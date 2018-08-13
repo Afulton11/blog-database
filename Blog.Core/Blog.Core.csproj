@@ -11,9 +11,7 @@
     
   <ItemGroup>
     <Folder Include="BusinessLayer\" />
-    <Folder Include="DataLayer\Contracts\" />
     <Folder Include="DataLayer\Mapping\" />
-    <Folder Include="DataLayer\Repositories\" />
   </ItemGroup>
 
 </Project>
