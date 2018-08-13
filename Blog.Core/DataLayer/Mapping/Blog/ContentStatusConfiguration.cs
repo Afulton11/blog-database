@@ -18,6 +18,11 @@ namespace Blog.Core.DataLayer.Mapping.Blog
             builder.Property(p => p.ContentStatusName).HasColumnType("varchar(25)").IsRequired();
             builder.ConfigureAuditableEntity();
             builder.ConfigureConcurrentEntity();
+
+            // set unique constraints
+            builder
+                .HasAlternateKey(p => new { p.ContentStatusName })
+                .HasName("U_ContentStatusName");
         }
     }
 }
