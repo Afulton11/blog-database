@@ -19,9 +19,6 @@ namespace Blog.Core.EntityLayer.Blog
 
         public String ArticleCategoryName { get; set; }
 
-
-        public virtual ICollection<Article> Articles { get; set; } = new Collection<Article>();
-
         public byte[] Timestamp { get; set; }
 
         public string CreationUser { get; set; }
@@ -31,5 +28,8 @@ namespace Blog.Core.EntityLayer.Blog
         public string LastUpdateUser { get; set; }
 
         public DateTime? LastUpdateDateTime { get; set; }
+
+        public virtual ICollection<Article> Articles { get; set; } = new Collection<Article>();
+
     }
 }
