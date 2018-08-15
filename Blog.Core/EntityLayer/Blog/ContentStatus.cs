@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Blog.Core.EntityLayer.Blog
 {
@@ -26,5 +27,7 @@ namespace Blog.Core.EntityLayer.Blog
         public DateTime? LastUpdateDateTime { get; set; }
 
         public Byte[] Timestamp { get; set; }
+
+        public ICollection<Article> ContentStatusArticles { get; set; }
     }
 }
