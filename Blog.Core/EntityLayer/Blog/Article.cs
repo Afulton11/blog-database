@@ -35,18 +35,10 @@ namespace Blog.Core.EntityLayer.Blog
         // Foreign Key ID's
         public Int64? AuthorID { get; set; }
 
-        public Int64? NextArticleID { get; set; }
-
-        public Int64? PreviousArticleID { get; set; }
-
         public Int16? ContentStatusID { get; set; }
 
         // Foreign Keys
         public virtual Author AuthorFk { get; set; }
-
-        public virtual Article NextArticleFk { get; set; }
-
-        public virtual Article PreviousArticleFk { get; set; }
 
         public virtual ContentStatus ContentStatusFk { get; set; }
 
