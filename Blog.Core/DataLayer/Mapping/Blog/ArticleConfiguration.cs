@@ -19,7 +19,7 @@ namespace Blog.Core.DataLayer.Mapping.Blog
 
             // set mapping for properties
             builder.Property(p => p.ArticleTitle).HasColumnType("nvarchar").IsRequired();
-            builder.Property(p => p.ArticleBody).HasColumnType("nvarchar").IsRequired();
+            builder.Property(p => p.ArticleBody).HasColumnType("nvarchar(max)").IsRequired();
             builder.Property(p => p.ArticleDescription).HasColumnType("nvarchar(1000)");
             builder.Property(p => p.AuthorID).HasColumnType("bigint").IsRequired();
             builder.Property(p => p.ContentStatusID).HasColumnType("smallint").IsRequired();
