@@ -1,4 +1,6 @@
-﻿using LiteGuard;
+﻿using Blog.Core.DataLayer.Mapping.Blog;
+using Blog.Core.DataLayer.Mapping.Dbo;
+using LiteGuard;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Core.DataLayer
@@ -13,13 +15,20 @@ namespace Blog.Core.DataLayer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            ApplyBlogConfigurations(modelBuilder);
-            base.OnModelCreating(modelBuilder);
-        }
+            // Apply dbo configurations 
+            modelBuilder
+                .ApplyConfiguration(new ChangeLogConfiguration())
+                .ApplyConfiguration(new ChangeLogExclusionConfiguration())
+                .ApplyConfiguration(new EventLogConfiguration());
 
-        private void ApplyBlogConfigurations(ModelBuilder modelBuilder)
-        {
-            /* ...Apply mapping all of our POCOs here ... */
+            // Apply Blog configurations
+            modelBuilder
+                .ApplyConfiguration(new AuthorConfiguration())
+                .ApplyConfiguration(new ArticleConfiguration())
+                .ApplyConfiguration(new ArticleCategoryConfiguration())
+                .ApplyConfiguration(new ContentStatusConfiguration());
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
