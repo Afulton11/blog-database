@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace Blog.Core.EntityLayer.Blog
 {
-    public class ArticleCategory
+    public class ArticleCategory : IAuditableEntity, IConcurrentEntity
     {
         public ArticleCategory()
         {
@@ -19,7 +19,17 @@ namespace Blog.Core.EntityLayer.Blog
 
         public String ArticleCategoryName { get; set; }
 
+        public byte[] Timestamp { get; set; }
+
+        public string CreationUser { get; set; }
+
+        public DateTime? CreationDateTime { get; set; }
+
+        public string LastUpdateUser { get; set; }
+
+        public DateTime? LastUpdateDateTime { get; set; }
 
         public virtual ICollection<Article> Articles { get; set; } = new Collection<Article>();
+
     }
 }

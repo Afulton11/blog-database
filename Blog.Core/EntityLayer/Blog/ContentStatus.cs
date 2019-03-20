@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Blog.Core.EntityLayer.Blog
 {
-    public sealed class ContentStatus
+    public sealed class ContentStatus : IAuditableEntity, IConcurrentEntity
     {
         public ContentStatus()
         {
@@ -16,5 +17,17 @@ namespace Blog.Core.EntityLayer.Blog
         public Int16? ContentStatusID { get; set; }
 
         public String ContentStatusName { get; set; }
+
+        public String CreationUser { get; set; }
+
+        public DateTime? CreationDateTime { get; set; }
+
+        public String LastUpdateUser { get; set; }
+
+        public DateTime? LastUpdateDateTime { get; set; }
+
+        public Byte[] Timestamp { get; set; }
+
+        public ICollection<Article> ContentStatusArticles { get; set; }
     }
 }

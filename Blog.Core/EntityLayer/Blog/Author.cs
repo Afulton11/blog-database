@@ -24,15 +24,15 @@ namespace Blog.Core.EntityLayer.Blog
 
         public DateTime? BirthDate { get; set; }
 
-        public string CreationUser { get; set; }
+        public String CreationUser { get; set; }
 
         public DateTime? CreationDateTime { get; set; }
 
-        public string LastUpdateUser { get; set; }
+        public String LastUpdateUser { get; set; }
 
         public DateTime? LastUpdateDateTime { get; set; }
 
-        public byte[] Timestamp { get; set; }
+        public Byte[] Timestamp { get; set; }
 
         public virtual ICollection<Article> Articles { get; set; }
     }
