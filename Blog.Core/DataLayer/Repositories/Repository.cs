@@ -119,7 +119,7 @@ namespace Blog.Core.DataLayer.Repositories
 
             }
 
-            // TODO: improve the way to retrieve primary key value from entity instance
+            // TODO: improve the way we retrieve the primary key value from an entity instance
             string GetPrimaryKeyFromEntity(object entity) =>
                 entity.GetType().GetProperties()[0].GetValue(entity, null).ToString();
         }

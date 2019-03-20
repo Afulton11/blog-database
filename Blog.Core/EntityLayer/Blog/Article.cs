@@ -5,16 +5,12 @@ namespace Blog.Core.EntityLayer.Blog
 {
     public class Article : IAuditableEntity, IConcurrentEntity
     {
-        public Article()
-        {
-        }
-
-        public Article(Int64? articleID)
+        public Article(Int64 articleID)
         {
             ArticleID = articleID;
         }
 
-        public Int64? ArticleID { get; set; }
+        public Int64 ArticleID { get; set; }
 
         public String ArticleTitle { get; set; }
 
@@ -33,7 +29,7 @@ namespace Blog.Core.EntityLayer.Blog
         public Byte[] Timestamp { get; set; }
 
         // Foreign Key ID's
-        public Int64? AuthorID { get; set; }
+        public Int64 AuthorID { get; set; }
 
         public Int16? ContentStatusID { get; set; }
 
@@ -41,7 +37,6 @@ namespace Blog.Core.EntityLayer.Blog
         public virtual Author AuthorFk { get; set; }
 
         public virtual ContentStatus ContentStatusFk { get; set; }
-
 
         public virtual ICollection<ArticleCategory> ArticleCategories { get; set; }
     }
