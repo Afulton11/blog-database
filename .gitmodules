@@ -1,0 +1,3 @@
+[submodule "DatabaseFactory"]
+	path = DatabaseFactory
+	url = https://github.com/Afulton11/ADO.NET-ORM-Less-Database.git

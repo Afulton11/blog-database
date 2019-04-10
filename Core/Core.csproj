@@ -1,0 +1,26 @@
+﻿
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Entities\" />
+    <Folder Include="Entities\Dbo\" />
+    <Folder Include="Entities\Blog\" />
+    <Folder Include="Data\Queries\" />
+    <Folder Include="Data\Validators\" />
+    <Folder Include="Business\QueryServices\" />
+    <Folder Include="Business\QueryServices\Decorators\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
+    <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DatabaseFactory\DatabaseFactory.csproj" />
+  </ItemGroup>
+</Project>
