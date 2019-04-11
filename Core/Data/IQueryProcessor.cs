@@ -1,8 +1,7 @@
-﻿using System;
-namespace DatabaseFactory.Data.Contracts
+﻿namespace DatabaseFactory.Data.Contracts
 {
-    public interface IQueryProcessor
+    public interface IQueryProcessor<TQuery, TResult> where TQuery : IQuery<TResult>
     {
-        TResult process<TResult>(IQuery<TResult> query);
+        TResult process(TQuery query);
     }
 }
