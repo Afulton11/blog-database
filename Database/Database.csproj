@@ -5,10 +5,10 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <Content Include="Setup\Blog.sql" />
-    <Content Include="Setup\Populate\PointReasons.sql" />
-    <Content Include="Setup\Populate\Roles.sql" />
-    <Content Include="Setup\Procedures\CreatePoints.sql" />
+    <Content Include="Setup\00_Blog.sql" />
+    <Content Include="Setup\02_Populate\PointReasons.sql" />
+    <Content Include="Setup\02_Populate\Roles.sql" />
+    <Content Include="Setup\01_Procedures\CreatePoints.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
