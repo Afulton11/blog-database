@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <StartupObject>Web.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
