@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Business.CommandServices;
-using DatabaseFactory.Data.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -33,9 +32,6 @@ namespace Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
-            // Register logger for commandHandlers
-            services.AddScoped<ILogger, Logger<CommandHandler<ICommand>>>();
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
