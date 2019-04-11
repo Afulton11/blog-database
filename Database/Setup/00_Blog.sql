@@ -1,4 +1,4 @@
-USE SimpleDatabase;
+﻿USE BlogDatabase;
 GO
 
 DROP TABLE IF EXISTS Blog.Points;

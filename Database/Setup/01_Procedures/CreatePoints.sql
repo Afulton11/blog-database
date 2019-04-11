@@ -1,4 +1,4 @@
-USE SimpleDatabase
+USE BlogDatabase
 GO
 
 CREATE OR ALTER FUNCTION Blog.GetPointReason( 
@@ -15,12 +15,12 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER PROCEDURE Blog.CreatePointForVisitingSite(
+CREATE OR ALTER PROCEDURE Blog.CreatePointForPublishingArticle(
     @userId INT
 ) 
 AS
 BEGIN
-    DECLARE @ReasonID INT = Blog.GetPointReason(N'Visited website');
+    DECLARE @ReasonID INT = Blog.GetPointReason(N'Published Article');
     DECLARE @ExpiresOn DATETIMEOFFSET = DATEADD(DAY, 3, SYSDATETIMEOFFSET());
     
     INSERT INTO Blog.Points(UserID, ReasonID, PointValue, ExipresOn)

@@ -1,19 +1,22 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{27FE0A36-0CA3-4245-83CB-E3CC11562F9F}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{27FE0A36-0CA3-4245-83CB-E3CC11562F9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{5065AD24-44B7-41EA-82A3-A4E94CBEFE42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{5065AD24-44B7-41EA-82A3-A4E94CBEFE42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mocker", "Mocker\Mocker.csproj", "{0E94DEB4-7430-487A-B49B-43805C0781F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mocker", "Mocker\Mocker.csproj", "{0E94DEB4-7430-487A-B49B-43805C0781F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{A7103ED4-239C-49F2-93D6-C91F19183D10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{A7103ED4-239C-49F2-93D6-C91F19183D10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{F236ED9D-147C-43AA-B087-9D631E81F3D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{F236ED9D-147C-43AA-B087-9D631E81F3D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{4294FC10-9E87-461C-A3DD-307B56EA05E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{4294FC10-9E87-461C-A3DD-307B56EA05E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseFactory", "DatabaseFactory\DatabaseFactory.csproj", "{84E7950A-CE41-4943-ABE7-29C9C7FDD1A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseFactory", "DatabaseFactory\DatabaseFactory.csproj", "{84E7950A-CE41-4943-ABE7-29C9C7FDD1A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{3992FED5-21FE-4CED-9E4F-A468CDA30B9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +52,16 @@ Global
 		{84E7950A-CE41-4943-ABE7-29C9C7FDD1A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84E7950A-CE41-4943-ABE7-29C9C7FDD1A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84E7950A-CE41-4943-ABE7-29C9C7FDD1A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3992FED5-21FE-4CED-9E4F-A468CDA30B9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3992FED5-21FE-4CED-9E4F-A468CDA30B9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3992FED5-21FE-4CED-9E4F-A468CDA30B9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3992FED5-21FE-4CED-9E4F-A468CDA30B9A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B9E3B871-5E5D-4DDB-A7C1-8C7F351935EB}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
