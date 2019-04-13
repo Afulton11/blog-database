@@ -1,4 +1,7 @@
-﻿using System;
+﻿using EnsureThat;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Core.Entities.Blog
 {
@@ -17,10 +20,50 @@ namespace Core.Entities.Blog
         public static ContentStatus Removed => new ContentStatus("Removed");
         public static ContentStatus Archived => new ContentStatus("Archived");
 
-        public override bool Equals(object obj) =>
-            obj is ContentStatus status
-            && Value == status.Value;
+        public static IEnumerable<ContentStatus> AllStatuses
+        {
+            get
+            {
+                yield return Draft;
+                yield return Published;
+                yield return Deleted;
+                yield return Removed;
+                yield return Archived;
+            }
+        }
 
-        public override int GetHashCode()=> HashCode.Combine(Value);
+        /// <summary>
+        /// Explicitly cast strings to a <see cref="ContentStatus"/>
+        /// </summary>
+        /// <param name="value">The <see cref="string"/> to convert.</param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="value"/> is 
+        /// null,
+        /// whitespace,
+        /// or not in <see cref="ContentStatus.AllStatuses"/>
+        /// </exception>
+        public static explicit operator ContentStatus(string value)
+        {
+            EnsureArg.IsNotEmptyOrWhitespace(value, nameof(value));
+
+            var result = AllStatuses.First((status) => status.Value == value);
+
+            // TODO: Show custom exception here.
+            EnsureArg.IsNotNull(result, nameof(value));
+
+            return result;
+        }
+
+        public override bool Equals(object obj) =>
+            (
+                obj is string value
+                && Value == value
+            ) ||
+            (
+                obj is ContentStatus status
+                && Value == status.Value
+            );
+
+        public override int GetHashCode() => HashCode.Combine(Value);
     }
 }
