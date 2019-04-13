@@ -36,14 +36,14 @@ namespace Core.Business.QueryServices
 
         private Article ReadArticles(IDataReader reader, GetArticleByIdQuery query)
         {
-            var articles = ArticleReader.Read(reader).ToList();
+            var article = ArticleReader.Read(reader).FirstOrDefault();
 
-            if (articles.Count == 0)
+            if (article == null)
             {
                 throw new KeyNotFoundException($"No Article with Id[{query.ArticleID}] was found in the database!");
             }
 
-            return articles.First();
+            return article;
         }
     }
 }
