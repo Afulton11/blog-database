@@ -2,8 +2,8 @@ Find User by AuthorUserId
   Inner Join with Article
   Group By AuthorUserId
   Count Distinct ArticleId
-
--------------------
+======================
+--Look Up User by AuthorUserID and count the number of posts they have made
 DECLARE
 	@AuthorUserID = x;
 
@@ -11,36 +11,50 @@ SELECT Auth.AuthorUserID AS UserID,
        COUNT(DISTINCT Art.ArticleID) AS NumberOfArticles
 FROM Blog.Author Auth
      INNER JOIN Blog.Article Art ON Art.AuthorID = Auth.AuthorUserID
+WHERE Auth.AuthorUserID = @AuthorUserID
 GROUP BY Auth.AuthorUserID
 ORDER BY Auth.AuthorUserID ASC;
--------------------
+======================
 
 
 
 Find posts with a span of time
   Creation date
-
---------------------
+====================
+--Look up posts made between a start date and an end date
 DECLARE
 	@StartDate = x,
 	@EndDate = y;
 
-SELECT
-FROM
-GROUP BY
-ORDER BY
---------------------
+SELECT Art.Title AS Title,
+       Art.AuthorID AS AuthorID,
+       Art.Description AS Description,
+       Art.CreationDateTime AS CreationDateTime
+FROM Blog.Article Art
+WHERE Art.CreationDateTime BETWEEN (@StartDate AND @EndDate)
+GROUP BY Art.Title, Art.AuthorID, Art.Description, Art.CreationDateTime
+ORDER BY Art.CreationDateDate ASC
+====================
 
 
 
 Find most recent articles
   Creation date
+=====================
+SELECT Art.AuthorID AS AuthorID,
+       Art.Title AS Title,
+       Art.Description AS Description,
+       MAX(Art.CreatedDateTime) AS CreatedDateTime
+FROM Blog.Article Art
+GROUP BY Art.AuthorID, Art.Title, Art.Description
+ORDER BY Art.CreatedDateTime DESC
+=====================
 
 
 
 Template for Pagenation
-
--------------------
+=====================
+--General template for pagenation
 DECLARE
 	@PageNumber = x,
 	@PageSize = y;
@@ -52,4 +66,4 @@ GROUP BY
 ORDER BY
 OFFSET @PageSize * @PageNumber ROWS
 FETCH NEXT @PageSize ROWS ONLY;
--------------------
+======================
