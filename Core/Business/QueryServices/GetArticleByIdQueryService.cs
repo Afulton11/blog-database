@@ -3,6 +3,7 @@ using Core.Business.QueryServices.Readers;
 using Core.Data.Queries;
 using Core.Entities.Blog;
 using DatabaseFactory.Data.Contracts;
+using EnsureThat;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -16,6 +17,9 @@ namespace Core.Business.QueryServices
     {
         public GetArticleByIdQueryService(IDatabase database, IReader<Article> articleReader)
         {
+            EnsureArg.IsNotNull(database, nameof(database));
+            EnsureArg.IsNotNull(articleReader, nameof(articleReader));
+
             Database = database;
             ArticleReader = articleReader;
         }
@@ -24,6 +28,8 @@ namespace Core.Business.QueryServices
 
         public Article Execute(GetArticleByIdQuery query)
         {
+            EnsureArg.IsNotNull(query, nameof(query));
+
             return Database.TryExecuteTransaction((transaction) =>
             {
                 var dbQuery = Database.CreateStoredProcCommand("Blog.GetArticleById", transaction);
