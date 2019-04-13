@@ -29,7 +29,7 @@ namespace Common
             {
                 return default;
             }
-}
+
         }
     }
 }
