@@ -1,5 +1,6 @@
-﻿using System;
-namespace DatabaseFactory.Data.Contracts
+﻿using Core.Data.Queries;
+
+namespace Core.Business.Contracts
 {
     public interface IQueryService<TQuery, TResult> where TQuery: IQuery<TResult>
     {

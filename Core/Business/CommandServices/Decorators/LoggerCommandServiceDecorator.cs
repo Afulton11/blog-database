@@ -1,4 +1,5 @@
-﻿using DatabaseFactory.Data.Contracts;
+﻿using Core.Business.Contracts;
+using Core.Data.Commands;
 using Microsoft.Extensions.Logging;
 
 namespace Core.Business.CommandServices.Decorators

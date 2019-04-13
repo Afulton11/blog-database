@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Core.Business
+namespace Core.Business.Contracts
 {
     public interface IService : IDisposable
     {

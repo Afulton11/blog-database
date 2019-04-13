@@ -1,4 +1,4 @@
-﻿namespace DatabaseFactory.Data.Contracts
+﻿namespace Core.Data.Commands
 {
     public interface ICommand
     {

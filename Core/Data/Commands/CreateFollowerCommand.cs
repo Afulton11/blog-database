@@ -1,5 +1,4 @@
-﻿using DatabaseFactory.Data.Contracts;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Core.Data.Commands
 {

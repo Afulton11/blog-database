@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Business.Contracts;
+using System;
 namespace Core.Business
 {
     public abstract class Service : IService
