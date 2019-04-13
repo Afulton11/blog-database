@@ -5,6 +5,8 @@ This repository is a simple skeleton for a blog with a database. Created as a pa
 
 `Title:` [Project-Name] 'Short Description of what you did'
 
+- Also, reference the issue the commit relates to using "#{issue-number}" that way when we look at the issue, we can see all the commits related to that specific issue.
+
 ## Coding Guidelines
 
 `todo: discuss: common coding practices/guidelines so that we all have consistent formatting throughout each commit`
