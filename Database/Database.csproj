@@ -10,6 +10,10 @@
     <Content Include="Setup\02_Populate\Roles.sql" />
     <Content Include="Setup\01_Procedures\CreatePoints.sql" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="Setup\01_Procedures\Query TasksSQL.txt" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />

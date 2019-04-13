@@ -1,0 +1,55 @@
+Find User by AuthorUserId
+  Inner Join with Article
+  Group By AuthorUserId
+  Count Distinct ArticleId
+
+-------------------
+DECLARE
+	@AuthorUserID = x;
+
+SELECT Auth.AuthorUserID AS UserID,
+       COUNT(DISTINCT Art.ArticleID) AS NumberOfArticles
+FROM Blog.Author Auth
+     INNER JOIN Blog.Article Art ON Art.AuthorID = Auth.AuthorUserID
+GROUP BY Auth.AuthorUserID
+ORDER BY Auth.AuthorUserID ASC;
+-------------------
+
+
+
+Find posts with a span of time
+  Creation date
+
+--------------------
+DECLARE
+	@StartDate = x,
+	@EndDate = y;
+
+SELECT
+FROM
+GROUP BY
+ORDER BY
+--------------------
+
+
+
+Find most recent articles
+  Creation date
+
+
+
+Template for Pagenation
+
+-------------------
+DECLARE
+	@PageNumber = x,
+	@PageSize = y;
+
+SELECT
+FROM
+WHERE
+GROUP BY
+ORDER BY
+OFFSET @PageSize * @PageNumber ROWS
+FETCH NEXT @PageSize ROWS ONLY;
+-------------------
