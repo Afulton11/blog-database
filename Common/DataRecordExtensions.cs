@@ -1,4 +1,5 @@
 ﻿using EnsureThat;
+using System;
 using System.Data;
 
 namespace Common
@@ -20,15 +21,15 @@ namespace Common
         public static TResult GetSafely<TResult>(this IDataRecord record, string name)
         {
             EnsureArg.IsNotNullOrEmpty(name);
-
-            var ordinal = record.GetOrdinal(name);
-
-            if (ordinal >= 0)
+            try
             {
-                return (TResult)record.GetValue(ordinal);
+                return (TResult)record[name];
             }
-
-            return default;
+            catch (IndexOutOfRangeException)
+            {
+                return default;
+            }
+}
         }
     }
 }
