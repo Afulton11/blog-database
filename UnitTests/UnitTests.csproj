@@ -19,5 +19,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\DatabaseFactory\DatabaseFactory.csproj" />
+    <ProjectReference Include="..\Mocker\Mocker.csproj" />
   </ItemGroup>
 </Project>
