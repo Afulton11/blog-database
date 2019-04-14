@@ -33,8 +33,9 @@ namespace Core.Business.QueryServices
             return Database.TryExecuteTransaction((transaction) =>
             {
                 var dbQuery = Database.CreateStoredProcCommand("Blog.GetArticleById", transaction);
+                var parameter = Database.CreateParameter("ArticleId", query.ArticleID);
 
-                dbQuery.Parameters.Add(Database.CreateParameter("ArticleId", query.ArticleID));
+                dbQuery.Parameters.Add(parameter);
 
                 return Database.ExecuteReader(dbQuery, (reader) => this.ReadArticles(reader, query));
             });

@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="Business\QueryServices\Exceptions\" />
     <Folder Include="Entities\Dbo\" />
     <Folder Include="Data\Validators\" />
     <Folder Include="Business\QueryServices\Decorators\" />
