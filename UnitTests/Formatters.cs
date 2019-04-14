@@ -12,7 +12,19 @@ namespace UnitTests
                 if (obj == null)
                     return x => "";
 
-                return x => JsonConvert.SerializeObject(x);
+                return (x) =>
+                {
+                    if (x == null)
+                        return "null";
+                    try
+                    {
+                        return JsonConvert.SerializeObject(x);
+                    }
+                    catch (JsonSerializationException)
+                    {
+                        return "null";
+                    }
+                };
             });
         }
     }

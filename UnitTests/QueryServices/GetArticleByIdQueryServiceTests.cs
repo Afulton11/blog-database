@@ -246,10 +246,7 @@ namespace UnitTests.QueryServices.GetArticleByIdQueryServiceTests
 
     public class FailedReaderTests : DataReaderTests
     {
-        protected override IEnumerable<Article> ReadArticles()
-        {
-            yield return null;
-        }
+        protected override IEnumerable<Article> ReadArticles() => null;
 
         [Test]
         public void Should_Throw_KeyNotFoundException()
