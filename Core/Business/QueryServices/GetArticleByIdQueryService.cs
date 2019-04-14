@@ -43,7 +43,7 @@ namespace Core.Business.QueryServices
 
         private Article ReadArticles(IDataReader reader, GetArticleByIdQuery query)
         {
-            var article = ArticleReader.Read(reader).FirstOrDefault();
+            var article = ArticleReader.Read(reader)?.FirstOrDefault() ?? null;
 
             if (article == null)
             {

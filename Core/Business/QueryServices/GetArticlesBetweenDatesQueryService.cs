@@ -50,7 +50,7 @@ namespace Core.Business.QueryServices
         {
             var articles = ArticleReader.Read(reader);
 
-            if (!articles.Any())
+            if (articles == null || !articles.Any())
             {
                 throw new ArticlesNotFoundException(query.StartDate, query.EndDate);
             }
