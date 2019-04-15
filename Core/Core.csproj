@@ -7,7 +7,6 @@
   <ItemGroup>
     <Folder Include="Entities\Dbo\" />
     <Folder Include="Data\Validators\" />
-    <Folder Include="Business\QueryServices\Decorators\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
