@@ -6,9 +6,9 @@ namespace Mocker.Comparers
     public class ArticleEqualityComparer : IEqualityComparer<Article>
     {
         public bool Equals(Article x, Article y) =>
-            x.ArticleID == y.ArticleID
-            && x.AuthorID == y.AuthorID
-            && x.CategoryID == y.CategoryID
+            x.ArticleId == y.ArticleId
+            && x.AuthorId == y.AuthorId
+            && x.CategoryId == y.CategoryId
             && (x.ContentStatus?.Equals(y.ContentStatus) ?? true)
             && x.Title == y.Title
             && x.Body == y.Body

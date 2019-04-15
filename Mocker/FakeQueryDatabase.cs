@@ -23,7 +23,7 @@ namespace Mocker
         public IDbConnection CreateConnection() => null;
 
         public IDbCommand CreateCommand() => null;
-        public IDbConnection CreateOpenConnection() => null;
+        public IDbConnection OpenConnection(IDbConnection connection) => null;
 
         public IDbCommand CreateCommand(string commandText, IDbConnection connection) => null;
 

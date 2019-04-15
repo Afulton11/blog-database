@@ -185,10 +185,10 @@ namespace UnitTests.QueryServices.GetArticleByIdQueryServiceTests
         {
             yield return new Article
             {
-                ArticleID = Query.ArticleID,
-                AuthorID = 1,
+                ArticleId = Query.ArticleID,
+                AuthorId = 1,
                 Body = "Body",
-                CategoryID = 0,
+                CategoryId = 0,
                 ContentStatus = ContentStatus.Published,
                 CreationDateTime = new DateTime(2017, 2, 10),
                 LastUpdateDateTime = new DateTime(2019, 4, 13),

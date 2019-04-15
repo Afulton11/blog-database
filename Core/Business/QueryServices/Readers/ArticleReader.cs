@@ -4,7 +4,7 @@ using Core.Entities.Blog;
 using System;
 using System.Data;
 
-namespace Core.Business.QueryServices.DataReaders
+namespace Core.Business.QueryServices.Readers
 {
     /// <summary>
     /// Reads all articles found in the given <see cref="IDataReader"/>
@@ -14,15 +14,15 @@ namespace Core.Business.QueryServices.DataReaders
         protected override Article ReadRow(IDataRecord row) =>
             new Article
             {
-                ArticleID = row.GetSafely<int>(nameof(Article.ArticleID)),
-                AuthorID = row.GetSafely<int>(nameof(Article.AuthorID)),
-                CategoryID = row.GetSafely<int>(nameof(Article.CategoryID)),
+                ArticleId = row.GetSafely<int>(nameof(Article.ArticleId)),
+                AuthorId = row.GetSafely<int>(nameof(Article.AuthorId)),
+                CategoryId = row.GetSafely<int>(nameof(Article.CategoryId)),
                 ContentStatus = row.GetSafely<ContentStatus>(nameof(Article.ContentStatus)),
                 Title = row.GetSafely<string>(nameof(Article.Title)),
                 Description = row.GetSafely<string>(nameof(Article.Description)),
                 Body = row.GetSafely<string>(nameof(Article.Body)),
-                CreationDateTime = row.GetSafely<DateTimeOffset>(nameof(Article.CreationDateTime)),
-                LastUpdateDateTime = row.GetSafely<DateTimeOffset>(nameof(Article.LastUpdateDateTime)),
+                CreationDateTime = row.GetSafely<DateTime>(nameof(Article.CreationDateTime)),
+                LastUpdateDateTime = row.GetSafely<DateTime>(nameof(Article.LastUpdateDateTime)),
             };
     }
 }
