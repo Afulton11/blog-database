@@ -1,29 +1,30 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Common;
-using Core.Business.CommandServices;
+using Core.Business.CommandServices.Decorators;
+using Core.Business.QueryServices.Decorators;
 using Core.Business.Contracts;
-using Core.Business.QueryServices;
 using Core.Business.QueryServices.Readers;
-using Core.Entities.Blog;
 using DatabaseFactory.Config;
 using DatabaseFactory.Data;
 using DatabaseFactory.Data.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using SimpleInjector;
+using SimpleInjector.Integration.AspNetCore.Mvc;
+using SimpleInjector.Lifestyles;
 
 namespace Web
 {
     public class Startup
     {
+        private readonly Container container = new Container();
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -49,16 +50,40 @@ namespace Web
                 options.UseConnectionString(connectionString);
             });
 
-            services.AddScoped<IReader<Article>, ArticleReader>();
-            services.AddScoped<GetArticleByIdQueryService>();
+
+            //services.AddScoped<IReader<Article>, ArticleReader>();
+            //services.AddScoped<GetArticleByIdQueryService>();
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            IntegrateSimpleInjector(services);
+        }
+
+        private void IntegrateSimpleInjector(IServiceCollection services)
+        {
+            container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
+
+            services.AddHttpContextAccessor();
+
+            services.AddSingleton<IControllerActivator>(
+                new SimpleInjectorControllerActivator(container));
+            services.AddSingleton<IViewComponentActivator>(
+                new SimpleInjectorViewComponentActivator(container));
+            services.AddSingleton<IPageModelActivatorProvider>(
+                new SimpleInjectorPageModelActivatorProvider(container));
+
+            services.EnableSimpleInjectorCrossWiring(container);
+            services.UseSimpleInjectorAspNetRequestScoping(container);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            InitializeContainer(app);
+
+            container.Verify();
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -74,6 +99,49 @@ namespace Web
             app.UseCookiePolicy();
 
             app.UseMvc();
+        }
+
+        private void InitializeContainer(IApplicationBuilder app)
+        {
+            // Add application presentation components:
+            container.RegisterMvcControllers(app);
+            container.RegisterMvcViewComponents(app);
+            container.RegisterPageModels(app);
+
+            InitializeAppServices(app);
+
+            // Allow Simple Injector to resolve services from ASP.NET Core.
+            container.AutoCrossWireAspNetComponents(app);
+        }
+
+        private void InitializeAppServices(IApplicationBuilder app)
+        {
+            // Add application services. For instance:
+            //container.Register<IUserService, UserService>(Lifestyle.Scoped);
+
+            container.RegisterConditional(
+                typeof(ILogger),
+                c => typeof(Logger<>).MakeGenericType(c.Consumer.ImplementationType),
+                Lifestyle.Singleton,
+                c => true);
+
+
+            container.Register(typeof(IReader<>), typeof(IReader<>).Assembly);
+            container.Register(typeof(ICommandService<>), typeof(ICommandService<>).Assembly);
+            container.Register(typeof(IQueryService<,>), typeof(IQueryService<,>).Assembly);
+
+            RegisterCommandServiceDecorators();
+            RegisterQueryServiceDecorators();
+        }
+
+        private void RegisterCommandServiceDecorators()
+        {
+            container.RegisterDecorator(typeof(ICommandService<>), typeof(LoggerCommandServiceDecorator<>));
+        }
+
+        private void RegisterQueryServiceDecorators()
+        {
+            container.RegisterDecorator(typeof(IQueryService<,>), typeof(LoggerQueryServiceDecorator<,>));
         }
     }
 }
