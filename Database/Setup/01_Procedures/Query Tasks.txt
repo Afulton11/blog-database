@@ -1,69 +1,150 @@
-Find User by AuthorUserId
-  Inner Join with Article
-  Group By AuthorUserId
-  Count Distinct ArticleId
 ======================
---Look Up User by AuthorUserID and count the number of posts they have made
-DECLARE
-	@AuthorUserID = x;
+//Look up and count the number of articles by a given author
+CREATE OR ALTER PROCEDURE Blog.AuthorArticleCount
+(
+	@AuthorUserID INT
+)
+AS (
+	SELECT Auth.AuthorUserID AS UserID,
+	       COUNT(DISTINCT Art.ArticleID) AS NumberOfArticles
+	FROM Blog.Author Auth
+	     INNER JOIN Blog.Article Art ON Art.AuthorID = Auth.AuthorUserID
+	WHERE Auth.AuthorUserID = @AuthorUserID
+	GROUP BY Auth.AuthorUserID
+)
+GO
+======================
 
-SELECT Auth.AuthorUserID AS UserID,
-       COUNT(DISTINCT Art.ArticleID) AS NumberOfArticles
-FROM Blog.Author Auth
-     INNER JOIN Blog.Article Art ON Art.AuthorID = Auth.AuthorUserID
-WHERE Auth.AuthorUserID = @AuthorUserID
-GROUP BY Auth.AuthorUserID
-ORDER BY Auth.AuthorUserID ASC;
+(Alternative to above: Find all articles by given author)
+======================
+//Look up all articles by a given author
+CREATE OR ALTER PROCEDURE Blog.GetAuthorArticles
+(
+	@AuthorID INT
+)
+AS(
+	SELECT Art.AuthorID AS AuthorID,
+	       Art.Title AS Title,
+	       Art.Description AS Description,
+	       Art.CreationDateTime AS CreationDateTime
+	FROM Blog.Article Art
+	WHERE Art.AuthorID = @AuthorID
+	GROUP BY Art.AuthorID, Art.Title, Art.Description, Art.CreationDateTime
+	ORDER BY Art.CreationDateTime DESC
+)
+GO
 ======================
 
 
 
-Find posts with a span of time
-  Creation date
 ====================
---Look up posts made between a start date and an end date
-DECLARE
-	@StartDate = x,
-	@EndDate = y;
-
-SELECT Art.Title AS Title,
-       Art.AuthorID AS AuthorID,
-       Art.Description AS Description,
-       Art.CreationDateTime AS CreationDateTime
-FROM Blog.Article Art
-WHERE Art.CreationDateTime BETWEEN (@StartDate AND @EndDate)
-GROUP BY Art.Title, Art.AuthorID, Art.Description, Art.CreationDateTime
-ORDER BY Art.CreationDateDate ASC
+//Look up posts made between a start date and an end date
+CREATE OR ALTER PROCEDURE Blog.GetArticlesTimeSpan
+(
+	@StartDate = DATETIME,
+	@EndDate = DATETIME
+)
+AS(
+	SELECT Art.Title AS Title,
+	       Art.AuthorID AS AuthorID,
+	       Art.Description AS Description,
+	       Art.CreationDateTime AS CreationDateTime
+	FROM Blog.Article Art
+	WHERE Art.CreationDateTime BETWEEN (@StartDate AND @EndDate)
+	GROUP BY Art.Title, Art.AuthorID, Art.Description, Art.CreationDateTime
+	ORDER BY Art.CreationDateDate DESC
+)
+GO
 ====================
 
 
 
-Find most recent articles
-  Creation date
 =====================
-SELECT Art.AuthorID AS AuthorID,
-       Art.Title AS Title,
-       Art.Description AS Description,
-       MAX(Art.CreatedDateTime) AS CreatedDateTime
-FROM Blog.Article Art
-GROUP BY Art.AuthorID, Art.Title, Art.Description
-ORDER BY Art.CreatedDateTime DESC
+//Look up most recent articles
+CREATE OR ALTER PROCEDURE Blog.MostRecentArticles
+AS(
+	SELECT Art.AuthorID AS AuthorID,
+	       Art.Title AS Title,
+	       Art.Description AS Description,
+	       MAX(Art.CreatedDateTime) AS CreatedDateTime
+	FROM Blog.Article Art
+	GROUP BY Art.AuthorID, Art.Title, Art.Description
+	ORDER BY Art.CreatedDateTime DESC
+)
+GO
 =====================
 
 
 
-Template for Pagenation
 =====================
---General template for pagenation
-DECLARE
-	@PageNumber = x,
-	@PageSize = y;
+//General template for pagenation (Useless?)
+CREATE OR ALTER PROCEDURE Blog.Pagenation
+(
+	@PageNumber INT,
+	@PageSize INT
+)
+AS(
+	SELECT
+	FROM
+	WHERE
+	GROUP BY
+	ORDER BY
+	`OFFSET @PageSize * @PageNumber ROWS
+	FETCH NEXT @PageSize ROWS ONLY
+)
+======================
 
-SELECT
-FROM
-WHERE
-GROUP BY
-ORDER BY
-OFFSET @PageSize * @PageNumber ROWS
-FETCH NEXT @PageSize ROWS ONLY;
+
+
+[Update: 4-15-19]
+======================
+//Retrieve all followers of a given author
+CREATE OR ALTER PROCEDURE Blog.GetFollowers
+(
+	@AuthorID INT
+)
+AS(
+	SELECT Fol.FollowingUserID AS Followers
+	FROM Blog.Following Fol
+	WHERE Fol.FollowedUserID = @AuthorID
+	GROUP BY Fol.FollowingUserID
+	ORDER BY Fol.FollowingUserID ASC
+)
+GO
+======================
+
+
+
+======================
+//Retrieve a given user's favorite articles
+CREATE OR ALTER PROCEDURE Blog.GetFavoriteArticles
+(
+	@UserID INT
+)
+AS(
+	SELECT Fav.ArticleID AS ArticleID
+	FROM Blog.Favorite Fav
+	WHERE Fav.UserID = @UserID
+	GROUP BY Fav.ArticleID
+	ORDER BY Fav.ArticleID ASC
+)
+GO
+======================
+
+
+
+======================
+//Retrieve all comments for a given article
+CREATE OR ALTER PROCEDURE Blog.GetComments
+(
+	@ArticleID INT
+)
+AS(
+	SELECT Com.Body AS Comment
+	FROM Blog.Comment Com
+	WHERE Com.ArticleID - @ArticleID
+	GROUP BY Com.Body
+	ORDER BY Com.CreationDateTime DESC
+)
+GO
 ======================
