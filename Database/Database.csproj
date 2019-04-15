@@ -7,7 +7,7 @@
   <ItemGroup>
     <Content Include="Setup\00_Blog.sql" />
     <Content Include="Setup\02_Populate\00_Role.sql" />
-    <Content Include="Setup\01_Procedures\CreatePoints.sql" />
+    <Content Include="Setup\01_Procedures\Commands\CreatePoints.sql" />
   </ItemGroup>
   
   <ItemGroup>

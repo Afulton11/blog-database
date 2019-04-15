@@ -7,6 +7,13 @@ GO
 USE BlogDatabase;
 GO
 
+DROP PROCEDURE IF EXISTS Blog.CreatePointForPublishingArticle;
+DROP PROCEDURE IF EXISTS Blog.GetArticleById;
+GO
+
+DROP FUNCTION IF EXISTS Blog.GetPointReason;
+GO
+
 DROP TABLE IF EXISTS Blog.Point;
 DROP TABLE IF EXISTS Blog.Reason;
 DROP TABLE IF EXISTS Blog.Comment;
