@@ -2,7 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common;
 using Core.Business.CommandServices;
+using Core.Business.Contracts;
+using Core.Business.QueryServices;
+using Core.Business.QueryServices.Readers;
+using Core.Entities.Blog;
+using DatabaseFactory.Config;
+using DatabaseFactory.Data;
+using DatabaseFactory.Data.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -32,6 +40,17 @@ namespace Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
+            services.AddDatabase<IDatabase, SQLDatabase>((provider, options) =>
+            {
+                var databaseSection = Configuration.GetSection("AppSettings");
+                var connectionString = databaseSection["ConnectionString"];
+
+                options.UseConnectionString(connectionString);
+            });
+
+            services.AddScoped<IReader<Article>, ArticleReader>();
+            services.AddScoped<GetArticleByIdQueryService>();
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
