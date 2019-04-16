@@ -1,3 +1,4 @@
+/// <binding AfterBuild='default' />
 module.exports = function (grunt) {
     'use strict';
 
