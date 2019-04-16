@@ -1,3 +1,5 @@
+using System;
+using System.Runtime.InteropServices;
 using Core.Business.CommandServices.Decorators;
 using Core.Business.QueryServices.Decorators;
 using Core.Business.Contracts;
@@ -12,12 +14,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
+using Microsoft.DotNet.PlatformAbstractions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
+using RuntimeEnvironment = System.Runtime.InteropServices.RuntimeEnvironment;
 
 namespace Web
 {
@@ -45,15 +49,15 @@ namespace Web
             services.AddDatabase<IDatabase, SQLDatabase>((provider, options) =>
             {
                 var databaseSection = Configuration.GetSection("AppSettings");
-                var connectionString = databaseSection["ConnectionString"];
+
+                var connectionSection = RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+                    ? databaseSection.GetSection("OSX")
+                    : databaseSection.GetSection("Windows");
+                
+                var connectionString = connectionSection["ConnectionString"];
 
                 options.UseConnectionString(connectionString);
             });
-
-
-            //services.AddScoped<IReader<Article>, ArticleReader>();
-            //services.AddScoped<GetArticleByIdQueryService>();
-
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
