@@ -16,4 +16,16 @@
     <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc" Version="4.5.1" />
     <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc.Core" Version="4.5.1" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\svg" />
+    <Folder Include="wwwroot\js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="src\js\site.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="src\js\site.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
 </Project>
