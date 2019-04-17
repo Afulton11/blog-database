@@ -1,5 +1,4 @@
-﻿using System;
-namespace DatabaseFactory.Data.Contracts
+﻿namespace Core.Data.Queries
 {
     public interface IQuery<TResult>
     {

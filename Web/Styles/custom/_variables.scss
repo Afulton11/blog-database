@@ -1,0 +1,40 @@
+// For a list of Bootstrap variables you can override, look at node_modules\bootstrap\scss\_variables.scss
+
+$background-secondary: #43425D;
+$background-primary: #fefefe;
+$text-secondary: #fefefe;
+$text-link-secondary: #ddf;
+$text-link-hover-secondary: #aaf;
+$text-primary: #404040;
+$text-link-primary: #6060f0;
+$text-link-primary-hover: #505090;
+
+$shadow-color: rgba(#000, 0.46);
+$shadow-size: 2px;
+$shadow-blur: 6px;
+
+$break-size: 768px;
+
+$outer-padding: 5%;
+$inner-padding: 3%;
+$small-padding: 8px;
+$regular-padding: 20px;
+$large-padding: 2em;
+$xl-padding: 40px;
+
+$title-size-lg-screen: 80px;
+$title-size-sm-screen: 50px;
+$recent-posts-title-size: 36px;
+$article-preview-title-size: 26px;
+
+// follow the programming standard for line width in chars:
+$max-line-width: 80ch;
+
+// override bootstrap variables:
+$enable-rounded: true;
+$body-bg: $background-primary;
+$body-color: $text-primary;
+$font-family-base: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+//override fontawesome variables
+$fa-font-path:  "fonts/fontawesome";

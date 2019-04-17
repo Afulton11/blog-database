@@ -1,6 +1,6 @@
-﻿using Core.Data.Commands;
+﻿using Core.Business.Contracts;
+using Core.Data.Commands;
 using DatabaseFactory.Data;
-using DatabaseFactory.Data.Contracts;
 
 namespace Core.Business.CommandServices.Points
 {

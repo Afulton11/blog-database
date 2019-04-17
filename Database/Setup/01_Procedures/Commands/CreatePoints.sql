@@ -8,8 +8,8 @@ RETURNS INT
 WITH SCHEMABINDING AS
 BEGIN
     DECLARE @ReasonID AS INT;
-    SELECT @ReasonID = PR.PointReasonID
-        FROM Blog.PointReasons PR
+    SELECT @ReasonID = PR.ReasonId
+        FROM Blog.Reason PR
         WHERE PR.Reason = @reason
     RETURN @ReasonID;
 END;
@@ -23,7 +23,7 @@ BEGIN
     DECLARE @ReasonID INT = Blog.GetPointReason(N'Published Article');
     DECLARE @ExpiresOn DATETIMEOFFSET = DATEADD(DAY, 3, SYSDATETIMEOFFSET());
     
-    INSERT INTO Blog.Points(UserID, ReasonID, PointValue, ExipresOn)
+    INSERT INTO Blog.Point(UserID, ReasonId, [Value], ExpiresAt)
     VALUES 
         (@userId, @ReasonID, 2, @ExpiresOn)
 END;

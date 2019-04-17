@@ -1,4 +1,5 @@
-﻿using DatabaseFactory.Data.Contracts;
+﻿using Core.Business.Contracts;
+using Core.Data.Commands;
 using Microsoft.Extensions.Logging;
 
 namespace Core.Business.CommandServices.Decorators
@@ -10,13 +11,15 @@ namespace Core.Business.CommandServices.Decorators
     public sealed class LoggerCommandServiceDecorator<TCommand> : ICommandService<TCommand>
         where TCommand : ICommand
     {
-        private readonly ICommandService<TCommand> decoratee;
         private readonly ILogger logger;
+        private readonly ICommandService<TCommand> decoratee;
 
-        public LoggerCommandServiceDecorator(ICommandService<TCommand> decoratee, ILogger logger)
+        public LoggerCommandServiceDecorator(
+            ILogger<ICommandService<TCommand>> logger,
+            ICommandService<TCommand> decoratee)
         {
-            this.decoratee = decoratee;
             this.logger = logger;
+            this.decoratee = decoratee;
         }
 
         public void Execute(TCommand command)
