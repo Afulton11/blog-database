@@ -1,12 +1,17 @@
 {
-  "name": "web",
+  "name": "blog-site",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple site that represents a blog",
+  "repository": {
+    "url": "https://github.com/Afulton11/blog-database"
+  },
+  "author": {
+    "name": "Andrew Fulton"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "bootstrap": "4.3.1"

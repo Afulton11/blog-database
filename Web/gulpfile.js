@@ -11,7 +11,7 @@
 var settings = {
     clean: true,
     scripts: true,
-    polyfills: true,
+    polyfills: false,
     styles: true,
     svgs: true,
     copy: true,
@@ -32,7 +32,7 @@ var paths = {
         output: 'wwwroot/js/'
     },
     styles: {
-        input: 'src/Styles/**/*.{scss,sass}',
+        input: 'src/styles/**/*.{scss,sass}',
         output: 'wwwroot/styles/',
         vendors: [
           'node_modules/bootstrap/scss/'  
@@ -42,9 +42,9 @@ var paths = {
         input: 'src/svg/*.svg',
         output: 'wwwroot/svg/'
     },
-    assets: {
+    copy: {
         input: 'src/assets/**/*',
-        output: 'wwwroot/assets'
+        output: 'wwwroot/assets/'
     },
     reload: './wwwroot/'
 };
@@ -128,11 +128,11 @@ var cleanDist = function (done) {
 // Repeated JavaScript tasks
 var jsTasks = lazypipe()
     .pipe(header, banner.full, {package: package})
-    .pipe(optimizejs)
+    // .pipe(optimizejs)
     .pipe(dest, paths.scripts.output)
     .pipe(rename, {suffix: '.min'})
     .pipe(uglify)
-    .pipe(optimizejs)
+    // .pipe(optimizejs)
     .pipe(header, banner.min, {package: package})
     .pipe(dest, paths.scripts.output);
 
