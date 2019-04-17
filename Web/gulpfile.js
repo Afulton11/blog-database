@@ -29,7 +29,12 @@ var paths = {
     scripts: {
         input: 'src/js/*',
         polyfills: '.polyfill.js',
-        output: 'wwwroot/js/'
+        output: 'wwwroot/js/',
+        vendors: [
+            'node_modules/jquery/dist/',
+            'node_modules/popper/dist/',
+            'node_modules/bootstrap/dist/js'
+        ]
     },
     styles: {
         input: 'src/styles/**/*.{scss,sass}',
