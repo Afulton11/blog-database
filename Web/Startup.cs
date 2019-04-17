@@ -1,3 +1,5 @@
+using System;
+using System.Runtime.InteropServices;
 using Core.Business.CommandServices.Decorators;
 using Core.Business.QueryServices.Decorators;
 using Core.Business.Contracts;
@@ -45,15 +47,15 @@ namespace Web
             services.AddDatabase<IDatabase, SQLDatabase>((provider, options) =>
             {
                 var databaseSection = Configuration.GetSection("AppSettings");
-                var connectionString = databaseSection["ConnectionString"];
+
+                var connectionSection = RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+                    ? databaseSection.GetSection("OSX")
+                    : databaseSection.GetSection("Windows");
+                
+                var connectionString = connectionSection["ConnectionString"];
 
                 options.UseConnectionString(connectionString);
             });
-
-
-            //services.AddScoped<IReader<Article>, ArticleReader>();
-            //services.AddScoped<GetArticleByIdQueryService>();
-
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
