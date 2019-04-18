@@ -129,15 +129,15 @@ namespace Web
                 c => true);
 
 
-            var assemblies = new[]
+            var cqrsAssemblies = new[]
             {
                 typeof(ICommandService<>).Assembly,
                 typeof(IDataAccessAssemblyAccessor).Assembly,
             };
 
             container.Register(typeof(IReader<>), typeof(IReader<>).Assembly);
-            container.Register(typeof(ICommandService<>), assemblies);
-            container.Register(typeof(IQueryService<,>), assemblies);
+            container.Register(typeof(ICommandService<>), cqrsAssemblies);
+            container.Register(typeof(IQueryService<,>), cqrsAssemblies);
 
             RegisterCommandServiceDecorators();
             RegisterQueryServiceDecorators();
