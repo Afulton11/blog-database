@@ -1,9 +1,6 @@
-using System;
 using System.Runtime.InteropServices;
-using Core.Business.CommandServices.Decorators;
-using Core.Business.QueryServices.Decorators;
-using Core.Business.Contracts;
-using Core.Business.QueryServices.Readers;
+using Domain.Business.CommandServices.Decorators;
+using Domain.Business.QueryServices.Decorators;
 using DatabaseFactory.Config;
 using DatabaseFactory.Data;
 using DatabaseFactory.Data.Contracts;
@@ -20,6 +17,10 @@ using Microsoft.Extensions.Logging;
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
+using Domain.Business.CommandServices;
+using DataAccess.QueryServices.Readers;
+using Domain.Business.QueryServices;
+using DataAccess.DataAccess;
 
 namespace Web
 {
@@ -128,9 +129,15 @@ namespace Web
                 c => true);
 
 
+            var assemblies = new[]
+            {
+                typeof(ICommandService<>).Assembly,
+                typeof(IDataAccessAssemblyAccessor).Assembly,
+            };
+
             container.Register(typeof(IReader<>), typeof(IReader<>).Assembly);
-            container.Register(typeof(ICommandService<>), typeof(ICommandService<>).Assembly);
-            container.Register(typeof(IQueryService<,>), typeof(IQueryService<,>).Assembly);
+            container.Register(typeof(ICommandService<>), assemblies);
+            container.Register(typeof(IQueryService<,>), assemblies);
 
             RegisterCommandServiceDecorators();
             RegisterQueryServiceDecorators();

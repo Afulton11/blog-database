@@ -1,4 +1,4 @@
-﻿using Core.Entities.Blog;
+﻿using Domain.Entities.Blog;
 using System.Collections.Generic;
 
 namespace Mocker.Comparers
