@@ -5,7 +5,7 @@
     <StartupObject>Web.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent Condition="$(OS)=='OSX'">gulp default</PreBuildEvent>
+    <PreBuildEvent Condition="$(OS)=='Unix'">gulp default</PreBuildEvent>
   </PropertyGroup>
 
   <ItemGroup>
