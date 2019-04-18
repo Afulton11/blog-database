@@ -1,3 +1,4 @@
+/// <binding BeforeBuild='default' />
 
 
 /** Gulp Template used
