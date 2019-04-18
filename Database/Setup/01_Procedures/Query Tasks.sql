@@ -114,8 +114,20 @@ CREATE OR ALTER PROCEDURE Blog.GetComments
 AS(
 	SELECT Com.Body AS Comment
 	FROM Blog.Comment Com
-	WHERE Com.ArticleID - @ArticleID
+	WHERE Com.ArticleID = @ArticleID
 	GROUP BY Com.Body
 	ORDER BY Com.CreationDateTime DESC
+)
+GO
+
+--Counts up all of a given user's unexpired points
+CREATE OR ALTER PROCEDURE Blog.CountPoint
+(
+	@UserID INT
+)
+AS(
+	SELECT SUM(P.Value) AS Points
+	FROM Blog.Point P
+	WHERE (P.UserID = @UserID) AND (CURRENT_TIMESTAMP < P.ExpiresAt)
 )
 GO
