@@ -4,6 +4,9 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <StartupObject>Web.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>gulp default</PreBuildEvent>
+  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
@@ -26,41 +29,5 @@
     <Content Include="src\js\site.min.js">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\assets\favicon.ico" />
-    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-brands-400.eot" />
-    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-brands-400.svg" />
-    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-brands-400.ttf" />
-    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-brands-400.woff" />
-    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-brands-400.woff2" />
-    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-regular-400.eot" />
-    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-regular-400.svg" />
-    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-regular-400.ttf" />
-    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-regular-400.woff" />
-    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-regular-400.woff2" />
-    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-solid-900.eot" />
-    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-solid-900.svg" />
-    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-solid-900.ttf" />
-    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-solid-900.woff" />
-    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-solid-900.woff2" />
-    <_ContentIncludedByDefault Remove="wwwroot\assets\images\banner1.svg" />
-    <_ContentIncludedByDefault Remove="wwwroot\assets\images\banner2.svg" />
-    <_ContentIncludedByDefault Remove="wwwroot\assets\images\banner3.svg" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\site.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\site.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\site.min.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\styles\fontawesome\scss\fa-brands.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\styles\fontawesome\scss\fa-brands.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\styles\fontawesome\scss\fa-regular.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\styles\fontawesome\scss\fa-regular.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\styles\fontawesome\scss\fa-solid.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\styles\fontawesome\scss\fa-solid.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\styles\fontawesome\scss\fontawesome.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\styles\fontawesome\scss\fontawesome.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\styles\fontawesome\scss\v4-shims.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\styles\fontawesome\scss\v4-shims.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\styles\index.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\styles\index.min.css" />
   </ItemGroup>
 </Project>
