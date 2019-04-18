@@ -89,7 +89,7 @@ var flatmap = require('gulp-flatmap');
 var lazypipe = require('lazypipe');
 var rename = require('gulp-rename');
 var header = require('gulp-header');
-var package = require('./package.json');
+var appPackage = require('./package.json');
 
 // Scripts
 var jshint = require('gulp-jshint');
@@ -132,13 +132,13 @@ var cleanDist = function (done) {
 
 // Repeated JavaScript tasks
 var jsTasks = lazypipe()
-    .pipe(header, banner.full, {package: package})
+    .pipe(header, banner.full, {package: appPackage})
     // .pipe(optimizejs)
     .pipe(dest, paths.scripts.output)
     .pipe(rename, {suffix: '.min'})
     .pipe(uglify)
     // .pipe(optimizejs)
-    .pipe(header, banner.min, {package: package})
+    .pipe(header, banner.min, {package: appPackage})
     .pipe(dest, paths.scripts.output);
 
 // Lint, minify, and concatenate scripts
@@ -218,7 +218,7 @@ var buildStyles = function (done) {
             cascade: true,
             remove: true
         }))
-        .pipe(header(banner.full, { package : package }))
+        .pipe(header(banner.full, { package : appPackage }))
         .pipe(dest(paths.styles.output))
         .pipe(rename({suffix: '.min'}))
         .pipe(minify({
@@ -226,7 +226,7 @@ var buildStyles = function (done) {
                 removeAll: true
             }
         }))
-        .pipe(header(banner.min, { package : package }))
+        .pipe(header(banner.min, { package : appPackage }))
         .pipe(dest(paths.styles.output));
 
 };
