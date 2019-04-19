@@ -1,9 +1,10 @@
-﻿using Domain.Business.CommandServices;
-using Domain.Data.Commands;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace DataAccess.CommandServices
+namespace DataAccess.DataAccess.CommandServices
 {
-    public class CreateFollowerCommandService : ICommandService<CreateFollowerCommand>
+    public class CreateAuthorCommandService : ICommandService<CreateAuthorCommand>
     {
         private readonly IDatabase database;
 
@@ -19,7 +20,7 @@ namespace DataAccess.CommandServices
 
             database.TryExecuteTransaction((transaction) =>
             {
-                var dbCommand = database.CreateStoredProcCommand("Blog.CreateFollower", transaction);
+                var dbCommand = database.CreateStoredProcCommand("Blog.CreateAuthor", transaction);
                 var parameters = CreateParameters(command);
 
                 foreach (var p in parameters)
@@ -31,13 +32,9 @@ namespace DataAccess.CommandServices
             });
         }
 
-        private IEnumerable<IDataParameter> CreateParameters(CreateFollowerCommand command)
+        private IEnumerable<IDataParameter> CreateParameters(CreateAuthorCommand command)
         {
-            yield return database.CreateParameter("FollowerUserId", command.FollowerUserId);
-            if (command.FollowingUserId != null)
-            {
-                yield return database.CreateParameter("FollowingUserId", command.FollowingUserId);
-            }
+            yield return database.CreateParameter("AuthorUserId", command.AuthorUserId);
         }
     }
 }
