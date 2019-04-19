@@ -18,7 +18,7 @@ This repository is a simple skeleton for a blog with a database. Created as a pa
      height="300px"/>
 
 ## System Design
-`WIP`
+
 <img alt="System Design"
      src="https://github.com/Afulton11/blog-database/blob/master/git-resources/Final%20System%20Design.png"/>
 
@@ -42,7 +42,7 @@ For this example we will create a Command that will create a point for a given u
 
 The **_SQL Procedure_** might look something like this:
 ```sql
-CREATE OR ALTER PROCEDRURE Blog.CreatePoint
+CREATE OR ALTER PROCEDURE Blog.CreatePoint
 (
      @UserId INT
 )
@@ -63,7 +63,7 @@ GO
 
 The **_Command Model_** might look something like this:
 ```C#
-public class CreatePointCommand implements ICommand
+public class CreatePointCommand : ICommand
 {
      [Required]
      public int UserId { get; set; }
@@ -77,9 +77,9 @@ public class CreatePointCommand implements ICommand
 
 - A _Command Service_ is a simple class that performs an action on the _Command Model_
 
-The **Command Service_** might look something like this:
+The **_Command Service_** might look something like this:
 ```C#
-public class CreatePointCommandService implements ICommandService<CreatePointCommand>
+public class CreatePointCommandService : ICommandService<CreatePointCommand>
 {
      private readonly IDatabase database;
      
