@@ -26,15 +26,15 @@ AS(
 	FROM Blog.Article Art
 	WHERE Art.AuthorID = @AuthorID
 	GROUP BY Art.AuthorID, Art.Title, Art.Description, Art.CreationDateTime
-	ORDER BY Art.CreationDateTime DESC
+	--ORDER BY Art.CreationDateTime DESC
 )
 GO
 
 --Look up posts made between a start date and an end date
 CREATE OR ALTER PROCEDURE Blog.GetArticlesTimeSpan
 (
-	@StartDate = DATETIME,
-	@EndDate = DATETIME
+	@StartDate DATETIME,
+	@EndDate DATETIME
 )
 AS(
 	SELECT Art.Title AS Title,
@@ -42,9 +42,9 @@ AS(
 	       Art.Description AS Description,
 	       Art.CreationDateTime AS CreationDateTime
 	FROM Blog.Article Art
-	WHERE Art.CreationDateTime BETWEEN (@StartDate AND @EndDate)
+	WHERE Art.CreationDateTime BETWEEN @StartDate AND @EndDate
 	GROUP BY Art.Title, Art.AuthorID, Art.Description, Art.CreationDateTime
-	ORDER BY Art.CreationDateDate DESC
+	--ORDER BY Art.CreationDateDate DESC
 )
 GO
 
@@ -57,10 +57,11 @@ AS(
 	       MAX(Art.CreatedDateTime) AS CreatedDateTime
 	FROM Blog.Article Art
 	GROUP BY Art.AuthorID, Art.Title, Art.Description
-	ORDER BY Art.CreatedDateTime DESC
+	--ORDER BY Art.CreatedDateTime DESC
 )
 GO
 
+/*
 --General template for pagenation (Useless?)
 CREATE OR ALTER PROCEDURE Blog.Pagenation
 (
@@ -77,6 +78,7 @@ AS(
 	FETCH NEXT @PageSize ROWS ONLY
 )
 GO
+*/
 
 --Retrieve all followers of a given author
 CREATE OR ALTER PROCEDURE Blog.GetFollowers
@@ -88,7 +90,7 @@ AS(
 	FROM Blog.Following Fol
 	WHERE Fol.FollowedUserID = @AuthorID
 	GROUP BY Fol.FollowingUserID
-	ORDER BY Fol.FollowingUserID ASC
+	--ORDER BY Fol.FollowingUserID ASC
 )
 GO
 
@@ -102,7 +104,7 @@ AS(
 	FROM Blog.Favorite Fav
 	WHERE Fav.UserID = @UserID
 	GROUP BY Fav.ArticleID
-	ORDER BY Fav.ArticleID ASC
+	--0ORDER BY Fav.ArticleID ASC
 )
 GO
 
@@ -116,7 +118,7 @@ AS(
 	FROM Blog.Comment Com
 	WHERE Com.ArticleID = @ArticleID
 	GROUP BY Com.Body
-	ORDER BY Com.CreationDateTime DESC
+	--ORDER BY Com.CreationDateTime DESC
 )
 GO
 
