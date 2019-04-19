@@ -4,10 +4,14 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <StartupObject>Web.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent Condition="$(OS)=='Unix'">gulp default</PreBuildEvent>
+  </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
     <ProjectReference Include="..\DatabaseFactory\DatabaseFactory.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -15,5 +19,16 @@
     <PackageReference Include="SimpleInjector.Integration.AspNetCore" Version="4.5.1" />
     <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc" Version="4.5.1" />
     <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc.Core" Version="4.5.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="src\js\site.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="src\js\site.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 </Project>

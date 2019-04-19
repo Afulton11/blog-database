@@ -1,20 +1,25 @@
 ﻿@page
+@using System.Collections.Specialized
 @model AboutModel
 @{
     ViewData["Title"] = "About";
 }
-<h2>@ViewData["Title"]</h2>
-<h3>@Model.Message</h3>
 
-<h1><b>Title:</b>  @Model.Article.Title</h1>
-
-<h5><b>AuthorId:</b> @Model.Article.AuthorId</h5>
-<h5><b>Created:</b> @Model.Article.CreationDateTime</h5>
-<h5><b>LastUpdated:</b> @Model.Article.LastUpdateDateTime</h5>
-
-<h5><b>Status:</b> @Model.Article.ContentStatus?.Value</h5>
-
-<p><b>Description</b> @Model.Article.Description</p>
-
-<p><b>Body:</b> @Model.Article.Body</p>
-
+<body>
+<div>
+    <h2>@ViewData["Title"]</h2>
+    <h3>@Model.Message</h3>
+    
+    <h1><b>Title:</b> @Model.Article.Title</h1>
+    
+    <h5><b>AuthorId:</b> @Model.Article.AuthorId</h5>
+    <h5><b>Created:</b> @Model.Article.CreationDateTime</h5>
+    <h5><b>LastUpdated:</b> @Model.Article.LastUpdateDateTime</h5>
+    
+    <h5><b>Status:</b> @Model.Article.ContentStatus?.Value</h5>
+    
+    <p><b>Description</b> @Model.Article.Description</p>
+    
+    <p><b>Body:</b> @Model.Article.Body</p>
+</div>
+</body>

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Core.Business.Contracts;
-using Core.Business.QueryServices;
-using Core.Data.Queries;
-using Core.Entities.Blog;
+﻿using Domain.Business.QueryServices;
+using Domain.Data.Queries;
+using Domain.Entities.Blog;
 using EnsureThat;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
