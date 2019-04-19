@@ -1,5 +1,9 @@
-﻿using Domain.Business.CommandServices;
+﻿using System.Collections.Generic;
+using System.Data;
+using DatabaseFactory.Data.Contracts;
+using Domain.Business.CommandServices;
 using Domain.Data.Commands;
+using EnsureThat;
 
 namespace DataAccess.CommandServices
 {
@@ -33,11 +37,8 @@ namespace DataAccess.CommandServices
 
         private IEnumerable<IDataParameter> CreateParameters(CreateFollowerCommand command)
         {
-            yield return database.CreateParameter("FollowerUserId", command.FollowerUserId);
-            if (command.FollowingUserId != null)
-            {
-                yield return database.CreateParameter("FollowingUserId", command.FollowingUserId);
-            }
+            yield return database.CreateParameter("FollowerUserId", command.FollowedUserID);
+            yield return database.CreateParameter("FollowingUserId", command.FollowingUserID);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Domain.Entities.Blog;
-using DatabaseFactory.Data.Contracts;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace Domain.Data.Queries
 {

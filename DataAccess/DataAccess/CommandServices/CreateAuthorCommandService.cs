@@ -1,6 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Data;
+using DatabaseFactory.Data.Contracts;
+using Domain.Business.CommandServices;
+using Domain.Data.Commands;
+using EnsureThat;
 
 namespace DataAccess.DataAccess.CommandServices
 {
@@ -8,13 +11,13 @@ namespace DataAccess.DataAccess.CommandServices
     {
         private readonly IDatabase database;
 
-        public CreateFollowerCommandService(IDatabase database)
+        public CreateAuthorCommandService(IDatabase database)
         {
             EnsureArg.IsNotNull(database, nameof(database));
 
             this.database = database;
         }
-        public void Execute(CreateFollowerCommand command)
+        public void Execute(CreateAuthorCommand command)
         {
             EnsureArg.IsNotNull(command, nameof(command));
 
@@ -34,7 +37,7 @@ namespace DataAccess.DataAccess.CommandServices
 
         private IEnumerable<IDataParameter> CreateParameters(CreateAuthorCommand command)
         {
-            yield return database.CreateParameter("AuthorUserId", command.AuthorUserId);
+            yield return database.CreateParameter("AuthorUserId", command.AuthorUserID);
         }
     }
 }
