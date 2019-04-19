@@ -5,9 +5,19 @@
 
 -- Create OR Alter Command Procedures
 :r ./Setup/01_Procedures/Commands/CreatePoints.sql
+:r ./Setup/01_Procedures/Commands/CreateUser.sql
+:r ./Setup/01_Procedures/Commands/DeleteUser.sql
+:r ./Setup/01_Procedures/Commands/UpdateUserEmail.sql
+:r ./Setup/01_Procedures/Commands/UpdateUsername.sql
+:r ./Setup/01_Procedures/Commands/VerifyUserEmail.sql
 
 -- Create OR Alter Query Procedures
 :r ./Setup/01_Procedures/Queries/GetArticleById.sql
+:r ./Setup/01_Procedures/Queries/GetTotalPointsByUserId.sql
+:r ./Setup/01_Procedures/Queries/GetAllUsers.sql
+:r ./Setup/01_Procedures/Queries/GetUserById.sql
+:r ./Setup/01_Procedures/Queries/GetUserRoles.sql
+:r ./Setup/01_Procedures/Queries/GetReasonForPoint.sql
 
 -- Populate Tables
 :r ./Setup/02_Populate/00_Role.sql
