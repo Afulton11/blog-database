@@ -11,9 +11,16 @@ This repository is a simple skeleton for a blog with a database. Created as a pa
 
 `todo: discuss: common coding practices/guidelines so that we all have consistent formatting throughout each commit`
 
-## System Design
+## Dependency Graph
 
-`incomplete`
+<img alt="Dependency Graph"
+     src="https://github.com/Afulton11/blog-database/blob/master/git-resources/Decoupled-Dependency-Graph.png"
+     height="300px"/>
+
+## System Design
+`WIP`
+<img alt="System Design"
+     src="https://github.com/Afulton11/blog-database/blob/master/git-resources/Final%20System%20Design.png"/>
 
 ## Database Design
 
