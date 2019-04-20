@@ -1,4 +1,4 @@
-﻿namespace DataAccess.DataAccess.QueryServices
+﻿namespace Domain.Data.Queries
 {
     /// <summary>
     /// Used for queries that have pagination
