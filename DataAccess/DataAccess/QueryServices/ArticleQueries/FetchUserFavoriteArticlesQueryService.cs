@@ -8,7 +8,7 @@ using EnsureThat;
 using System.Collections.Generic;
 using System.Data;
 
-namespace DataAccess.DataAccess.QueryServices.ArticleQueries
+namespace DataAccess.QueryServices.ArticleQueries
 {
     public class FetchUserFavoriteArticlesQueryService : IFetchUserFavoriteArticleQueryService
     {

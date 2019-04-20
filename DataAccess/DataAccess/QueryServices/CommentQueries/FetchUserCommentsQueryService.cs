@@ -9,7 +9,7 @@ using EnsureThat;
 using System.Collections.Generic;
 using System.Data;
 
-namespace DataAccess.DataAccess.QueryServices.CommentQueries
+namespace DataAccess.QueryServices.CommentQueries
 {
     public class FetchUserCommentsQueryService : IFetchUserCommentsQueryService
     {

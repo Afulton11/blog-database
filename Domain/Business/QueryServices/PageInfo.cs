@@ -1,4 +1,4 @@
-﻿namespace DataAccess.DataAccess.QueryServices
+﻿namespace Domain.Business.QueryServices
 {
     public class PageInfo
     {
