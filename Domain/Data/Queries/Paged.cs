@@ -1,5 +1,4 @@
-﻿using DataAccess.DataAccess.QueryServices;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Domain.Data.Queries
 {

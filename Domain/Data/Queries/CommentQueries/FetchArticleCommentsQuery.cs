@@ -1,5 +1,4 @@
-﻿using DataAccess.DataAccess.QueryServices;
-using Domain.Entities.Blog;
+﻿using Domain.Entities.Blog;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Data.Queries.CommentQueries
