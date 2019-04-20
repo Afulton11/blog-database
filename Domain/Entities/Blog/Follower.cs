@@ -6,7 +6,7 @@ namespace Domain.Entities.Blog
     {
         public int FollowedUserID { get; }
         public int FollowingUserID { get; }
-        public DateTimeOffset AddedAt { get; }
-        public DateTimeOffset DeletedAt { get; }
+        public DateTime AddedAt { get; }
+        public DateTime DeletedAt { get; }
     }
 }
