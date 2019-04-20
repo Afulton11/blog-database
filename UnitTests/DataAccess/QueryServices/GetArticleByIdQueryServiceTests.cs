@@ -44,7 +44,7 @@ namespace UnitTests.DataAccess.QueryServices.GetArticleByIdQueryServiceTests
         protected Mock<IReader<Article>> articleReaderMock;
         protected GetArticleByIdQueryService queryService;
         protected string ProcedureName => "Blog.GetArticleById";
-        protected string ParameterName => "ArticleId";
+        protected string ParameterName => "@ArticleId";
 
         protected IEqualityComparer<Article> ArticleComparer => new ArticleEqualityComparer();
          

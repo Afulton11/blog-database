@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Domain.Data.Commands.Comment
+namespace Domain.Data.Commands.Comments
 {
     public class RemoveCommentCommand : ICommand
     {

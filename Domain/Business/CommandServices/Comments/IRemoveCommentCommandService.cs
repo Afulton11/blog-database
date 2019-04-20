@@ -1,4 +1,4 @@
-﻿using Domain.Data.Commands.Comment;
+﻿using Domain.Data.Commands.Comments;
 
 namespace Domain.Business.CommandServices.Comments
 {

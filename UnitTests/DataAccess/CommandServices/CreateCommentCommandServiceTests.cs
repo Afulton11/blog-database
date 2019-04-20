@@ -1,5 +1,4 @@
-﻿using Domain.Data.Commands;
-using Domain.Entities.Blog;
+﻿using Domain.Entities.Blog;
 using DatabaseFactory.Data.Contracts;
 using Mocker;
 using Mocker.Comparers;
@@ -8,7 +7,8 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using DataAccess.CommandServices;
+using Domain.Data.Commands.Comments;
+using DataAccess.CommandServices.Comments;
 
 namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
 {

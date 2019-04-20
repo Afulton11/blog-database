@@ -1,7 +1,7 @@
 ﻿using Common;
 using DatabaseFactory.Data.Contracts;
 using Domain.Business.CommandServices.Comments;
-using Domain.Data.Commands.Comment;
+using Domain.Data.Commands.Comments;
 using EnsureThat;
 using System.Collections.Generic;
 using System.Data;
