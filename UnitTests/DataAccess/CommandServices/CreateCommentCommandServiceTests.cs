@@ -58,10 +58,10 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
         protected virtual void SetUpMocks() { }
 
         protected string ProcedureName => "Blog.CreateComment";
-        protected string ParameterUserId => "UserId";
-        protected string ParameterArticleId => "ArticleId";
-        protected string ParameterBody => "Body";
-        protected string ParameterParentCommentId => "ParentCommentId";
+        protected string ParameterUserId => "@UserId";
+        protected string ParameterArticleId => "@ArticleId";
+        protected string ParameterBody => "@Body";
+        protected string ParameterParentCommentId => "@ParentCommentId";
 
         protected IEnumerable<string> AllParameters
         {
