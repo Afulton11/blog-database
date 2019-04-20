@@ -23,5 +23,26 @@ namespace DataAccess.DataAccess.QueryServices
         }
 
         protected abstract IEnumerable<TPageItem> ReadItems(IDataReader dataReader);
+
+        protected override IEnumerable<IDataParameter> GetParameters(TQuery query)
+        {
+            foreach (var parameter in GetQueryParameters(query))
+            {
+                yield return parameter;
+            }
+            foreach (var parameter in GetPagingParameters(query))
+            {
+                yield return parameter;
+            }
+        }
+
+        protected abstract IEnumerable<IDataParameter> GetQueryParameters(TQuery query);
+
+        protected virtual IEnumerable<IDataParameter> GetPagingParameters(TQuery query)
+        {
+            var paging = query.Paging;
+            yield return Database.CreateParameter("@PageNumber", paging.PageIndex);
+            yield return Database.CreateParameter("@PageSize", paging.PageSize);
+        }
     }
 }
