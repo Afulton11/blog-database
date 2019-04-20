@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using Common;
 using DatabaseFactory.Data.Contracts;
@@ -7,7 +6,7 @@ using Domain.Business.CommandServices.Articles;
 using Domain.Data.Commands.Articles;
 using EnsureThat;
 
-namespace DataAccess.DataAccess.CommandServices.Articles
+namespace DataAccess.CommandServices.Articles
 {
     public class UpdateArticleCommandService : IUpdateArticleCommandService
     {
