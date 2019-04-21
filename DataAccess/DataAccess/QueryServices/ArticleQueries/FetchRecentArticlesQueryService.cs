@@ -29,7 +29,7 @@ namespace DataAccess.QueryServices.ArticleQueries
         {
             return database.TryExecuteTransaction((transaction) =>
             {
-                var procedure = database.CreateStoredProcCommand("Blog.MostRecentArticles", transaction);
+                var procedure = database.CreateStoredProcCommand("Blog.GetRecentArticles", transaction);
                 procedure.Parameters.AddAll(GetParameters(query));
 
                 return new Paged<Article>

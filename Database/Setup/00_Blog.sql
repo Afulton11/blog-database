@@ -9,7 +9,7 @@ GO
 
 DROP PROCEDURE IF EXISTS Blog.CreatePointForPublishingArticle;
 DROP PROCEDURE IF EXISTS Blog.GetArticleById;
-DROP PROCEDURE IF EXISTS Blog.GetArticleById;
+DROP PROCEDURE IF EXISTS Blog.GetRecentArticles;
 GO
 
 DROP FUNCTION IF EXISTS Blog.GetPointReason;
