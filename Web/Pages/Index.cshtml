@@ -5,7 +5,7 @@
 }
 
 <div class="alternate-title">
-<h2>What's new?</h2>
+    <h2>What's new?</h2>
 </div>
 <div class="content">
     <div class="article-preview">
@@ -165,11 +165,31 @@
         </div>
     }
 </div>
+
+<div class="large-space"></div>
+<nav class="article-navigation">
+    @if (Model.ShowPrevious)
+    {
+        <div class="previous">
+            <a asp-page="/Index" asp-route-CurrentPage="@(Model.CurrentPage - 1)" rel="prev">
+                <span class="metadata">← Articles</span>
+                <br /> Previous
+            </a>
+        </div>
+    }
+    <div class="next">
+        <a asp-page="/Index" asp-route-CurrentPage="@(Model.CurrentPage + 1)" rel="next">
+            <span class="metadata">Articles →</span>
+            <br /> More
+        </a>
+    </div>
+</nav>
+
 <div class="alternate-title">
-<h2>More Articles</h2>
+    <h2>More Articles</h2>
 </div>
 <p>
-I am working on writing more articles, stay tuned!
+    I am working on writing more articles, stay tuned!
 </p>
 <div class="large-space"></div>
 <nav class="article-navigation"></nav>

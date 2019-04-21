@@ -3,6 +3,7 @@ using Domain.Data.Queries;
 using Domain.Data.Queries.ArticleQueries;
 using Domain.Entities.Blog;
 using EnsureThat;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,7 @@ namespace Web.Pages
                 {
                     Paging = new PageInfo
                     {
+                        PageIndex = CurrentPage - 1,
                         PageSize = 8
                     }
                 });
@@ -35,5 +37,10 @@ namespace Web.Pages
         }
 
         public IEnumerable<Article> Articles { get; private set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int CurrentPage { get; set; } = 1;
+        public bool ShowPrevious => CurrentPage > 1;
+            
     }
 }
