@@ -20,8 +20,13 @@
         <div>
             <div class="sidebar">
                 <div class="sidebar-header">
-                    <form>
-                        <input type="text" class="form-control search-form" placeholder="Search Articles..." aria-label="Search Articles" aria-describedby="basic-addon1">
+                    <form method="get" asp-page="/Search">
+                        <input name="Text"
+                               type="text"
+                               class="form-control search-form"
+                               placeholder="Search Articles..."
+                               aria-label="Search Articles"
+                               aria-describedby="basic-addon1" />
                     </form>
                 </div>
                 <nav class="sidebar-content">
