@@ -31,6 +31,6 @@ namespace DataAccess.QueryServices.ArticleCategoryQueries
             yield return Database.CreateParameter("@ArticleCategoryId", query.ArticleCategoryId);
         }
 
-        protected override string ProcedureName => "Blog.GetArticleCategory";
+        protected override string ProcedureName => "Blog.GetArticleCategoryById";
     }
 }

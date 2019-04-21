@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = Model.Article.Title;
     var article = Model.Article;
+    var category = Model.Category;
 }
 
 
@@ -25,8 +26,8 @@
 <div class="article-tags">
     <ul class="tag-list">
         <li class="category">
-            <a href="/category/@article.CategoryId" rel="category tag">
-                @article.CategoryId
+            <a asp-page="/Category" asp-route-cateogry="@category.Name" rel="category tag">
+                @category.Name
             </a>
             ,
             <a href="/category/news" rel="category tag">
