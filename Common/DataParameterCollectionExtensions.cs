@@ -7,7 +7,7 @@ namespace Common
     public static class DataParameterCollectionExtensions
     {
         public static void AddAll(this IDataParameterCollection collection, params IDataParameter[] parameters) =>
-            AddAll(collection, parameters);
+            AddAll(collection, (IEnumerable<IDataParameter>)parameters);
 
         public static void AddAll(this IDataParameterCollection collection, IEnumerable<IDataParameter> parameters)
         {
@@ -16,7 +16,7 @@ namespace Common
 
             foreach (var p in parameters)
             {
-                collection.AddAll(p);
+                collection.Add(p);
             }
         }
     }
