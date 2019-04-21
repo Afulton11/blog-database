@@ -1,0 +1,43 @@
+﻿@page "{name}"
+@model Web.Pages.CategoryModel
+@{
+    ViewData["Title"] = Model.Name;
+    var articles = Model.Articles;
+}
+
+<h1>@Model.Name</h1>
+
+@foreach (var article in Model.Articles)
+{
+    <div class="article-preview">
+        <p class="metadata">
+            <span class="date">
+                @article.CreationDateTime.ToShortDateString();
+            </span>
+            <span class="by">
+                by
+            </span>
+            <span class="author">
+                <a asp-page="/User" asp-route-id="@article.AuthorId">
+                    @article.AuthorId
+                </a>
+            </span>
+        </p>
+        <h3 class="article-title">
+            <a asp-page="/Article" asp-route-id="@article.ArticleId">
+                @article.Title
+            </a>
+        </h3>
+        <div class="article-preview-content">
+            <p>
+                @article.Description
+                <span class="read-more">
+                    <a class="more-link" asp-page="/Article" asp-route-id="@article.ArticleId">
+                        Read more
+                    </a>
+                </span>
+            </p>
+        </div>
+    </div>
+}
+

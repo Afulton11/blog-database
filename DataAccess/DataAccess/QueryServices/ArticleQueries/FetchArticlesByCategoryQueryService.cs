@@ -27,9 +27,9 @@ namespace DataAccess.DataAccess.QueryServices.ArticleQueries
 
         protected override IEnumerable<IDataParameter> GetQueryParameters(FetchArticlesByCategoryQuery query)
         {
-            yield return Database.CreateParameter("@CategoryId", query.ArticleCategoryId);
+            yield return Database.CreateParameter("@CategoryName", query.ArticleCategoryName);
         }
 
-        protected override string ProcedureName => "Blog.GetArticlesByCategory";
+        protected override string ProcedureName => "Blog.GetArticlesInCategory";
     }
 }

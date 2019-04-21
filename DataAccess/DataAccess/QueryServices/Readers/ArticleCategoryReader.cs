@@ -11,10 +11,11 @@ namespace DataAccess.DataAccess.QueryServices.Readers
         protected override ArticleCategory ReadRow(IDataRecord row) =>
             new ArticleCategory
             {
-                ArticleCategoryID = row.GetSafely<int>(nameof(ArticleCategory.ArticleCategoryID)),
-                CreationDateTime = row.GetSafely<DateTime>(nameof(ArticleCategory.CreationDateTime)),
-                CreationUserID = row.GetSafely<int>(nameof(ArticleCategory.CreationUserID)),
-                LastUpdateDateTime = row.GetSafely<DateTime>(nameof(ArticleCategory.LastUpdateDateTime)),
+                ArticleCategoryID = row.GetSafely<int>("ArticleCategoryId"),
+                Name = row.GetSafely<string>("Name"),
+                CreationDateTime = row.GetSafely<DateTime>("CreationDateTime"),
+                CreationUserID = row.GetSafely<int>("CreationUserId"),
+                LastUpdateDateTime = row.GetSafely<DateTime>("LastUpdateDateTime"),
             };
     }
 }

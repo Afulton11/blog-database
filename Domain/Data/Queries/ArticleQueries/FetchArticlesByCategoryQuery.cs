@@ -6,10 +6,10 @@ namespace Domain.Data.Queries.ArticleQueries
     public class FetchArticlesByCategoryQuery : IPaginatedQuery<Article>
     {
         /// <summary>
-        /// The <see cref="ArticleCategory.ArticleCategoryID"/> to fetch a paginated list of <see cref="Article"/>
+        /// The <see cref="ArticleCategory.Name"/> to fetch a paginated list of <see cref="Article"/>
         /// </summary>
         [Required]
-        public int ArticleCategoryId { get; set; }
+        public string ArticleCategoryName { get; set; }
         public PageInfo Paging { get; set; } = new PageInfo();
     }
 }
