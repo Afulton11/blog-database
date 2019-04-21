@@ -111,6 +111,23 @@ public class CreatePointCommandService : ICommandService<CreatePointCommand>
   - Using the transaction created, we will then create a call to our stored procedure `Blog.CreatePoint` passing in the _command model's_ properties as the arguments to that procedure.
 - Finally, we make sure to execute that procedure call we just created on the database within the scope of the _try execute transaction_.
 
+Using the base class `DbCommandService` we can simplify this class to be the following:
+```C#
+public class CreatePointCommandService : DbCommandService<CreatePointCommand>
+{     
+     public CreatePointCommandService(IDatabase database) : base(database)
+     {
+     }
+	 
+	 protected override IEnumerable<IDataParameter> GetParameters(CreatePointCommand command)
+	 {
+		yield return Database.CreateParameter("@UserId", command.UserId);
+	 }
+	 
+	 protected override string ProcedureName => "Blog.CreatePoint"
+}
+```
+
 ### Query
 
 - A **_Query_** is similar to _command_, but returns a result.
