@@ -8,7 +8,7 @@ using System.Linq;
 using Domain.Business.QueryServices;
 using DataAccess.QueryServices.Readers;
 
-namespace DataAccess.QueryServices
+namespace DataAccess.DataAccess.QueryServices
 {
     public class GetUserByIdQueryService : IQueryService<GetUserByIdQuery, User>
     {
