@@ -1,19 +1,19 @@
-﻿using Domain.Data.Queries;
-using Domain.Entities.Blog;
+﻿using Common;
+using DataAccess.QueryServices.Readers;
 using DatabaseFactory.Data.Contracts;
+using Domain.Business.QueryServices.ArticleQueryServices;
+using Domain.Data.Queries;
+using Domain.Entities.Blog;
 using EnsureThat;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using Domain.Business.QueryServices;
-using DataAccess.QueryServices.Readers;
 
-namespace DataAccess.DataAccess.QueryServices
+namespace DataAccess.DataAccess.QueryServices.UserQueries
 {
     public class GetUserByIdQueryService : IQueryService<GetUserByIdQuery, User>
     {
-        public IDatabase Database { get; }
-        public IReader<User> UserReader { get; }
+        private readonly IDatabase Database { get; }
+        private readonly IReader<User> UserReader { get; }
 
         public GetUserByIdQueryService(IDatabase database, IReader<User> userReader)
         {
