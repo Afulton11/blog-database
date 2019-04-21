@@ -1,13 +1,13 @@
-﻿using Domain.Data.Commands;
-using DatabaseFactory.Data.Contracts;
+﻿using DatabaseFactory.Data.Contracts;
+using Domain.Business.CommandServices.Comments;
+using Domain.Data.Commands.Comments;
 using EnsureThat;
 using System.Collections.Generic;
 using System.Data;
-using Domain.Business.CommandServices;
 
-namespace DataAccess.CommandServices
+namespace DataAccess.CommandServices.Comments
 {
-    public class CreateCommentCommandService : ICommandService<CreateCommentCommand>
+    public class CreateCommentCommandService : ICreateCommentCommandService
     {
         private readonly IDatabase database;
 
@@ -38,13 +38,13 @@ namespace DataAccess.CommandServices
 
         private IEnumerable<IDataParameter> CreateParameters(CreateCommentCommand command)
         {
-            yield return database.CreateParameter("UserId", command.UserID);
-            yield return database.CreateParameter("ArticleId", command.ArticleID);
-            yield return database.CreateParameter("Body", command.Body);
+            yield return database.CreateParameter("@UserId", command.UserID);
+            yield return database.CreateParameter("@ArticleId", command.ArticleID);
+            yield return database.CreateParameter("@Body", command.Body);
 
             if (command.ParentCommentID != null)
             {
-                yield return database.CreateParameter("ParentCommentId", command.ParentCommentID);
+                yield return database.CreateParameter("@ParentCommentId", command.ParentCommentID);
             }
 
         }

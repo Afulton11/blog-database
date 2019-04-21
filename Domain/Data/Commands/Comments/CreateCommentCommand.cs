@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Domain.Data.Commands
+namespace Domain.Data.Commands.Comments
 {
     public class CreateCommentCommand : ICommand
     {

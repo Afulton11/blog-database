@@ -8,7 +8,7 @@ namespace Domain.Entities.Blog
         public int ArticleCategoryID { get; set; }
         public string Name { get; set; }
         public int CreationUserID { get; set; }
-        public DateTimeOffset CreationDateTime { get; set; }
-        public DateTimeOffset LastUpdateDateTime { get; set; }
+        public DateTime CreationDateTime { get; set; }
+        public DateTime LastUpdateDateTime { get; set; }
     }
 }
