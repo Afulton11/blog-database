@@ -41,3 +41,22 @@
     </div>
 }
 
+<div class="large-space"></div>
+<nav class="article-navigation">
+    @if (Model.showPrevious)
+    {
+        <div class="previous">
+            <a asp-page="/Category" asp-route-name="@Model.Name" asp-route-CurrentPage="@(Model.CurrentPage - 1)" rel="prev">
+                <span class="metadata">← Articles</span>
+                <br /> Previous
+            </a>
+        </div>
+    }
+    <div class="next">
+        <a asp-page="/Category" asp-route-name="@Model.Name" asp-route-CurrentPage="@(Model.CurrentPage + 1)" rel="next">
+            <span class="metadata">Articles →</span>
+            <br /> More
+        </a>
+    </div>
+</nav>
+

@@ -35,6 +35,10 @@ namespace Web.Pages
         {
             var page = fetchArticles.Execute(new FetchArticlesByCategoryQuery
             {
+                Paging = new PageInfo
+                {
+                    PageIndex = CurrentPage - 1,
+                },
                 ArticleCategoryName = Name
             });
 
@@ -46,6 +50,11 @@ namespace Web.Pages
         [BindProperty(SupportsGet = true, Name = "name")]
         [Required]
         public string Name { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int CurrentPage { get; set; } = 1;
+        public bool showPrevious => CurrentPage > 1;
+
 
         public IEnumerable<Article> Articles { get; set; }
     }
