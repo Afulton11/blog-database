@@ -5,6 +5,6 @@ namespace DataAccess.QueryServices.Readers
 {
     public interface IReader<TResult>
     {
-        IEnumerable<TResult> Read(IDataReader reader);
+        IList<TResult> Read(IDataReader reader);
     }
 }
