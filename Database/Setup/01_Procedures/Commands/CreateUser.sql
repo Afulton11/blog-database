@@ -20,7 +20,7 @@ AS
 			Blog.[User].NormalizedEmail = @NormalizedEmail,
 			Blog.[User].IsEmailVerified = @IsEmailVerified,
 			Blog.[User].LastUpdatedTime = SYSDATETIME()
-		WHERE U.Username = @Username
+		WHERE Blog.[User].Username = @Username
 
 		if @@ROWCOUNT = 0
 		BEGIN
