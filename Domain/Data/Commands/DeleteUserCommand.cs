@@ -2,7 +2,7 @@
 
 namespace Domain.Data.Commands
 {
-    class DeleteUserCommand : ICommand
+    public class DeleteUserCommand : ICommand
     {
         [Required]
         public int UserId { get; set; }

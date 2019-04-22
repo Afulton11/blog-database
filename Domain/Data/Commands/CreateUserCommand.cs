@@ -3,9 +3,9 @@
 
 namespace Domain.Data.Commands
 {
-    class CreateUserCommand : ICommand
+    public class CreateUserCommand : ICommand
     {
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; }
         [Required]
         public string Username { get; set; }
         [Required]
