@@ -17,13 +17,13 @@ namespace Domain.Business
             this.container = container;
         }
 
-        public async Task<TResult> Execute<TResult>(IQuery<TResult> query)
+        public Task<TResult> Execute<TResult>(IQuery<TResult> query)
         {
             var serviceType = typeof(IQueryService<,>).MakeGenericType(query.GetType(), typeof(TResult));
 
             dynamic service = this.container.GetInstance(serviceType);
 
-            return await Task.Factory.StartNew(() =>
+            return Task.Factory.StartNew<TResult>(() =>
             {
                 return service.Execute((dynamic)query);
             });
