@@ -56,7 +56,11 @@ CREATE TABLE Blog.[Role]
 	[Name] NVARCHAR(64) NOT NULL,
 	NormalizedName NVARCHAR(128),
 
+<<<<<<< HEAD
 	UNIQUE([Name]),
+=======
+	UNIQUE([Name])
+>>>>>>> 0cf17b1... fixed typos
 );
 
 CREATE TABLE Blog.[User]
