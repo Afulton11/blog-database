@@ -200,7 +200,7 @@ namespace UnitTests.DataAccess.QueryServices.GetArticlesBetweenDatesQueryService
     {
         protected Mock<IDataReader> DataReaderMock;
 
-        protected abstract IEnumerable<Article> ReadArticles();
+        protected abstract IList<Article> ReadArticles();
 
         protected override void SetUp()
         {
@@ -219,15 +219,15 @@ namespace UnitTests.DataAccess.QueryServices.GetArticlesBetweenDatesQueryService
 
             articleReaderMock.Setup((mock) =>
                 mock.Read(DataReaderMock.Object))
-               .Returns(ReadArticles().ToList());
+               .Returns(ReadArticles());
         }
     }
 
     public class SuccessfulReaderTests : DataReaderTests
     {
-        protected override IEnumerable<Article> ReadArticles()
+        protected override IList<Article> ReadArticles()
         {
-            yield return new Article
+            var article = new Article
             {
                 ArticleId = Query.ArticleID,
                 AuthorId = 1,
@@ -239,6 +239,11 @@ namespace UnitTests.DataAccess.QueryServices.GetArticlesBetweenDatesQueryService
                 Description = "Description",
                 Title = "Title",
             };
+
+            var list = new List<Article>();
+            list.Add(article);
+
+            return list;
         }
 
         [Test]
@@ -323,7 +328,7 @@ namespace UnitTests.DataAccess.QueryServices.GetArticlesBetweenDatesQueryService
 
     public class FailedArticlesTest : DataReaderTests
     {
-        protected override IEnumerable<Article> ReadArticles() => null;
+        protected override IList<Article> ReadArticles() => null;
 
         [Test]
         public void Should_Throw_ArticlesNotFoundException()
