@@ -18,12 +18,13 @@ namespace Web.Services.Email
         private readonly IHostingEnvironment environment;
         public EmailSender(
             IOptions<EmailSettings> emailSettings,
-            IHostingEnvironment envrionment)
+            IHostingEnvironment environment)
         {
             EnsureArg.IsNotNull(emailSettings, nameof(emailSettings));
-            EnsureArg.IsNotNull(envrionment, nameof(envrionment));
+            EnsureArg.IsNotNull(environment, nameof(environment));
 
             this.emailSettings = emailSettings.Value;
+            this.environment = environment;
         }
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
