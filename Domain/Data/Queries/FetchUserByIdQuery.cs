@@ -7,6 +7,6 @@ namespace Domain.Data.Queries
     {
         [Required]
         public int UserId { get; set; }
-        public bool WithDeleted { get; set; }
+        public bool WithDeleted { get; set; } = false;
     }
 }

@@ -11,6 +11,7 @@ namespace DataAccess.QueryServices.Readers
             {
                 RoleId = row.GetSafely<int>(nameof(Role.RoleId)),
                 Name = row.GetSafely<string>(nameof(Role.Name)),
+                NormalizedName = row.GetSafely<string>(nameof(Role.NormalizedName)),
             };
     }
 }
