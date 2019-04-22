@@ -9,11 +9,11 @@ using System;
 
 namespace DataAccess.DataAccess.QueryServices.UserQueries
 {
-    public class GetAllUsersQueryService : DbPagedQueryService<GetAllUsersQuery, User>
+    public class FetchAllUsersQueryService : DbPagedQueryService<FetchAllUsersQuery, User>
     {
         public readonly IReader<User> userReader;
 
-        public GetAllUsersQueryService(IDatabase database, IReader<User> userReader) : base(database)
+        public FetchAllUsersQueryService(IDatabase database, IReader<User> userReader) : base(database)
         {
             EnsureArg.IsNotNull(userReader, nameof(userReader));
 
@@ -23,7 +23,7 @@ namespace DataAccess.DataAccess.QueryServices.UserQueries
         protected override IEnumerable<User> ReadItems(IDataReader dataReader) =>
             userReader.Read(dataReader);
 
-        protected override IEnumerable<IDataParameter> GetQueryParameters(GetAllUsersQuery query)
+        protected override IEnumerable<IDataParameter> GetQueryParameters(FetchAllUsersQuery query)
         {
             yield return Database.CreateParameter("@WithDeleted", Convert.ToInt32(query.WithDeleted));
         }
