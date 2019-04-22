@@ -73,7 +73,6 @@ namespace Web
             services.AddTransient<IRoleStore<Role>, RoleStore>();
 
             services.AddIdentity<User, Role>()
-                .AddDefaultUI(Microsoft.AspNetCore.Identity.UI.UIFramework.Bootstrap3)
                 .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>

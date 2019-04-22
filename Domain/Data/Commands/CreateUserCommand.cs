@@ -9,9 +9,9 @@ namespace Domain.Data.Commands
         [Required]
         public string Username { get; set; }
         public string NormalizedUsername { get; set; }
-        [Required]
+        [Required, DataType(DataType.Password)]
         public string Password { get; set; }
-        [Required]
+        [Required, DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         public string NormalizedEmail { get; set; }
         public bool IsEmailVerified { get; set; }

@@ -1,4 +1,26 @@
 ﻿@page
 @model SignInModel
 @{
+    ViewData["Title"] = "Sign In";
 }
+
+<h1>Sign In</h1>
+
+<form class="form-group col-sm-4" method="post" asp-page="SignIn"> 
+    <div class="text-danger" asp-validation-summary="All"></div> 
+      
+    <label class="form-text" asp-for = "LoginData.Username">Username</label> 
+    <input class="form-control fa-user" asp-for="LoginData.Username" /> 
+    <span class="form-text text-danger" asp-validation-for="LoginData.Username"></span> 
+      
+    <label class="form-text" asp-for = "LoginData.Password">Password</label> 
+    <input class="form-control" asp-for="LoginData.Password" type="password"/>
+    <span class="form-text text-danger" asp-validation-for="LoginData.Password"></span> 
+    
+
+    <label class="form-check-label" asp-for="LoginData.RememberMe">Remember Me</label>
+    <input class="form-check-inline" asp-for="LoginData.RememberMe" type="checkbox" />
+    <span class="form-text text-danger" asp-validation-for="LoginData.RememberMe"></span> 
+    <br />
+    <input class="btn btn-primary form-control" type="submit" value="Sign In" /> 
+</form>  
