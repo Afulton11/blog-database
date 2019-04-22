@@ -1,8 +1,6 @@
-﻿using Common;
+﻿using DataAccess.QueryServices;
 using DataAccess.QueryServices.Readers;
 using DatabaseFactory.Data.Contracts;
-using Domain.Business.QueryServices;
-using Domain.Business.QueryServices.ArticleQueryServices;
 using Domain.Data.Queries;
 using Domain.Entities.Blog;
 using EnsureThat;
@@ -12,45 +10,34 @@ using System.Linq;
 
 namespace DataAccess.DataAccess.QueryServices.UserQueries
 {
-    public class GetUserByIdQueryService : IQueryService<GetUserByIdQuery, User>
+    public class GetUserByIdQueryService : DbQueryService<GetUserByIdQuery, User>
     {
-        private readonly IDatabase Database { get; }
-        private readonly IReader<User> UserReader { get; }
+        private readonly IReader<User> userReader;
 
-        public GetUserByIdQueryService(IDatabase database, IReader<User> userReader)
+        public GetUserByIdQueryService(IDatabase database, IReader<User> userReader) : base(database)
         {
-            EnsureArg.IsNotNull(database, nameof(database));
             EnsureArg.IsNotNull(userReader, nameof(userReader));
-
-            Database = database;
-            UserReader = userReader;
+            this.userReader = userReader;
         }
 
-        public User Execute(GetUserByIdQuery query)
+        protected override User ReadQueryResult(IDataReader reader, GetUserByIdQuery query)
         {
-            EnsureArg.IsNotNull(query, nameof(query));
+            var user = userReader.Read(reader)?.FirstOrDefault() ?? null;
 
-            return Database.TryExecuteTransaction((transaction) =>
-            {
-                var dbQuery = Database.CreateStoredProcCommand("Blog.GetUserById", transaction);
-                var parameter = Database.CreateParameter("UserId", query.UserId);
-
-                dbQuery.Parameters.Add(parameter);
-
-                return Database.ExecuteReader(dbQuery, (reader) => this.ReadUsers(reader, query));
-            });
-        }
-
-        private User ReadUsers(IDataReader reader, GetUserByIdQuery query)
-        {
-            var article = UserReader.Read(reader)?.FirstOrDefault() ?? null;
-
-            if (article == null)
+            if (user == null)
             {
                 throw new KeyNotFoundException($"No User with Id[{query.UserId}] was found in the database!");
             }
 
-            return article;
+            return user;
         }
+
+        protected override IEnumerable<IDataParameter> GetParameters(GetUserByIdQuery query)
+        {
+            yield return Database.CreateParameter("UserId", query.UserId);
+        }
+
+        protected override string ProcedureName => "Blog.GetUserById";
+
     }
 }
