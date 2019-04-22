@@ -21,6 +21,8 @@ using Domain.Business.CommandServices;
 using DataAccess.QueryServices.Readers;
 using Domain.Business.QueryServices;
 using DataAccess.DataAccess;
+using Domain.Data;
+using Domain.Business;
 
 namespace Web
 {
@@ -119,8 +121,8 @@ namespace Web
 
         private void InitializeAppServices(IApplicationBuilder app)
         {
-            // Add application services. For instance:
-            //container.Register<IUserService, UserService>(Lifestyle.Scoped);
+            container.RegisterSingleton<ICommandProcessor, DynamicAsyncCommandProcessor>();
+            container.RegisterSingleton<IQueryProcessor, DynamicAsyncQueryProcessor>();
 
             container.RegisterConditional(
                 typeof(ILogger),
