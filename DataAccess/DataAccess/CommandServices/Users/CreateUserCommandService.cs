@@ -19,8 +19,10 @@ namespace DataAccess.DataAccess.CommandServices.Users
                 yield return Database.CreateParameter("@RoleId", command.RoleId);
             }
             yield return Database.CreateParameter("@Username", command.Username);
+            yield return Database.CreateParameter("@NormalizedUsername", command.Username);
             yield return Database.CreateParameter("@Password", command.Password);
             yield return Database.CreateParameter("@Email", command.Email);
+            yield return Database.CreateParameter("@NormalizedUsername", command.Email);
             yield return Database.CreateParameter("@IsEmailVerified", command.IsEmailVerified);
         }
 

@@ -5,15 +5,19 @@ GO
 CREATE OR ALTER PROCEDURE Blog.CreateOrUpdateUser
 	@RoleId AS INT = NULL,
 	@Username AS NVARCHAR(64),
+	@NormalizedUsername AS NVARCHAR(128),
 	@Password AS NVARCHAR(128),
 	@Email AS NVARCHAR(128),
+	@NormalizedEmail AS NVARCHAR(256),
 	@IsEmailVerified AS BIT = 0
 AS
 	BEGIN TRAN
 		UPDATE Blog.[User] SET
 			Blog.[User].RoleId = @RoleId,
+			Blog.[User].NormalizedUsername = @NormalizedUsername,
 			Blog.[User].[Password] = @Password,
 			Blog.[User].Email = @Email,
+			Blog.[User].NormalizedEmail = @NormalizedEmail,
 			Blog.[User].IsEmailVerified = @IsEmailVerified,
 			Blog.[User].LastUpdatedTime = SYSDATETIME()
 		WHERE U.Username = @Username
