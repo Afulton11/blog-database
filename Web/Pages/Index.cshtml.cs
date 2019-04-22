@@ -41,6 +41,5 @@ namespace Web.Pages
         [BindProperty(SupportsGet = true)]
         public int CurrentPage { get; set; } = 1;
         public bool ShowPrevious => CurrentPage > 1;
-            
     }
 }
