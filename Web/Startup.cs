@@ -21,8 +21,12 @@ using Domain.Business.CommandServices;
 using DataAccess.QueryServices.Readers;
 using Domain.Business.QueryServices;
 using DataAccess.DataAccess;
-using Domain.Data;
 using Domain.Business;
+using Domain.Entities.Blog;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity;
+using Web.Services.Email;
+using Web.Identity;
 
 namespace Web
 {
@@ -60,8 +64,19 @@ namespace Web
                 options.UseConnectionString(connectionString);
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSingleton<ICommandProcessor, DynamicAsyncCommandProcessor>();
+            services.AddSingleton<IQueryProcessor, DynamicAsyncQueryProcessor>();
 
+            services.AddTransient<IUserStore<User>, UserStore>();
+            services.AddTransient<IRoleStore<Role>, RoleStore>();
+
+            services.AddIdentity<User, Role>()
+                .AddDefaultTokenProviders();
+
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+            services.AddTransient<IEmailSender, EmailSender>();
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             IntegrateSimpleInjector(services);
         }
 
@@ -121,8 +136,6 @@ namespace Web
 
         private void InitializeAppServices(IApplicationBuilder app)
         {
-            container.RegisterSingleton<ICommandProcessor, DynamicAsyncCommandProcessor>();
-            container.RegisterSingleton<IQueryProcessor, DynamicAsyncQueryProcessor>();
 
             container.RegisterConditional(
                 typeof(ILogger),

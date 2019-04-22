@@ -22,6 +22,7 @@
     <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc.Core" Version="4.5.1" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Services\" />
     <Folder Include="src\svg" />
   </ItemGroup>
   <ItemGroup>
