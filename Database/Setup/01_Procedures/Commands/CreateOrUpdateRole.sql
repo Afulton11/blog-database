@@ -19,9 +19,9 @@ AS
 
 		if @@ROWCOUNT = 0
 		BEGIN
-			INSERT INTO Blog.[Role] ([Name], NormalizedUserame)
+			INSERT INTO Blog.[Role] ([Name], NormalizedName)
 			VALUES
-				(@Name, @NormalizedUsername);
+				(@Name, @NormalizedName);
 		END
 	COMMIT TRAN
 GO
