@@ -25,7 +25,7 @@ namespace DataAccess.QueryServices.UserQueries
 
         protected override IEnumerable<IDataParameter> GetParameters(FetchUserByNormalizedEmailQuery query)
         {
-            yield return Database.CreateParameter("@NormalizedEmail", query.NormalizedUsername);
+            yield return Database.CreateParameter("@NormalizedEmail", query.NormalizedEmail);
         }
 
         protected override string ProcedureName => "Blog.FetchUserByNormalizedEmail";
