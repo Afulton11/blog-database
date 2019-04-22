@@ -1,6 +1,7 @@
 ﻿using EnsureThat;
 using System;
 using System.Data;
+using System.Linq;
 
 namespace Common
 {
@@ -21,15 +22,19 @@ namespace Common
         public static TResult GetSafely<TResult>(this IDataRecord record, string name)
         {
             EnsureArg.IsNotNullOrEmpty(name);
-            try
+            name = name.ToLower();
+
+            var availableNames = Enumerable.Range(0, record.FieldCount).Select(record.GetName);
+
+            foreach (var columnName in availableNames)
             {
-                return (TResult)record[name];
-            }
-            catch (IndexOutOfRangeException)
-            {
-                return default;
+                if (columnName.ToLower().Equals(name))
+                {
+                    return (TResult)record[columnName];
+                }
             }
 
+            return default;
         }
     }
 }
