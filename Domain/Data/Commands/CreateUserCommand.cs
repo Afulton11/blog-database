@@ -3,15 +3,17 @@
 
 namespace Domain.Data.Commands
 {
-    class CreateUserCommand : ICommand
+    public class CreateUserCommand : ICommand
     {
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; }
         [Required]
         public string Username { get; set; }
+        public string NormalizedUsername { get; set; }
         [Required]
         public string Password { get; set; }
         [Required]
         public string Email { get; set; }
+        public string NormalizedEmail { get; set; }
         public bool IsEmailVerified { get; set; }
     }
 }

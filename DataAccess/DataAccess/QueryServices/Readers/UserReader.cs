@@ -11,14 +11,16 @@ namespace DataAccess.QueryServices.Readers
             new User
             {
                 UserId = row.GetSafely<int>(nameof(User.UserId)),
-                RoleId = row.GetSafely<int>(nameof(User, RoleId)),
-                Username = row.GetSafely<string>(nameof(User,Username)),
-                Password = row.GetSafely<string>(nameof(User, Password)),
-                Email = row.GetSafely<string>(nameof(User, Email)),
-                IsEmailVerified = row.GetSafely<bool>(nameof(User, IsEmailVerified)),
-                CreationDateTime = row.GetSafely<DateTime>(nameof(User, CreationDateTime)),
-                LastUpdatedTime = row.GetSafely<DateTime>(nameof(User, LastUpdatedTime)),
-                DeletedAt = row.GetSafely<DateTime>(nameof(User, DeletedAt)),
+                RoleId = row.GetSafely<int>(nameof(User.RoleId)),
+                Username = row.GetSafely<string>(nameof(User.Username)),
+                NormalizedUsername = row.GetSafely<string>(nameof(User.NormalizedUsername)),
+                Password = row.GetSafely<string>(nameof(User.Password)),
+                Email = row.GetSafely<string>(nameof(User.Email)),
+                NormalizedEmail = row.GetSafely<string>(nameof(User.NormalizedEmail)),
+                IsEmailVerified = row.GetSafely<bool>(nameof(User.IsEmailVerified)),
+                CreationDateTime = row.GetSafely<DateTime>(nameof(User.CreationDateTime)),
+                LastUpdatedDateTime = row.GetSafely<DateTime>(nameof(User.LastUpdatedDateTime)),
+                DeletedAt = row.GetSafely<DateTime>(nameof(User.DeletedAt)),
             };
     }
 }

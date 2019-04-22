@@ -1,10 +1,10 @@
 ﻿using Domain.Entities.Blog;
-using System.Collections.Generic;
 
 namespace Domain.Data.Queries
 {
-    public class GetAllUsersQuery : IQuery<IEnumerable<User>>
+    public class FetchAllUsersQuery : IPaginatedQuery<User>
     {
         public bool WithDeleted { get; set; }
+        public PageInfo Paging { get; set; } = new PageInfo();
     }
 }

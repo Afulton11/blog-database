@@ -1,4 +1,6 @@
 ﻿using Domain.Business;
+using Domain.Data.Commands.Roles;
+using Domain.Data.Queries.RoleQueries;
 using Domain.Entities.Blog;
 using EnsureThat;
 using Microsoft.AspNetCore.Identity;
@@ -23,22 +25,43 @@ namespace Web.Identity
             this.commandProcessor = commandProcessor;
         }
 
-        public Task<IdentityResult> CreateAsync(Role role, CancellationToken cancellationToken)
+        public async Task<IdentityResult> CreateAsync(Role role, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            throw new NotImplementedException();
+
+            await commandProcessor.Execute(new CreateOrUpdateRoleCommand
+            {
+                Name = role.Name,
+                NormalizedName = role.NormalizedName,
+            });
+
+            return IdentityResult.Success;
         }
 
-        public Task<IdentityResult> UpdateAsync(Role role, CancellationToken cancellationToken)
+        public async Task<IdentityResult> UpdateAsync(Role role, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            throw new NotImplementedException();
+
+            await commandProcessor.Execute(new CreateOrUpdateRoleCommand
+            {
+                RoleId = role.RoleId,
+                Name = role.Name,
+                NormalizedName = role.NormalizedName,
+            });
+
+            return IdentityResult.Success;
         }
 
-        public Task<IdentityResult> DeleteAsync(Role role, CancellationToken cancellationToken)
+        public async Task<IdentityResult> DeleteAsync(Role role, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            throw new NotImplementedException();
+
+            await commandProcessor.Execute(new DeleteRoleCommand
+            {
+                RoleId = role.RoleId
+            });
+
+            return IdentityResult.Success;
         }
 
         // TODO: Add RoleId to Domain POCOs
@@ -54,30 +77,33 @@ namespace Web.Identity
             return Task.FromResult(0);
         }
 
-        public Task<string> GetNormalizedRoleNameAsync(Role role, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            // TODO: implement role normalized name in database.
-            throw new NotImplementedException();
-        }
+        public Task<string> GetNormalizedRoleNameAsync(Role role, CancellationToken cancellationToken) =>
+            Task.FromResult(role.NormalizedName);
 
         public Task SetNormalizedRoleNameAsync(Role role, string normalizedName, CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            // TODO: implement role normalized name in database.
-            throw new NotImplementedException();
+            role.NormalizedName = normalizedName;
+            return Task.FromResult(0);
         }
 
         public Task<Role> FindByIdAsync(string roleId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            throw new NotImplementedException();
+
+            return queryProcessor.Execute(new FetchRoleByIdQuery
+            {
+                RoleId = int.Parse(roleId),
+            });
         }
 
         public Task<Role> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            throw new NotImplementedException();
+
+            return queryProcessor.Execute(new FetchRoleByNormalizedNameQuery
+            {
+                NormalizedName = normalizedRoleName,
+            });
         }
 
         public void Dispose()

@@ -10,14 +10,24 @@
 :r ./Setup/01_Procedures/Commands/UpdateUserEmail.sql
 :r ./Setup/01_Procedures/Commands/UpdateUsername.sql
 :r ./Setup/01_Procedures/Commands/VerifyUserEmail.sql
+:r ./Setup/01_Procedures/Commands/CreateOrUpdateRole.sql
+:r ./Setup/01_Procedures/Commands/DeleteRole.sql
 
 -- Create OR Alter Query Procedures
 :r ./Setup/01_Procedures/Queries/GetArticleById.sql
 :r ./Setup/01_Procedures/Queries/GetTotalPointsByUserId.sql
+:r ./Setup/01_Procedures/Queries/FetchUserByUsername.sql
+:r ./Setup/01_Procedures/Queries/FetchUserByNormalizedUsername.sql
+:r ./Setup/01_Procedures/Queries/FetchUserByNormalizedEmail.sql
 :r ./Setup/01_Procedures/Queries/GetAllUsers.sql
 :r ./Setup/01_Procedures/Queries/GetUserById.sql
 :r ./Setup/01_Procedures/Queries/GetUserRoles.sql
 :r ./Setup/01_Procedures/Queries/GetReasonForPoint.sql
+:r ./Setup/01_Procedures/Queries/GetTotalPointsByUserId.sql
+:r ./Setup/01_Procedures/Queries/GetRecentArticles.sql
+:r ./Setup/01_Procedures/Queries/SearchArticles.sql
+:r ./Setup/01_Procedures/Queries/FetchRoleById.sql
+:r ./Setup/01_Procedures/Queries/FetchRoleByNormalizedName.sql
 
 -- Populate Tables
 :r ./Setup/02_Populate/00_Role.sql

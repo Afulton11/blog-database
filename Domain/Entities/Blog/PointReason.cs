@@ -3,6 +3,7 @@ namespace Domain.Entities.Blog
 {
     public class PointReason : IEntity
     {
-        public string Reason { get; }
+        public int ReasonId { get; set; }
+        public string Reason { get; set; }
     }
 }
