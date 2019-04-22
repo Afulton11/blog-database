@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Data;
 using DataAccess.QueryServices;
 using DataAccess.QueryServices.Readers;
+using System.Linq;
 
 namespace UnitTests.DataAccess.QueryServices.GetArticlesBetweenDatesQueryServiceTests
 {
@@ -218,7 +219,7 @@ namespace UnitTests.DataAccess.QueryServices.GetArticlesBetweenDatesQueryService
 
             articleReaderMock.Setup((mock) =>
                 mock.Read(DataReaderMock.Object))
-               .Returns(ReadArticles());
+               .Returns(ReadArticles().ToList());
         }
     }
 

@@ -175,7 +175,7 @@ namespace UnitTests.DataAccess.QueryServices.GetArticleByIdQueryServiceTests
 
             articleReaderMock.Setup((mock) =>
                 mock.Read(DataReaderMock.Object))
-               .Returns(ReadArticles());
+               .Returns(ReadArticles().ToList());
         }
     }
 
