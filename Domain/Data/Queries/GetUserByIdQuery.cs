@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Data.Queries
 {
-    public class GetUserByIdQuery : IQuery<User>
+    public class FetchUserByIdQuery : IQuery<User>
     {
         [Required]
         public int UserId { get; set; }

@@ -10,29 +10,20 @@ using System.Linq;
 
 namespace DataAccess.DataAccess.QueryServices.UserQueries
 {
-    public class GetUserByIdQueryService : DbQueryService<GetUserByIdQuery, User>
+    public class FetchUserByIdQueryService : DbQueryService<FetchUserByIdQuery, User>
     {
         private readonly IReader<User> userReader;
 
-        public GetUserByIdQueryService(IDatabase database, IReader<User> userReader) : base(database)
+        public FetchUserByIdQueryService(IDatabase database, IReader<User> userReader) : base(database)
         {
             EnsureArg.IsNotNull(userReader, nameof(userReader));
             this.userReader = userReader;
         }
 
-        protected override User ReadQueryResult(IDataReader reader, GetUserByIdQuery query)
-        {
-            var user = userReader.Read(reader)?.FirstOrDefault() ?? null;
+        protected override User ReadQueryResult(IDataReader reader, FetchUserByIdQuery query) =>
+            userReader.Read(reader).FirstOrDefault();
 
-            if (user == null)
-            {
-                throw new KeyNotFoundException($"No User with Id[{query.UserId}] was found in the database!");
-            }
-
-            return user;
-        }
-
-        protected override IEnumerable<IDataParameter> GetParameters(GetUserByIdQuery query)
+        protected override IEnumerable<IDataParameter> GetParameters(FetchUserByIdQuery query)
         {
             yield return Database.CreateParameter("UserId", query.UserId);
         }
