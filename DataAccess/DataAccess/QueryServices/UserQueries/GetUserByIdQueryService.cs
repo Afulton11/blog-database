@@ -1,12 +1,14 @@
 ﻿using Common;
 using DataAccess.QueryServices.Readers;
 using DatabaseFactory.Data.Contracts;
+using Domain.Business.QueryServices;
 using Domain.Business.QueryServices.ArticleQueryServices;
 using Domain.Data.Queries;
 using Domain.Entities.Blog;
 using EnsureThat;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace DataAccess.DataAccess.QueryServices.UserQueries
 {
