@@ -7,14 +7,30 @@ GO
 USE BlogDatabase;
 GO
 
-DROP PROCEDURE IF EXISTS Blog.CreatePointForPublishingArticle;
-DROP PROCEDURE IF EXISTS Blog.GetArticleById;
-DROP PROCEDURE IF EXISTS Blog.GetRecentArticles;
-GO
+-- drop all procedures from the database (!danger!)
+create Procedure [dbo].[DeleteAllProcedures]
+As 
+declare @schemaName varchar(500)    
+declare @procName varchar(500)
+declare cur cursor
+for select s.Name, p.Name from sys.procedures p
+INNER JOIN sys.schemas s ON p.schema_id = s.schema_id
+WHERE p.type = 'P' and is_ms_shipped = 0 and p.name not like 'sp[_]%diagram%'
+ORDER BY s.Name, p.Name
+open cur
 
-DROP FUNCTION IF EXISTS Blog.GetPointReason;
-GO
+fetch next from cur into @schemaName,@procName
+while @@fetch_status = 0
+begin
+if @procName <> 'DeleteAllProcedures'
+exec('drop procedure ' + @schemaName + '.' + @procName)
+fetch next from cur into @schemaName,@procName
+end
+close cur
+deallocate cur
 
+
+-- drop tables
 DROP TABLE IF EXISTS Blog.Point;
 DROP TABLE IF EXISTS Blog.Reason;
 DROP TABLE IF EXISTS Blog.Comment;
