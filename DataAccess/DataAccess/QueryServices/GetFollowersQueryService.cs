@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
+﻿using System.Data;
 using DataAccess.QueryServices.Readers;
 using DatabaseFactory.Data.Contracts;
 using Domain.Business.QueryServices;
-using Domain.Business.QueryServices.Exceptions;
 using Domain.Data.Queries;
 using Domain.Entities.Blog;
 using EnsureThat;
@@ -16,7 +11,7 @@ namespace DataAccess.DataAccess.QueryServices
     /// <summary>
     /// Retrieves the list of a user's followers
     /// </summary>
-    public class GetFollowersQueryService : IQueryService<GetFollowersQuery, IEnumerable<Follower>>
+    public class GetFollowersQueryService : IQueryService<GetFollowersQuery, Paged<Follower>>
     {
         public GetFollowersQueryService(IDatabase database, IReader<Follower> followerReader)
         {
@@ -30,14 +25,14 @@ namespace DataAccess.DataAccess.QueryServices
         public IDatabase Database { get; }
         public IReader<Follower> FollowerReader { get; }
 
-        public IEnumerable<Follower> Execute(GetFollowersQuery query)
+        public Paged<Follower> Execute(GetFollowersQuery query)
         {
             EnsureArg.IsNotNull(query, nameof(query));
 
             return Database.TryExecuteTransaction((transaction) =>
             {
                 var dbQuery = Database.CreateStoredProcCommand("Blog.GetFollowers", transaction);
-                var userId = Database.CreateParameter("UserId", query.userId);
+                var userId = Database.CreateParameter("UserId", query.UserId);
 
                 dbQuery.Parameters.Add(userId);
 
@@ -45,15 +40,11 @@ namespace DataAccess.DataAccess.QueryServices
             });
         }
 
-        private IEnumerable<Follower> GetFollowers(IDataReader reader, GetFollowersQuery query)
-        {
-            var followers = FollowerReader.Read(reader);
-
-            if (followers == null || !followers.Any())
+        private Paged<Follower> GetFollowers(IDataReader reader, GetFollowersQuery query) =>
+            new Paged<Follower>
             {
-                throw new FollowersNotFoundException(query.userId);
-            }
-            return followers;
-        }
+                Paging = query.Paging,
+                Items = FollowerReader.Read(reader),
+            };
     }
 }
