@@ -1,6 +1,4 @@
-/// <binding BeforeBuild='default' />
-
-
+/// <binding />
 /** Gulp Template used
  * https://github.com/cferdinandi/gulp-boilerplate/blob/master/gulpfile.js
  */
@@ -49,7 +47,10 @@ var paths = {
         output: 'wwwroot/svg/'
     },
     copy: {
-        input: 'src/assets/**/*',
+        baseInput: 'src/assets',
+        input: [
+            'src/assets/**/*'
+        ],
         output: 'wwwroot/assets/'
     },
     reload: './wwwroot/'
@@ -252,7 +253,7 @@ var copyFiles = function (done) {
     if (!settings.copy) return done();
 
     // Copy static files
-    return src(paths.copy.input)
+    return src(paths.copy.input, { base: paths.copy.baseInput })
         .pipe(dest(paths.copy.output));
 
 };
@@ -313,3 +314,5 @@ exports.watch = series(
     startServer,
     watchSource
 );
+
+exports.copy = series(copyFiles);
