@@ -1,11 +1,9 @@
 ﻿using DataAccess.QueryServices;
 using DataAccess.QueryServices.Readers;
 using DatabaseFactory.Data.Contracts;
-using Domain.Business;
 using Domain.Business.QueryServices;
 using Domain.Data.Queries;
 using EnsureThat;
-using Microsoft.Extensions.Logging;
 using SimpleInjector;
 using System;
 using System.Collections.Generic;
@@ -13,7 +11,6 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Reflection.Emit;
 
 namespace Web.Services
 {
@@ -49,8 +46,6 @@ namespace Web.Services
 
         private static void RegisterQueryService(Container container, Type queryType, Type resultType)
         {
-            //logger.LogInformation($"Registering query type: {queryType.ToFriendlyName()}");
-
             if (resultType.IsPrimitive) return;
 
             var queryServiceType = typeof(IQueryService<,>).MakeGenericType(queryType, resultType);
@@ -74,16 +69,12 @@ namespace Web.Services
 
         private static dynamic CreateQueryServiceInstance(Container container, Type queryType, Type resultType, Type queryServiceImplType)
         {
-            //logger.LogInformation($"Creating query instance: {queryServiceImplType.ToFriendlyName()}");
             const string SCHEMA_NAME = "Blog";
 
             var readQuery = CreateReadQueryFunction(container, queryType, resultType);
             var queryParameters = GetCreateQueryParametersFunc(queryType);
             var procedureName = queryType.Name.Replace("Query", "");
             var fullProcedureName = SCHEMA_NAME + "." + procedureName;
-
-            //logger.LogInformation($"Created Read query: {readQuery.ToString()}");
-            //logger.LogInformation($"Created Create Query Pameteres func: {queryParameters.ToString()}");
 
             var database = container.GetInstance<IDatabase>();
 
@@ -92,14 +83,10 @@ namespace Web.Services
 
         private static dynamic CreateReadQueryFunction(Container container, Type queryType, Type resultType)
         {
-            //logger.LogInformation($"Creating readQueryFunction with result: ${resultType.ToFriendlyName()}");
             var readerArgument = Expression.Parameter(typeof(IDataReader), "reader");
             var queryArgument = Expression.Parameter(queryType, "query");
-            var resultTarget = Expression.Label(resultType, "result");
-            var resultVariable = Expression.Variable(resultType, "result");
 
             var resultItemType = IsPaged(resultType) ? GetItemResultType(resultType) : resultType;
-
             var readerItemType = IsEnumerable(resultItemType) ? resultType.GetGenericArguments().First() : resultItemType;
 
             var readerType = typeof(IReader<>).MakeGenericType(readerItemType);
@@ -114,7 +101,6 @@ namespace Web.Services
 
             if (IsPaged(resultType))
             {
-                //logger.LogInformation($"Creating Paged result: {resultType.ToFriendlyName()}");
                 var resultCtor = Expression.New(resultType);
 
                 var itemsProperty = resultType.GetProperty("Items");
@@ -146,10 +132,6 @@ namespace Web.Services
             }
 
             var funcType = typeof(Func<,,>).MakeGenericType(typeof(IDataReader), queryType, resultType);
-
-
-            //var returnExpression = Expression.Return(resultTarget, resultVariable, resultType);
-            //var returnLabel = Expression.Label(resultTarget, )
 
             return Expression.Lambda(funcType, result, readerArgument, queryArgument).Compile();
         }
