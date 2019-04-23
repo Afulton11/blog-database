@@ -3,17 +3,23 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
+@{ 
+    var returnUrl = Url.Page("/", new { area = "" });
+}
+
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity"
-               asp-page="/Account/Manage/Index"
+            <a class="nav-link text-dark"
+               asp-page="/User"
+               asp-route-username="@User.Identity.Name"
                title="Manage">Hello @User.Identity.Name!</a>
         </li>
         <li class="nav-item">
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
-                  asp-route-returnUrl="@Url.Page("/", new { area = "" })"
+            <form class="form-inline"
+                  asp-page="/Logout"
+                  asp-route-returnUrl="@returnUrl"
                   method="post">
                 <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
             </form>
@@ -22,10 +28,14 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-page="/Register">Register</a>
+            <a class="nav-link text-dark"
+               asp-page="/Register"
+               asp-route-returnUrl="@returnUrl">Register</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-page="/SignIn">Sign In</a>
+            <a class="nav-link text-dark"
+               asp-page="/SignIn"
+               asp-route-returnUrl="@returnUrl">Sign In</a>
         </li>
     }
 </ul>
