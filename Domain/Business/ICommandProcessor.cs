@@ -5,6 +5,6 @@ namespace Domain.Business
 {
     public interface ICommandProcessor
     {
-        Task Execute(ICommand command);
+        Task Execute<TCommand>(TCommand command) where TCommand : ICommand;
     }
 }

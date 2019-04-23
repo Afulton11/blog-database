@@ -1,14 +1,16 @@
 ﻿USE BlogDatabase;
 GO
 
+
+
 -- TODO: add exception handling
 CREATE OR ALTER PROCEDURE Blog.CreateOrUpdateUser
 	@RoleId AS INT = NULL,
 	@Username AS NVARCHAR(64),
-	@NormalizedUsername AS NVARCHAR(128),
+	@NormalizedUsername AS NVARCHAR(128) = NULL,
 	@Password AS NVARCHAR(128),
 	@Email AS NVARCHAR(128),
-	@NormalizedEmail AS NVARCHAR(256),
+	@NormalizedEmail AS NVARCHAR(256) = NULL,
 	@IsEmailVerified AS BIT = 0
 AS
 	BEGIN TRAN
@@ -25,13 +27,11 @@ AS
 		if @@ROWCOUNT = 0
 		BEGIN
 			-- default role to user
-			SET @RoleId = ISNULL(@RoleId, 
-				(
+			SET @RoleId = (
 					SELECT r.RoleId
 					FROM Blog.[Role] AS r
 					WHERE r.[Name] = N'User'
 				)
-			)
 
 			INSERT INTO Blog.[User] (RoleId, Username, [Password], Email, IsEmailVerified)
 			VALUES

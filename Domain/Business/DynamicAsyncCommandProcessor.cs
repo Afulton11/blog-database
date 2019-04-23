@@ -19,9 +19,10 @@ namespace Domain.Business
             this.container = container;
         }
 
-        public Task Execute(ICommand command)
+        public Task Execute<TCommand>(TCommand command)
+            where TCommand : ICommand
         {
-            var serviceType = typeof(ICommandService<>).MakeGenericType(typeof(ICommand));
+            var serviceType = typeof(ICommandService<>).MakeGenericType(typeof(TCommand));
 
             dynamic service = container.GetInstance(serviceType);
 
