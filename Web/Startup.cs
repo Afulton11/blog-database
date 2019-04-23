@@ -189,6 +189,7 @@ namespace Web
 
             container.Register(typeof(IReader<>), typeof(IReader<>).Assembly);
 
+            container.RegisterCommandServices();
             container.RegisterQueryServices();
 
             container.Options.AllowOverridingRegistrations = true;
