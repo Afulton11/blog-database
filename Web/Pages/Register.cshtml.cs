@@ -54,7 +54,7 @@ namespace Web.Pages
                     var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
 
                     var callbackUrl = Url.Page(
-                        "~/",
+                        "/Index",
                         pageHandler: null,
                         values: new { username = user.Username, code },
                         protocol: Request.Scheme);
