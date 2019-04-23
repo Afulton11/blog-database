@@ -4,8 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Data.Queries
 {
-    public class GetAllUsersQuery : IQuery<IEnumerable<User>>
+    class GetReasonForPointQuery : IQuery<PointReason>
     {
-        public bool WithDeleted { get; set; }
+        [Required]
+        public int PointId { get; set; }
     }
 }

@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SimpleInjector" Version="4.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\DatabaseFactory\DatabaseFactory.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />

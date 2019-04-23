@@ -21,6 +21,14 @@ using Domain.Business.CommandServices;
 using DataAccess.QueryServices.Readers;
 using Domain.Business.QueryServices;
 using DataAccess.DataAccess;
+using Domain.Business;
+using Domain.Entities.Blog;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity;
+using Web.Services.Email;
+using Web.Identity;
+using System;
+using Web.Services;
 
 namespace Web
 {
@@ -58,8 +66,54 @@ namespace Web
                 options.UseConnectionString(connectionString);
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSingleton(this.container);
+            services.AddSingleton<ICommandProcessor, DynamicAsyncCommandProcessor>();
+            services.AddSingleton<IQueryProcessor, DynamicAsyncQueryProcessor>();
 
+            services.AddTransient<IUserStore<User>, UserStore>();
+            services.AddTransient<IRoleStore<Role>, RoleStore>();
+
+            services.AddIdentity<User, Role>()
+                .AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = true;
+            });
+
+            services.ConfigureApplicationCookie((options) =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+                options.LoginPath = "/SignIn";
+                options.AccessDeniedPath = "/AccessDenied";
+                options.SlidingExpiration = true;
+            });
+
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+            services.AddTransient<IEmailSender, EmailSender>();
+
+            services.AddSingleton<ILoggerFactory, LoggerFactory>();
+            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             IntegrateSimpleInjector(services);
         }
 
@@ -101,6 +155,8 @@ namespace Web
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseAuthentication();
+
             app.UseMvc();
         }
 
@@ -111,6 +167,12 @@ namespace Web
             container.RegisterMvcViewComponents(app);
             container.RegisterPageModels(app);
 
+            container.RegisterConditional(
+                typeof(ILogger),
+                c => typeof(Logger<>).MakeGenericType(c.Consumer.ImplementationType),
+                Lifestyle.Singleton,
+                c => true);
+
             InitializeAppServices(app);
 
             // Allow Simple Injector to resolve services from ASP.NET Core.
@@ -119,16 +181,6 @@ namespace Web
 
         private void InitializeAppServices(IApplicationBuilder app)
         {
-            // Add application services. For instance:
-            //container.Register<IUserService, UserService>(Lifestyle.Scoped);
-
-            container.RegisterConditional(
-                typeof(ILogger),
-                c => typeof(Logger<>).MakeGenericType(c.Consumer.ImplementationType),
-                Lifestyle.Singleton,
-                c => true);
-
-
             var cqrsAssemblies = new[]
             {
                 typeof(ICommandService<>).Assembly,
@@ -136,8 +188,17 @@ namespace Web
             };
 
             container.Register(typeof(IReader<>), typeof(IReader<>).Assembly);
+
+            container.RegisterCommandServices();
+            container.RegisterQueryServices();
+
+            container.Options.AllowOverridingRegistrations = true;
             container.Register(typeof(ICommandService<>), cqrsAssemblies);
             container.Register(typeof(IQueryService<,>), cqrsAssemblies);
+            container.Options.AllowOverridingRegistrations = false;
+
+
+
 
             RegisterCommandServiceDecorators();
             RegisterQueryServiceDecorators();

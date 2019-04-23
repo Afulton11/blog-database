@@ -1,56 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Data;
+using DataAccess.QueryServices.Readers;
+using DatabaseFactory.Data.Contracts;
+using Domain.Business.QueryServices;
+using Domain.Data.Queries;
+using Domain.Entities.Blog;
+using EnsureThat;
 
 namespace DataAccess.DataAccess.QueryServices
 {
     /// <summary>
     /// Retrieves the list of a user's followers
     /// </summary>
-    public class GetFollowersQueryService : IQueryService<GetFollowersQuery, IEnumerable<Follower>> 
+    public class GetFollowersQueryService : IQueryService<GetFollowersQuery, Paged<Follower>>
     {
-        public GetFollowersQueryService(IDatabase database, int userId, IReader<Follower> followerReader)
+        public GetFollowersQueryService(IDatabase database, IReader<Follower> followerReader)
         {
             EnsureArg.IsNotNull(database, nameof(database));
-            EnsureArg.IsNotNull(userId, nameof(userId));
             EnsureArg.IsNotNull(followerReader, nameof(followerReader));
 
             Database = database;
-            UserId = userId;
             FollowerReader = followerReader;
         }
-        
-    }
 
-    public IDatabase Database { get; }
-    public int UserId { get; }
-    public IReader<Follower> FollowerReader { get; }
+        public IDatabase Database { get; }
+        public IReader<Follower> FollowerReader { get; }
 
-    public IEnumerable<Follower> Execute(GetFollowersQuery query)
-    {
-        EnsureArg.IsNotNull(query, nameof(query));
-
-        return Database.TryExecuteTransaction((transaction) =>
+        public Paged<Follower> Execute(GetFollowersQuery query)
         {
-            var dbQuery = Database.CreateStoredProcCommand("Blog.GetFollowers", transaction);
-            var userId = Database.CreateParameter("UserId", query.UserID);
-            var followedUserId = Database.CreateParameter("FollowedUserId", query.followedUserId);
+            EnsureArg.IsNotNull(query, nameof(query));
 
-            dbQuery.Parameters.Add(userId);
-            dbQuery.Parameters.Add(followedUserId);           
+            return Database.TryExecuteTransaction((transaction) =>
+            {
+                var dbQuery = Database.CreateStoredProcCommand("Blog.GetFollowers", transaction);
+                var userId = Database.CreateParameter("UserId", query.UserId);
 
-            return Database.ExecuteReader(dbQuery, (reader) => this.GetFollowers(reader, query));
-        });
-    }
+                dbQuery.Parameters.Add(userId);
 
-    private IEnumerable<Follower> GetFollowers(IDataReader reader, GetFollowersQuery query)
-    {
-        var followers = FollowerReader.Read(reader);
-
-        if (followers == null || !followers.Any())
-        {
-            throw new FollowersNotFoundException(query.UserId);
+                return Database.ExecuteReader(dbQuery, (reader) => this.GetFollowers(reader, query));
+            });
         }
-        return followers;
+
+        private Paged<Follower> GetFollowers(IDataReader reader, GetFollowersQuery query) =>
+            new Paged<Follower>
+            {
+                Paging = query.Paging,
+                Items = FollowerReader.Read(reader),
+            };
     }
 }

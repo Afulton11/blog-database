@@ -1,0 +1,59 @@
+﻿@page "{id:int}"
+@model Web.Pages.ArticleModel
+@{
+    ViewData["Title"] = Model.Article.Title;
+    var article = Model.Article;
+    var category = Model.Category;
+}
+
+
+<p class="metadata">
+    <span class="date">
+        @article.CreationDateTime
+    </span>
+    <span class="by">
+        by
+    </span>
+    <span class="author">
+        <a href="about.html">
+            @article.AuthorId
+        </a>
+    </span>
+</p>
+<h1 class="title">
+    @article.Title
+</h1>
+<div class="article-tags">
+    <ul class="tag-list">
+        <li class="category">
+            <a asp-page="/Category" asp-route-name="@category.Name" rel="category tag">
+                @category.Name
+            </a>
+            ,
+            <a href="/category/news" rel="category tag">
+                News
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="article-reading-content">
+    <p>
+        @article.Body
+    </p>
+</div>
+<div class="large-space"></div>
+<nav class="article-navigation">
+    <div class="previous">
+        <a href="#" rel="previous">
+            <span class="metadata">← Previous Article</span>
+            <br /> Stack Overflow Age
+        </a>
+    </div>
+    <div class="next">
+        <a href="#" rel="next">
+            <span class="metadata">Next Article →</span>
+            <br /> Strange and Maddening Rules
+        </a>
+    </div>
+</nav>
+

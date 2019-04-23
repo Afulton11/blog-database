@@ -8,7 +8,8 @@ namespace Domain.Data.Commands
     public class CreateFollowerCommand : ICommand
     {
         [Required]
-        public int FollowedUserID { get; }
-        public int FollowingUserID { get; }
+        public int FollowedUserId { get; }
+        [Required]
+        public int FollowingUserId { get; }
     }
 }

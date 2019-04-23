@@ -3,6 +3,8 @@ namespace Domain.Entities.Blog
 {
     public class Role : IEntity
     {
-        public string Name { get; }
+        public int RoleId { get; set; }
+        public string Name { get; set; }
+        public string NormalizedName { get; set; }
     }
 }

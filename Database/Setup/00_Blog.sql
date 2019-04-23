@@ -7,14 +7,31 @@ GO
 USE BlogDatabase;
 GO
 
-DROP PROCEDURE IF EXISTS Blog.CreatePointForPublishingArticle;
-DROP PROCEDURE IF EXISTS Blog.GetArticleById;
-DROP PROCEDURE IF EXISTS Blog.GetArticleById;
+-- drop all procedures from the database (!danger!)
+declare @schemaName varchar(500)    
+declare @procName varchar(500)
+declare cur cursor
+for select s.Name, p.Name from sys.procedures p
+	INNER JOIN sys.schemas s ON p.schema_id = s.schema_id
+WHERE p.type = 'P' and is_ms_shipped = 0 and p.name not like 'sp[_]%diagram%'
+ORDER BY s.Name, p.Name
+open cur
+
+fetch next from cur into @schemaName,@procName
+while @@fetch_status = 0
+begin
+if @procName <> 'DeleteAllProcedures'
+exec('drop procedure ' + @schemaName + '.' + @procName)
+fetch next from cur into @schemaName,@procName
+end
+close cur
+deallocate cur
+
+DROP FUNCTION IF EXISTS Blog.GetPointReason
 GO
 
-DROP FUNCTION IF EXISTS Blog.GetPointReason;
-GO
 
+-- drop tables
 DROP TABLE IF EXISTS Blog.Point;
 DROP TABLE IF EXISTS Blog.Reason;
 DROP TABLE IF EXISTS Blog.Comment;
@@ -37,8 +54,9 @@ CREATE TABLE Blog.[Role]
 (
 	RoleId INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[Name] NVARCHAR(64) NOT NULL,
+	NormalizedName NVARCHAR(128),
 
-	UNIQUE([Name])
+	UNIQUE([Name]),
 );
 
 CREATE TABLE Blog.[User]
@@ -46,8 +64,10 @@ CREATE TABLE Blog.[User]
 	UserId INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	RoleId INT NOT NULL FOREIGN KEY REFERENCES Blog.[Role] (RoleId),
 	Username NVARCHAR(64) NOT NULL,
+	NormalizedUsername NVARCHAR(128),
 	[Password] NVARCHAR(128) NOT NULL,
 	Email NVARCHAR(128) NOT NULL,
+	NormalizedEmail NVARCHAR(256),
 	IsEmailVerified BIT NOT NULL DEFAULT(0),
 	CreationDateTime DATETIME NOT NULL DEFAULT(SYSDATETIME()),
 	LastUpdatedTime DATETIME NOT NULL DEFAULT(SYSDATETIME()),

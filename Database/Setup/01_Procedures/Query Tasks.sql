@@ -57,7 +57,7 @@ BEGIN
 		   U.CreationDateTime AS CreationDateTime,
 		   U.LastUpdateTime AS LastUpdateTime
 	FROM Blog.[User] U
-	WHERE (U.Username = @Username)
+	WHERE (U.Username = @Username) AND (U.DeletedAt = NULL OR U.DeletedAt > SYSDATETIME())
 END
 GO
 
@@ -66,13 +66,25 @@ CREATE OR ALTER PROCEDURE Blog.UserUpdate
 (
 	@UserID INT,
 	@Email NVARCHAR(128),
-	@Password NVARCHAR(128),
-	@DeletedAt DATETIME
+	@Password NVARCHAR(128)
 )
 AS
 BEGIN
 	UPDATE Blog.[User]
-	SET Email = ISNULL(@Email, Email), [Password] = ISNULL(@Password, [Password]), DeletedAt = ISNULL(@DeletedAt, DeletedAt)
+	SET Email = ISNULL(@Email, Email), [Password] = ISNULL(@Password, [Password]), LastUpdateUserID = @UserID, LastUpdateTime = SYSDATETIME()
+	WHERE UserID = @UserID
+END
+GO
+
+--Delete User
+CREATE OR ALTER PROCEDURE Blog.DeleteUser
+(
+	@UserID INT
+)
+AS
+BEGIN
+	UPDATE Blog.[User]
+	SET DeletedAt = SYSDATETIME()
 	WHERE UserID = @UserID
 END
 GO
@@ -105,13 +117,12 @@ CREATE OR ALTER PROCEDURE Blog.AuthorUpdate
 	@FirstName NVARCHAR(64),
 	@MiddleName NVARCHAR(64),
 	@LastName NVARCHAR(64),
-	@BirthDate DATE,
-	@DeletedAt DATETIME
+	@BirthDate DATE
 )
 AS
 BEGIN
 	UPDATE Blog.Author
-	SET FirstName = ISNULL(@FirstName, FirstName), MiddleName = ISNULL(@MiddleName, MiddleName), LastName = ISNULL(@LastName, LastName), BirthDate = ISNULL(@BirthDate, BirthDate), DeletedAt = ISNULL(@DeletedAt, DeletedAt)
+	SET FirstName = ISNULL(@FirstName, FirstName), MiddleName = ISNULL(@MiddleName, MiddleName), LastName = ISNULL(@LastName, LastName), BirthDate = ISNULL(@BirthDate, BirthDate)
 	WHERE AuthorUserID = @AuthorUserID
 END
 GO
@@ -132,7 +143,7 @@ BEGIN
 	       Art.Description AS Description,
 	       Art.CreationDateTime AS CreationDateTime
 	FROM Blog.Article Art
-	WHERE Art.AuthorID = @AuthorID
+	WHERE (Art.AuthorID = @AuthorID) AND (Art.DeletedAt = NULL OR Art.DeletedAt > SYSDATETIME())
 	GROUP BY Art.AuthorID, Art.Title, Art.Description, Art.CreationDateTime
 	ORDER BY Art.CreationDateTime DESC
 	OFFSET @PageSize * @PageNumber ROWS
@@ -155,6 +166,19 @@ AS (
 )
 GO
 
+--Delete Author
+CREATE OR ALTER PROCEDURE Blog.DeleteAuthor
+(
+	@AuthorID INT
+)
+AS
+BEGIN
+	UPDATE Blog.Author
+	SET DeletedAt = SYSDATETIME()
+	WHERE AuthorUserID = @AuthorID
+END
+GO
+
 
 
 
@@ -167,13 +191,12 @@ CREATE OR ALTER PROCEDURE Blog.AddNewArticle
 	@Title NVARCHAR(128),
 	@Description NVARCHAR(512),
 	@Body NVARCHAR(2048),
-	@CategoryID INT,
-	@CreationDateTime DATETIME
+	@CategoryID INT
 )
 AS
 BEGIN
-	INSERT Blog.Article(AuthorID, Title, [Description], Body, CategoryID, CreationDateTime, LastUpdateDateTime)
-	VALUES (@AuthorID, @Title, @Description, @Body, @CategoryID, @CreationDateTime, @CreationDateTime)
+	INSERT Blog.Article(AuthorID, Title, [Description], Body, CategoryID)
+	VALUES (@AuthorID, @Title, @Description, @Body, @CategoryID)
 END
 GO
 
@@ -185,13 +208,12 @@ CREATE OR ALTER PROCEDURE Blog.UpdateArticle
 	@Description NVARCHAR(512),
 	@Body NVARCHAR(2048),
 	@CategoryID INT,
-	@Update DATETIME,
-	@DeletedAt DATETIME
+	@Update DATETIME
 )
 AS
 BEGIN
 	UPDATE Blog.Article
-	SET Title = ISNULL(@Title, Title), [Description] = ISNULL(@Description, [Description]), Body = ISNULL(@Body, Body), CategoryID = ISNULL(@CategoryID, CategoryID), LastUpdateDateTime = ISNULL(@Update, LastUpdateDateTime), DeletedAt = ISNULL(@DeletedAt, DeletedAt)
+	SET Title = ISNULL(@Title, Title), [Description] = ISNULL(@Description, [Description]), Body = ISNULL(@Body, Body), CategoryID = ISNULL(@CategoryID, CategoryID), LastUpdateDateTime = @Update
 	WHERE ArticleID = @ArticleID
 END
 GO
@@ -206,7 +228,7 @@ BEGIN
 	SELECT Art.Title AS Title,
 		   (Auth.FirstName + Auth.MiddleName + Auth.LastName) AS Author,
 		   Art.Body AS Body,
-		   Cat.Name AS Category,
+		   Cat.[Name] AS Category,
 		   Art.CreationDateTime AS CreationDate,
 		   Art.LastUpdatedDateTime AS LastUpdate,
 		   COUNT(DISTINCT Fav.UserID) AS Favorited
@@ -215,8 +237,8 @@ BEGIN
 		 INNER JOIN Blog.ArticleCategory Cat ON Cat.ArticleCategoryID = Art.CategoryID
 		 INNER JOIN Blog.Comment Com ON Com.ArticleID = Art.ArticleID
 		 INNER JOIN Blog.Favorite Fav ON Fav.ArticleID = Art.ArticleID
-	WHERE Art.ArticleID = @ArticleID
-	GROUP BY
+	WHERE (Art.ArticleID = @ArticleID) AND (Art.DeletedAt = NULL OR Art.DeletedAt > SYSDATETIME())
+	GROUP BY Art.Title, Art.Body, Cat.[Name], Art.CreationDateTime, Art.LastUpdatedDateTime
 END
 GO
 
@@ -234,6 +256,7 @@ BEGIN
 	       Art.CreatedDateTime AS CreatedDateTime,
 		   MAX(Art.LastUpdateDateTime) AS LastUpdateDateTime
 	FROM Blog.Article Art
+	WHERE Art.DeletedAt = NULL OR Art.DeletedAt > SYSDATETIME()
 	GROUP BY Art.AuthorID, Art.Title, Art.Description, Art.CreationDateTime
 	ORDER BY Art.LastUpdateDateTime DESC
 	OFFSET @PageSize * @PageNumber ROWS
@@ -257,11 +280,42 @@ BEGIN
 	       Art.CreationDateTime AS CreationDateTime,
 		   Art.LastUpdateDateTime AS LastUpdateDateTime
 	FROM Blog.Article Art
-	WHERE Art.CreationDateTime BETWEEN @StartDate AND @EndDate
+	WHERE (Art.CreationDateTime BETWEEN @StartDate AND @EndDate) AND (Art.DeletedAt = NULL OR Art.DeletedAt > SYSDATETIME())
 	GROUP BY Art.Title, Art.AuthorID, Art.Description, Art.CreationDateTime, Art.LastUpdateDateTime
 	ORDER BY Art.LastUpdateDateTime DESC, Art.CreationDateDate DESC
 	OFFSET @PageSize * @PageNumber ROWS
 	FETCH NEXT @PageSize ROWS ONLY;
+END
+GO
+
+--Delete Article
+CREATE OR ALTER PROCEDURE Blog.DeleteArticle
+(
+	@ArticleID INT
+)
+AS
+BEGIN
+	UPDATE Blog.Article
+	SET DeletedAt = SYSDATETIME()
+	WHERE ArticleID = @ArticleID
+END
+GO
+
+
+
+
+
+--================================================================Category Procedures=========================================================
+--Create article category
+CREATE OR ALTER PROCEDURE Blog.AddCategory
+(
+	@Name NVARCHAR(28),
+	@UserID INT
+)
+AS
+BEGIN
+	INSERT Blog.ArticleCategory(Name, CreationUserID)
+	VALUES (@Name, @UserID)
 END
 GO
 
@@ -280,11 +334,39 @@ BEGIN
 		   Art.CreationDateTime AS CreationDateTime,
 		   Art.LastUpdateDateTime AS LastUpdate
 	FROM Blog.Article Art
-	WHERE Art.CategoryID = @CategoryID
+	WHERE (Art.CategoryID = @CategoryID) AND (Art.DeletedAt = NULL OR Art.DeletedAt > SYSDATETIME())
 	GROUP BY Art.AuthorID, Art.Title, Art.[Description], Art.CreationDateTime, Art.LastUpdateDateTime
 	ORDER BY Art.LastUpdateDateTime DESC, Art.CreationDateTime DESC
 	OFFSET @PageSize * @PageNumber ROWS
 	FETCH NEXT @PageSize ROWS ONLY;
+END
+GO
+
+--Update article category
+CREATE OR ALTER PROCEDURE Blog.UpdateCategory
+(
+	@CategoryID INT,
+	@Name NVARCHAR(28),
+	@UserID INT
+)
+AS
+BEGIN
+	UPDATE Blog.ArticleCategory
+	SET [Name] = ISNULL(@Name, [Name]), LastUpdateUserID = @UserID, LastUpdateDateTime = SYSDATETIME()
+	WHERE ArticleCategoryID = @CategoryID
+END
+GO
+
+--Archive (delete) article category
+CREATE OR ALTER PROCEDURE Blog.ArchiveCategory
+(
+	@CategoryID INT
+)
+AS
+BEGIN
+	UPDATE Blog.ArticleCategory
+	SET DeletedAt = SYSDATETIME()
+	WHERE ArticleCategoryID = @CategoryID
 END
 GO
 
@@ -298,13 +380,12 @@ CREATE OR ALTER PROCEDURE Blog.AddNewComment
 (
 	@ArticleID INT,
 	@UserID INT,
-	@Body NVARCHAR(2048),
-	@CreationDateTime DATETIME
+	@Body NVARCHAR(2048)
 )
 AS
 BEGIN
-	INSERT Blog.Comment(UserID, ArticleID, Body, CreationDateTime)
-	VALUES (@UserID, @ArticleID, @Body, @CreationDateTime)
+	INSERT Blog.Comment(UserID, ArticleID, Body)
+	VALUES (@UserID, @ArticleID, @Body)
 END
 GO
 
@@ -313,13 +394,12 @@ CREATE OR ALTER PROCEDURE Blog.AddNewSubComment
 (
 	@ParentCommentID INT,
 	@UserID INT,
-	@Body NVARCHAR(2048),
-	@CreationDateTime DATETIME
+	@Body NVARCHAR(2048)
 )
 AS
 BEGIN
-	INSERT Blog.Comment(UserID, ParentCommentID, Body, CreationDateTime)
-	VALUES (@UserID, @ParentCommentID, @Body, @CreationDateTime)
+	INSERT Blog.Comment(UserID, ParentCommentID, Body)
+	VALUES (@UserID, @ParentCommentID, @Body)
 END
 GO
 
@@ -327,20 +407,18 @@ GO
 CREATE OR ALTER PROCEDURE Blog.UpdateComment
 (
 	@CommentID INT,
-	@Body NVARCHAR(2048),
-	@Update DATETIME,
-	@DeletedAt DATETIME
+	@Body NVARCHAR(2048)
 )
 AS
 BEGIN
 	UPDATE Blog.Comment
-	SET Body = ISNULL(@Body, Body), LastUpdateDateTime = ISNULL(@Update, LastUpdateDateTime), DeletedAt = ISNULL(@DeletedAt, DeletedAt)
+	SET Body = ISNULL(@Body, Body), LastUpdateDateTime = SYSDATETIME()
 	WHERE CommentID = @CommentID
 END
 GO
 
 --Retrieve all comments for a given article
-CREATE OR ALTER PROCEDURE Blog.GetComments
+CREATE OR ALTER PROCEDURE Blog.GetCommentsArticle
 (
 	@ArticleID INT,
 	@PageSize INT = 10,
@@ -348,13 +426,43 @@ CREATE OR ALTER PROCEDURE Blog.GetComments
 )
 AS
 BEGIN
-	SELECT Com.Body AS Comment
+	SELECT *
 	FROM Blog.Comment Com
 	WHERE Com.ArticleID = @ArticleID
-	GROUP BY Com.Body
-	ORDER BY Com.CreationDateTime DESC
+	ORDER BY  Com.LastUpdateDateTime DESC, Com.CreationDateTime DESC
 	OFFSET @PageSize * @PageNumber ROWS
 	FETCH NEXT @PageSize ROWS ONLY;
+END
+GO
+
+--Retrieve all comments by a given user
+CREATE OR ALTER PROCEDURE Blog.GetCommentsUser
+(
+	@UserID INT,
+	@PageSize INT = 10,
+	@PageNumber INT = 1
+)
+AS
+BEGIN
+	SELECT *
+	FROM Blog.Comment Com
+	WHERE Com.UserID = @UserID
+	ORDER BY Com.LastUpdateDateTime DESC, Com.CreationDateTime DESC
+	OFFSET @PageSize * @PageNumber ROWS
+	FETCH NEXT @PageSize ROWS ONLY;
+END
+GO
+
+--Delete Comment
+CREATE OR ALTER PROCEDURE Blog.DeleteComment
+(
+	@CommentID INT
+)
+AS
+BEGIN
+	UPDATE Blog.Comment
+	SET  Body = NULL, DeletedAt = SYSDATETIME()
+	WHERE CommentID = @CommentID
 END
 GO
 
@@ -362,7 +470,7 @@ GO
 
 
 
---===Points Procedures===
+--==================================================================Points Procedures===========================
 --Counts up all of a given user's points
 CREATE OR ALTER PROCEDURE Blog.CountAllPoints
 (
@@ -404,6 +512,19 @@ GO
 
 
 --===================================================================Favorites Procedures============================================================
+--Add a new favorite article to a given user
+CREATE OR ALTER PROCEDURE Blog.AddFavorite
+(
+	@ArticleID INT,
+	@UserID INT
+)
+AS
+BEGIN
+	INSERT Blog.Favorite(UserID, ArticleID)
+	VALUES (@UserID, @ArticleID)
+END
+GO
+
 --Retrieve a given user's favorite articles
 CREATE OR ALTER PROCEDURE Blog.GetFavoriteArticles
 (
@@ -415,7 +536,7 @@ AS
 BEGIN
 	SELECT Fav.ArticleID AS ArticleID
 	FROM Blog.Favorite Fav
-	WHERE Fav.UserID = @UserID
+	WHERE (Fav.UserID = @UserID) AND (Fav.DeletedAt = NULL OR Fav.DeletedAt > SYSDATETIME())
 	GROUP BY Fav.ArticleID
 	ORDER BY Fav.ArticleID ASC
 	OFFSET @PageSize * @PageNumber ROWS
@@ -423,18 +544,17 @@ BEGIN
 END
 GO
 
---Update Favorite Articles for a given user
-CREATE OR ALTER PROCEDURE Blog.FavoriteUpdate
+--Delete Favorite
+CREATE OR ALTER PROCEDURE Blog.DeleteFavorite
 (
 	@UserID INT,
-	@ArticleID INT,
-	@DeletedAt DATETIME
+	@ArticleID INT
 )
 AS
 BEGIN
 	UPDATE Blog.Favorite
-	SET ArticleID = ISNULL(@ArticleID, ArticleID), DeletedAt = ISNULL(@DeletedAt, DeletedAt)
-	WHERE UserID = @UserID
+	SET DeletedAt = SYSDATETIME()
+	WHERE (UserID = @UserID) AND (ArticleID = @ArticleID)
 END
 GO
 
@@ -443,6 +563,33 @@ GO
 
 
 --======================================================================Followers Procedures=====================================================
+--Add a new Follower to a given Author
+CREATE OR ALTER PROCEDURE Blog.AddFollower
+(
+	@FollowedUserID INT,
+	@NewFollower INT
+)
+AS
+BEGIN
+	INSERT Blog.Follower(FollowedUserID, FollowingUserID)
+	VALUES (@FollowedUserID, @NewFollower)
+END
+GO
+
+--Delete author from 'following' list
+CREATE OR ALTER PROCEDURE Blog.RemoveAuthorFollowing
+(
+	@FollowingID INT,
+	@FollowedID INT
+)
+AS
+BEGIN
+	UPDATE Blog.Follower
+	SET DeletedAt = SYSDATETIME()
+	WHERE (FollowingUserID = @FollowingID) AND (FollowedUserID = @FollowedID)
+END
+GO
+
 --Retrieve all authors a given user is following
 CREATE OR ALTER PROCEDURE Blog.GetFollowers
 (
@@ -454,7 +601,7 @@ AS
 BEGIN
 	SELECT Fol.FollowedUserID AS [Following]
 	FROM Blog.Follower Fol
-	WHERE Fol.FollowingUserID = @UserID
+	WHERE (Fol.FollowingUserID = @UserID) AND (Fol.DeletedAt = NULL OR Fol.DeletedAT > SYSDATETIME())
 	GROUP BY Fol.FollowedUserID
 	ORDER BY Fol.FollowedUserID ASC
 	OFFSET @PageSize * @PageNumber ROWS
@@ -473,11 +620,37 @@ AS
 BEGIN
 	SELECT Fol.FollowingUserID AS Followers
 	FROM Blog.Followed Fol
-	WHERE Fol.FollowedUserID = @AuthorID
+	WHERE (Fol.FollowedUserID = @AuthorID) AND (Fol.DeletedAt = NULL OR Fol.DeletedAt > SYSDATETIME())
 	GROUP BY Fol.FollowingUserID
 	ORDER BY Fol.FollowingUserID ASC
 	OFFSET @PageSize * @PageNumber ROWS
 	FETCH NEXT @PageSize ROWS ONLY;
+END
+GO
+
+--Retrieve a count of authors a given user is following
+CREATE OR ALTER PROCEDURE Blog.GetAuthorFollowCount
+(
+	@UserID INT
+)
+AS
+BEGIN
+	SELECT COUNT(DISTINCT Fol.FollowedUserID) AS AuthorsFollowed
+	FROM Blog.Follower Fol
+	WHERE FollowingUserID = @UserID
+END
+GO
+
+--Retrieve a count of users following a given author
+CREATE OR ALTER PROCEDURE Blog.GetAuthorFollowCount
+(
+	@AuthorID INT
+)
+AS
+BEGIN
+	SELECT COUNT(DISTINCT Fol.FollowingUserID) AS AuthorsFollowed
+	FROM Blog.Follower Fol
+	WHERE FollowedUserID = @AuthorID
 END
 GO
 
@@ -502,5 +675,19 @@ AS(
 	OFFSET @PageSize * @PageNumber ROWS
 	FETCH NEXT @PageSize ROWS ONLY
 )
+GO
+
+--Update Favorite Articles for a given user
+CREATE OR ALTER PROCEDURE Blog.FavoriteUpdate
+(
+	@UserID INT,
+	@ArticleID INT
+)
+AS
+BEGIN
+	UPDATE Blog.Favorite
+	SET ArticleID = ISNULL(@ArticleID, ArticleID)
+	WHERE UserID = @UserID
+END
 GO
 */

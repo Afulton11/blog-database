@@ -1,0 +1,26 @@
+﻿@page
+@model RegisterModel
+@{
+}
+
+<h1>Register</h1>
+
+<div class="col-sm-4">
+    <form class="form-group col" method="post" asp-page="Register">
+        <div class="text-danger" asp-validation-summary="All"></div>
+
+        <label class="form-text" asp-for="RegisterData.Username">Username</label>
+        <input class="form-control" asp-for="RegisterData.Username" />
+        <span class="text-danger" asp-validation-for="RegisterData.Username"></span>
+
+        <label class="form-text" asp-for="RegisterData.Password">Password</label>
+        <input class="form-control" asp-for="RegisterData.Password" type="password" />
+        <span class="text-danger" asp-validation-for="RegisterData.Password"></span>
+
+        <label class="form-text" asp-for="RegisterData.Email"></label>
+        <input class="form-control" asp-for="RegisterData.Email" type="email" />
+        <span class="text-danger" asp-validation-for="RegisterData.Email"></span>
+        <br />
+        <input class="btn btn-primary form-control" type="submit" value="Register" />
+    </form>
+</div>
