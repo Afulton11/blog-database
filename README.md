@@ -77,6 +77,9 @@ public class CreatePointCommand : ICommand
 
 - A _Command Service_ is a simple class that performs an action on the _Command Model_
 
+## UPDATE TO QUERY SERVICES!!
+  - see #27
+
 The **_Command Service_** might look something like this:
 ```C#
 public class CreatePointCommandService : ICommandService<CreatePointCommand>
@@ -179,6 +182,9 @@ public class FetchUserArticlesQuery : IQuery<Paged<Article>>
 #### Query Service
 
 - A _Query Service_ is a simple class that performs a function on the _Query Model_ and returns a result.
+
+## UPDATE TO QUERY SERVICES!!
+  - see #26
 
 The **_Query Service_** might look something like this:
 ```C#
