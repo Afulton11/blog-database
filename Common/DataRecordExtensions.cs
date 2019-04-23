@@ -30,7 +30,12 @@ namespace Common
             {
                 if (columnName.ToLower().Equals(name))
                 {
-                    return (TResult)record[columnName];
+                    var result = record[columnName];
+
+                    if (result != null && result.GetType() != typeof(DBNull))
+                    {
+                        return (TResult)result;
+                    }
                 }
             }
 
