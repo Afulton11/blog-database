@@ -628,6 +628,32 @@ BEGIN
 END
 GO
 
+--Retrieve a count of authors a given user is following
+CREATE OR ALTER PROCEDURE Blog.GetAuthorFollowCount
+(
+	@UserID INT
+)
+AS
+BEGIN
+	SELECT COUNT(DISTINCT Fol.FollowedUserID) AS AuthorsFollowed
+	FROM Blog.Follower Fol
+	WHERE FollowingUserID = @UserID
+END
+GO
+
+--Retrieve a count of users following a given author
+CREATE OR ALTER PROCEDURE Blog.GetAuthorFollowCount
+(
+	@AuthorID INT
+)
+AS
+BEGIN
+	SELECT COUNT(DISTINCT Fol.FollowingUserID) AS AuthorsFollowed
+	FROM Blog.Follower Fol
+	WHERE FollowedUserID = @AuthorID
+END
+GO
+
 
 
 
