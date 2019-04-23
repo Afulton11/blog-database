@@ -2,12 +2,15 @@
 using System.ComponentModel.DataAnnotations;
 using Domain.Entities.Blog;
 using Domain.Data.Queries;
+using Domain.Business.QueryServices;
+using DatabaseFactory.Data.Contracts;
+using EnsureThat;
 
 namespace DataAccess.DataAccess.QueryServices
 {
     public class GetFollowerCountQueryService : IQueryService<GetFollowerCountQuery, int>
     {
-        public GetFollowersQueryService(IDatabase database)
+        public GetFollowerCountQueryService(IDatabase database)
         {
             EnsureArg.IsNotNull(database, nameof(database));
 
@@ -23,7 +26,7 @@ namespace DataAccess.DataAccess.QueryServices
             return Database.TryExecuteTransaction((transaction) =>
             {
                 var dbQuery = Database.CreateStoredProcCommand("Blog.GetFollowerCount", transaction);
-                var userId = Database.CreateParameter("UserId", query.userId);
+                var userId = Database.CreateParameter("UserId", query.UserId);
 
                 dbQuery.Parameters.Add(userId);
 

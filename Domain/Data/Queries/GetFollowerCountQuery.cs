@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Domain.Entities.Blog;
+﻿using System.ComponentModel.DataAnnotations;
 namespace Domain.Data.Queries
 {
-    public class GetFollowerCountQuery : IQuery<IEnumerable<Follower>>
+    public class GetFollowerCountQuery : IQuery<int>
     {
         [Required]
         public int UserId { get; set; }

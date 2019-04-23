@@ -37,8 +37,8 @@ namespace DataAccess.CommandServices
 
         private IEnumerable<IDataParameter> CreateParameters(CreateFollowerCommand command)
         {
-            yield return database.CreateParameter("FollowerUserId", command.FollowedUserID);
-            yield return database.CreateParameter("FollowingUserId", command.FollowingUserID);
+            yield return database.CreateParameter("FollowerUserId", command.FollowedUserId);
+            yield return database.CreateParameter("FollowingUserId", command.FollowingUserId);
         }
     }
 }

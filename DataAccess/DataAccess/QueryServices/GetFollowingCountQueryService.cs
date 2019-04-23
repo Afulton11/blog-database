@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using DataAccess.QueryServices.Readers;
-using DatabaseFactory.Data.Contracts;
+﻿using DatabaseFactory.Data.Contracts;
 using Domain.Business.QueryServices;
-using Domain.Business.QueryServices.Exceptions;
 using Domain.Data.Queries;
-using Domain.Entities.Blog;
 using EnsureThat;
 
 namespace DataAccess.DataAccess.QueryServices
@@ -31,7 +23,7 @@ namespace DataAccess.DataAccess.QueryServices
             return Database.TryExecuteTransaction((transaction) =>
             {
                 var dbQuery = Database.CreateStoredProcCommand("Blog.GetFollowingCount", transaction);
-                var userId = Database.CreateParameter("UserId", query.userId);
+                var userId = Database.CreateParameter("UserId", query.UserId);
 
                 dbQuery.Parameters.Add(userId);
 

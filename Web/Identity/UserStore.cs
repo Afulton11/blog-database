@@ -87,14 +87,16 @@ namespace Web.Identity
             });
         }
 
-        public Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
+        public async Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return queryProcessor.Execute(new FetchUserByNormalizedNameQuery
+            var name = await queryProcessor.Execute(new FetchUserByNormalizedNameQuery
             {
                 NormalizedUsername = normalizedUserName
             });
+
+            return name;
         }
 
         public Task<string> GetUserIdAsync(User user, CancellationToken cancellationToken) =>
