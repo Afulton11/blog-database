@@ -18,7 +18,7 @@
     <body>
         <partial name="_CookieConsentPartial" />
         <div>
-            <div class="sidebar">
+            <div class="sidebar" style="z-index: 6">
                 <div class="sidebar-header">
                     <form method="get" asp-page="/Search">
                         <input name="Text"
@@ -54,8 +54,12 @@
                     </div>
                 </nav>
             </div>
+            <div class="position-fixed fixed-top" style="z-index: 5">
+                <div class="navbar-text float-right" style="margin-right: 3em">
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
             <div class="page-content">
-                <partial name="_LoginPartial" />
                 @RenderBody()
             </div>
             <hr />
