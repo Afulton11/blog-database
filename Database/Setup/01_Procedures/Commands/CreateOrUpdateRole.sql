@@ -13,7 +13,7 @@ AS
 		BEGIN
 			UPDATE Blog.[Role] SET
 				Blog.[Role].[Name] = @Name,
-				Blog.[Role].NormalizedUsername = @NormalizedName
+				Blog.[Role].NormalizedName = @NormalizedName
 			WHERE Blog.[Role].RoleId = @RoleId
 		END
 

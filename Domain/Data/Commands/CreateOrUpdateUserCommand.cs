@@ -3,7 +3,7 @@
 
 namespace Domain.Data.Commands
 {
-    public class CreateUserCommand : ICommand
+    public class CreateOrUpdateUserCommand : ICommand
     {
         public int? RoleId { get; set; }
         [Required]
