@@ -1,30 +1,33 @@
-﻿using Domain.Business.QueryServices;
+﻿using Domain.Business;
+using Domain.Business.QueryServices;
 using Domain.Data.Queries;
 using Domain.Data.Queries.ArticleQueries;
 using Domain.Entities.Blog;
+using Domain.Entities.View;
 using EnsureThat;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Web.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly IQueryService<FetchRecentArticlesQuery, Paged<Article>> fetchRecentArticles;
+        private readonly IAsyncQueryProcessor queryProcessor;
 
         public IndexModel(
-            IQueryService<FetchRecentArticlesQuery, Paged<Article>> fetchRecentArticles)
+            IAsyncQueryProcessor queryProcessor)
         {
-            EnsureArg.IsNotNull(fetchRecentArticles, nameof(fetchRecentArticles));
-            this.fetchRecentArticles = fetchRecentArticles;
+            EnsureArg.IsNotNull(queryProcessor, nameof(queryProcessor));
+            this.queryProcessor = queryProcessor;
         }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            var page = fetchRecentArticles.Execute(
-                new FetchRecentArticlesQuery
+            var page = await queryProcessor.ExecuteAsync(
+                new FetchRecentArticlesPreviewQuery
                 {
                     Paging = new PageInfo
                     {
@@ -33,10 +36,10 @@ namespace Web.Pages
                     }
                 });
 
-            Articles = page.Items ?? Enumerable.Empty<Article>();
+            Articles = page.Items ?? Enumerable.Empty<PreviewArticle>();
         }
 
-        public IEnumerable<Article> Articles { get; private set; }
+        public IEnumerable<PreviewArticle> Articles { get; private set; }
 
         [BindProperty(SupportsGet = true)]
         public int CurrentPage { get; set; } = 1;

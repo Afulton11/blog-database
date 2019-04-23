@@ -1,7 +1,7 @@
 ﻿using Common;
 using DataAccess.QueryServices.Readers;
 using DatabaseFactory.Data.Contracts;
-using Domain.Business.QueryServices.ArticleQueryServices;
+using Domain.Business.QueryServices;
 using Domain.Data.Queries;
 using Domain.Data.Queries.ArticleQueries;
 using Domain.Entities.Blog;
@@ -11,7 +11,7 @@ using System.Data;
 
 namespace DataAccess.QueryServices.ArticleQueries
 {
-    public class FetchRecentArticlesQueryService : IFetchRecentArticlesQueryService
+    public class FetchRecentArticlesQueryService : IQueryService<FetchRecentArticlesQuery, Paged<Article>>
     {
         private readonly IDatabase database;
         private readonly IReader<Article> articleReader;
