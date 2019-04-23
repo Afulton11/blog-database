@@ -33,12 +33,12 @@ namespace Web.Identity
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            await commandProcessor.Execute(new CreateUserCommand
+            await commandProcessor.Execute(new CreateOrUpdateUserCommand
             {
                 Username = user.Username,
-                NormalizedUsername = user.NormalizedUsername,
+                NormalizedUsername = user.Username.Normalize().ToUpper(),
                 Email = user.Email,
-                NormalizedEmail = user.NormalizedEmail,
+                NormalizedEmail = user.Email.Normalize().ToUpper(),
                 IsEmailVerified = user.IsEmailVerified,
                 Password = user.Password,
                 RoleId = user.RoleId,
@@ -51,12 +51,12 @@ namespace Web.Identity
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            await commandProcessor.Execute(new CreateUserCommand
+            await commandProcessor.Execute(new CreateOrUpdateUserCommand
             {
                 Username = user.Username,
-                NormalizedUsername = user.NormalizedUsername,
+                NormalizedUsername = user.Username.Normalize().ToUpper(),
                 Email = user.Email,
-                NormalizedEmail = user.NormalizedEmail,
+                NormalizedEmail = user.Email.Normalize().ToUpper(),
                 IsEmailVerified = user.IsEmailVerified,
                 Password = user.Password,
                 RoleId = user.RoleId,
@@ -138,14 +138,16 @@ namespace Web.Identity
             return Task.FromResult(0);
         }
 
-        public Task<User> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
+        public async Task<User> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return queryProcessor.Execute(new FetchUserByNormalizedEmailQuery
+            var user = await queryProcessor.Execute(new FetchUserByNormalizedEmailQuery
             {
                 NormalizedEmail = normalizedEmail
             });
+
+            return user;
         }
 
         public Task<string> GetNormalizedEmailAsync(User user, CancellationToken cancellationToken) =>

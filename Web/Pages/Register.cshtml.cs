@@ -34,7 +34,7 @@ namespace Web.Pages
         }
         
         [BindProperty]
-        public CreateUserCommand RegisterData { get; set; }
+        public CreateOrUpdateUserCommand RegisterData { get; set; }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {

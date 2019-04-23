@@ -5,12 +5,12 @@ GO
 
 -- TODO: add exception handling
 CREATE OR ALTER PROCEDURE Blog.CreateOrUpdateUser
-	@RoleId AS INT = NULL,
+	@RoleId AS INT = 0,
 	@Username AS NVARCHAR(64),
-	@NormalizedUsername AS NVARCHAR(128) = NULL,
+	@NormalizedUsername AS NVARCHAR(128),
 	@Password AS NVARCHAR(128),
 	@Email AS NVARCHAR(128),
-	@NormalizedEmail AS NVARCHAR(256) = NULL,
+	@NormalizedEmail AS NVARCHAR(256),
 	@IsEmailVerified AS BIT = 0
 AS
 	BEGIN TRAN
@@ -33,9 +33,9 @@ AS
 					WHERE r.[Name] = N'User'
 				)
 
-			INSERT INTO Blog.[User] (RoleId, Username, [Password], Email, IsEmailVerified)
+			INSERT INTO Blog.[User] (RoleId, Username, NormalizedUsername, [Password], Email, NormalizedEmail, IsEmailVerified)
 			VALUES
-				(@RoleId, @Username, @Password, @Email, @IsEmailVerified);
+				(@RoleId, @Username, @NormalizedUsername, @Password, @Email, @NormalizedEmail, @IsEmailVerified);
 		END
 	COMMIT TRAN
 GO
