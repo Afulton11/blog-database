@@ -28,6 +28,7 @@ using Microsoft.AspNetCore.Identity;
 using Web.Services.Email;
 using Web.Identity;
 using System;
+using Web.Services;
 
 namespace Web
 {
@@ -109,6 +110,9 @@ namespace Web
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.AddTransient<IEmailSender, EmailSender>();
 
+            services.AddSingleton<ILoggerFactory, LoggerFactory>();
+            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             IntegrateSimpleInjector(services);
         }
@@ -163,6 +167,12 @@ namespace Web
             container.RegisterMvcViewComponents(app);
             container.RegisterPageModels(app);
 
+            container.RegisterConditional(
+                typeof(ILogger),
+                c => typeof(Logger<>).MakeGenericType(c.Consumer.ImplementationType),
+                Lifestyle.Singleton,
+                c => true);
+
             InitializeAppServices(app);
 
             // Allow Simple Injector to resolve services from ASP.NET Core.
@@ -171,14 +181,6 @@ namespace Web
 
         private void InitializeAppServices(IApplicationBuilder app)
         {
-
-            container.RegisterConditional(
-                typeof(ILogger),
-                c => typeof(Logger<>).MakeGenericType(c.Consumer.ImplementationType),
-                Lifestyle.Singleton,
-                c => true);
-
-
             var cqrsAssemblies = new[]
             {
                 typeof(ICommandService<>).Assembly,
@@ -186,8 +188,16 @@ namespace Web
             };
 
             container.Register(typeof(IReader<>), typeof(IReader<>).Assembly);
+
+            container.RegisterQueryServices();
+
+            container.Options.AllowOverridingRegistrations = true;
             container.Register(typeof(ICommandService<>), cqrsAssemblies);
             container.Register(typeof(IQueryService<,>), cqrsAssemblies);
+            container.Options.AllowOverridingRegistrations = false;
+
+
+
 
             RegisterCommandServiceDecorators();
             RegisterQueryServiceDecorators();
