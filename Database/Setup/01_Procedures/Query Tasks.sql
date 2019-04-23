@@ -418,7 +418,7 @@ END
 GO
 
 --Retrieve all comments for a given article
-CREATE OR ALTER PROCEDURE Blog.GetComments
+CREATE OR ALTER PROCEDURE Blog.GetCommentsArticle
 (
 	@ArticleID INT,
 	@PageSize INT = 10,
@@ -429,8 +429,25 @@ BEGIN
 	SELECT *
 	FROM Blog.Comment Com
 	WHERE Com.ArticleID = @ArticleID
-	GROUP BY Com.Body
-	ORDER BY Com.CreationDateTime DESC
+	ORDER BY  Com.LastUpdateDateTime DESC, Com.CreationDateTime DESC
+	OFFSET @PageSize * @PageNumber ROWS
+	FETCH NEXT @PageSize ROWS ONLY;
+END
+GO
+
+--Retrieve all comments by a given user
+CREATE OR ALTER PROCEDURE Blog.GetCommentsUser
+(
+	@UserID INT,
+	@PageSize INT = 10,
+	@PageNumber INT = 1
+)
+AS
+BEGIN
+	SELECT *
+	FROM Blog.Comment Com
+	WHERE Com.UserID = @UserID
+	ORDER BY Com.LastUpdateDateTime DESC, Com.CreationDateTime DESC
 	OFFSET @PageSize * @PageNumber ROWS
 	FETCH NEXT @PageSize ROWS ONLY;
 END
@@ -444,7 +461,7 @@ CREATE OR ALTER PROCEDURE Blog.DeleteComment
 AS
 BEGIN
 	UPDATE Blog.Comment
-	SET DeletedAt = SYSDATETIME(), Body = NULL
+	SET  Body = NULL, DeletedAt = SYSDATETIME()
 	WHERE CommentID = @CommentID
 END
 GO
