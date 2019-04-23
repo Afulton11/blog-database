@@ -68,7 +68,8 @@ namespace Web
 
             services.AddSingleton(this.container);
             services.AddSingleton<ICommandProcessor, DynamicAsyncCommandProcessor>();
-            services.AddSingleton<IQueryProcessor, DynamicAsyncQueryProcessor>();
+            services.AddSingleton<IAsyncQueryProcessor, DynamicAsyncQueryProcessor>();
+            services.AddSingleton<IQueryProcessor, DynamicQueryProcessor>();
 
             services.AddTransient<IUserStore<User>, UserStore>();
             services.AddTransient<IRoleStore<Role>, RoleStore>();
