@@ -1,10 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Text;
+using DataAccess.QueryServices.Readers;
+using DatabaseFactory.Data.Contracts;
+using Domain.Business.QueryServices;
+using Domain.Business.QueryServices.Exceptions;
+using Domain.Data.Queries;
+using Domain.Entities.Blog;
+using EnsureThat;
 
 namespace DataAccess.DataAccess.QueryServices
 {
-    public class GetFollowingQueryService : IQueryService<GetFollowingQuery, IEnumerable<Following>>
+    public class GetFollowingQueryService : IQueryService<GetFollowingQuery, IEnumerable<User>>
     {
         public GetFollowingQueryService(IDatabase database, IReader<Following> followingReader)
         {
@@ -33,7 +42,7 @@ namespace DataAccess.DataAccess.QueryServices
             });
         }
 
-        private IEnumerable<Following> GetFollowing(IDataReader reader, GetFollowingQuery query)
+        private IEnumerable<User> GetFollowing(IDataReader reader, GetFollowingQuery query)
         {
             var followers = FollowingReader.Read(reader);
 

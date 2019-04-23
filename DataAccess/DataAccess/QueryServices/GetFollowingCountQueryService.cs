@@ -1,24 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Text;
+using DataAccess.QueryServices.Readers;
+using DatabaseFactory.Data.Contracts;
+using Domain.Business.QueryServices;
+using Domain.Business.QueryServices.Exceptions;
+using Domain.Data.Queries;
+using Domain.Entities.Blog;
+using EnsureThat;
 
 namespace DataAccess.DataAccess.QueryServices
 {
-    public class GetFollowingCountQueryService : IQueryService<GetFollowingCountQuery, IEnumerable<Following>>
+    public class GetFollowingCountQueryService : IQueryService<GetFollowingCountQuery, int>
     {
-        public GetFollowingCountQueryService(IDatabase database, IReader<Following> followingReader)
+        public GetFollowingCountQueryService(IDatabase database)
         {
             EnsureArg.IsNotNull(database, nameof(database));
-            EnsureArg.IsNotNull(followerReader, nameof(followingReader));
 
             Database = database;
-            FollowingReader = followerReader;
         }
 
         public IDatabase Database { get; }
-        public IReader<Following> FollowingReader { get; }
 
-        public IEnumerable<Following> Execute(GetFollowingCountQuery query)
+        public int Execute(GetFollowingCountQuery query)
         {
             EnsureArg.IsNotNull(query, nameof(query));
 

@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Domain.Entities.Blog;
+using Domain.Data.Queries;
 
 namespace DataAccess.DataAccess.QueryServices
 {
-    public class GetFollowerCountQueryService : IQueryService<GetFollowerCountQuery, IEnumerable<Follower>>
+    public class GetFollowerCountQueryService : IQueryService<GetFollowerCountQuery, int>
     {
-        public GetFollowersQueryService(IDatabase database, IReader<Follower> followerReader)
+        public GetFollowersQueryService(IDatabase database)
         {
             EnsureArg.IsNotNull(database, nameof(database));
-            EnsureArg.IsNotNull(followerReader, nameof(followerReader));
 
             Database = database;
-            FollowerReader = followerReader;
         }
 
         public IDatabase Database { get; }
-        public IReader<Follower> FollowerReader { get; }
 
-        public IEnumerable<Follower> Execute(GetFollowerCountQuery query)
+        public int Execute(GetFollowerCountQuery query)
         {
             EnsureArg.IsNotNull(query, nameof(query));
 
