@@ -1,4 +1,5 @@
-﻿DROP DATABASE IF EXISTS BlogDatabase;
+﻿
+DROP DATABASE IF EXISTS BlogDatabase;
 GO
 
 CREATE DATABASE BlogDatabase;
