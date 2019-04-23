@@ -2,7 +2,7 @@
 
 namespace Domain.Data.Commands.Comments
 {
-    public class CreateCommentCommand : ICommand
+    public class CreateOrUpdateCommentCommand : ICommand
     {
         [Required]
         public int UserID { get; set; }

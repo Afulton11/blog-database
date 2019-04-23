@@ -64,9 +64,8 @@ namespace Web.Identity
             return IdentityResult.Success;
         }
 
-        // TODO: Add RoleId to Domain POCOs
         public Task<string> GetRoleIdAsync(Role role, CancellationToken cancellationToken) =>
-            Task.FromResult(role.Name);
+            Task.FromResult(role.RoleId.ToString());
 
         public Task<string> GetRoleNameAsync(Role role, CancellationToken cancellationToken) =>
             Task.FromResult(role.Name);

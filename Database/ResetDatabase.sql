@@ -3,6 +3,8 @@
 -- remove and create Tables
 :r ./Setup/00_Blog.sql
 
+:r ./Setup/triggers.sql
+
 -- Create OR Alter Command Procedures
 :r ./Setup/01_Procedures/Commands/CreatePoints.sql
 :r ./Setup/01_Procedures/Commands/CreateUser.sql
@@ -11,6 +13,9 @@
 :r ./Setup/01_Procedures/Commands/UpdateUsername.sql
 :r ./Setup/01_Procedures/Commands/VerifyUserEmail.sql
 :r ./Setup/01_Procedures/Commands/CreateOrUpdateRole.sql
+:r ./Setup/01_Procedures/Commands/CreateOrUpdateArticle.sql
+:r ./Setup/01_Procedures/Commands/CreateOrUpdateComment.sql
+:r ./Setup/01_Procedures/Commands/CreateOrUpdateAuthor.sql
 :r ./Setup/01_Procedures/Commands/DeleteRole.sql
 
 -- Create OR Alter Query Procedures
@@ -31,6 +36,7 @@
 :r ./Setup/01_Procedures/Queries/FetchRoleById.sql
 :r ./Setup/01_Procedures/Queries/FetchRoleByNormalizedName.sql
 :r ./Setup/01_Procedures/Queries/FetchAuthorById.sql
+:r ./Setup/01_Procedures/Queries/FetchArticleCategories.sql
 
 -- Populate Tables
 :r ./Setup/02_Populate/00_Role.sql

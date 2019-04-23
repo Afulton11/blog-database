@@ -1,0 +1,33 @@
+﻿@page
+@model Web.Pages.Account.BecomeAuthorModel
+@{
+    ViewData["Title"] = "BecomeAuthor";
+}
+
+<h1>Become an Author</h1>
+
+<div class="col-sm-4">
+    <form class="form-group col" method="post">
+        <div class="text-danger" asp-validation-summary="All"></div>
+
+        <label class="form-text" asp-for="AuthorData.FirstName">First Name</label>
+        <input class="form-control" asp-for="AuthorData.FirstName" />
+        <span class="text-danger" asp-validation-for="AuthorData.FirstName"></span>
+
+        <label class="form-text" asp-for="AuthorData.MiddleName">Middle Name</label>
+        <input class="form-control" asp-for="AuthorData.MiddleName" />
+        <span class="text-danger" asp-validation-for="AuthorData.MiddleName"></span>
+
+        <label class="form-text" asp-for="AuthorData.LastName">Last Name</label>
+        <input class="form-control" asp-for="AuthorData.LastName" />
+        <span class="text-danger" asp-validation-for="AuthorData.LastName"></span>
+
+
+        <label class="form-text" asp-for="AuthorData.BirthDate">Birthdate</label>
+        <input class="form-control date" asp-for="AuthorData.BirthDate" />
+        <span class="text-danger" asp-validation-for="AuthorData.BirthDate"></span>
+
+        <br />
+        <input class="btn btn-primary form-control" type="submit" value="Become an author" />
+    </form>
+</div>

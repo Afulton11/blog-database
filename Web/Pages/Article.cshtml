@@ -1,9 +1,18 @@
 ﻿@page "{id:int}"
 @model Web.Pages.ArticleModel
+
+@using Microsoft.AspNetCore.Identity
+@using Domain.Entities.Blog
+@using System.Security.Claims;
+@inject SignInManager<User> SignInManager
 @{
     ViewData["Title"] = Model.Article.Title;
-    var article = Model.Article;
-    var category = Model.Category;
+ var article = Model.Article;
+ var category = Model.Category;
+
+ var currentUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+ var isAuthorViewingArticle = currentUser == article.AuthorId.ToString();
 }
 
 
@@ -23,15 +32,19 @@
 <h1 class="title">
     @article.Title
 </h1>
+@if (isAuthorViewingArticle)
+{
+<div class="article-tags" style="padding-bottom: 10px">
+    <a class="fa-edit" asp-page="/Edit/Article" asp-route-id="@article.ArticleId">
+        Edit
+    </a>
+</div>
+}
 <div class="article-tags">
     <ul class="tag-list">
         <li class="category">
             <a asp-page="/Category" asp-route-name="@category.Name" rel="category tag">
                 @category.Name
-            </a>
-            ,
-            <a href="/category/news" rel="category tag">
-                News
             </a>
         </li>
     </ul>

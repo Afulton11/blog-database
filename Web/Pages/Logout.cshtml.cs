@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Domain.Entities.Blog;
 using EnsureThat;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +8,10 @@ namespace Web.Pages
 {
     public class LogoutModel : PageModel
     {
-        private SignInManager<User> signInManager;
+        private SignInManager<Domain.Entities.Blog.User> signInManager;
 
         public LogoutModel(
-            SignInManager<User> signInManager)
+            SignInManager<Domain.Entities.Blog.User> signInManager)
         {
             EnsureArg.IsNotNull(signInManager, nameof(signInManager));
 

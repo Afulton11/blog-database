@@ -7,24 +7,24 @@ using System.Data;
 
 namespace DataAccess.CommandServices.Comments
 {
-    public class CreateCommentCommandService : ICreateCommentCommandService
+    public class CreateOrUpdateCommentCommandService : ICreateCommentCommandService
     {
         private readonly IDatabase database;
 
-        public CreateCommentCommandService(IDatabase database)
+        public CreateOrUpdateCommentCommandService(IDatabase database)
         {
             EnsureArg.IsNotNull(database, nameof(database));
 
             this.database = database;
         }
 
-        public void Execute(CreateCommentCommand command)
+        public void Execute(CreateOrUpdateCommentCommand command)
         {
             EnsureArg.IsNotNull(command, nameof(command));
 
             database.TryExecuteTransaction((transaction) =>
             {
-                var dbCommand = database.CreateStoredProcCommand("Blog.CreateComment", transaction);
+                var dbCommand = database.CreateStoredProcCommand("Blog.CreateOrUpdateComment", transaction);
                 var parameters = CreateParameters(command);
 
                 foreach (var p in parameters)
@@ -36,7 +36,7 @@ namespace DataAccess.CommandServices.Comments
             });
         }
 
-        private IEnumerable<IDataParameter> CreateParameters(CreateCommentCommand command)
+        private IEnumerable<IDataParameter> CreateParameters(CreateOrUpdateCommentCommand command)
         {
             yield return database.CreateParameter("@UserId", command.UserID);
             yield return database.CreateParameter("@ArticleId", command.ArticleID);

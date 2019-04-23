@@ -24,7 +24,7 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
         [Test, TestCaseSource("NullArgumentCases")]
         public void Creation_Should_Throw_ArgumentNullException(IDatabase arg1)
         {
-            TestDelegate action = () => new CreateCommentCommandService(arg1);
+            TestDelegate action = () => new CreateOrUpdateCommentCommandService(arg1);
 
             Assert.Throws<ArgumentNullException>(action);
         }
@@ -37,7 +37,7 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
     public class CreateCommentCommandServiceTests
     {
         protected Mock<IDatabase> databaseMock;
-        protected CreateCommentCommandService cmdService;
+        protected CreateOrUpdateCommentCommandService cmdService;
 
 
         [SetUp]
@@ -45,7 +45,7 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
         {
             databaseMock = new Mock<IDatabase>();
 
-            cmdService = new CreateCommentCommandService(databaseMock.Object);
+            cmdService = new CreateOrUpdateCommentCommandService(databaseMock.Object);
 
             SetUpMocks();
         }
@@ -88,7 +88,7 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
         }
 
         [Test, TestCaseSource("NullArgumentCases")]
-        public void Execution_Should_Throw_ArgumentNullException(CreateCommentCommand cmd)
+        public void Execution_Should_Throw_ArgumentNullException(CreateOrUpdateCommentCommand cmd)
         {
             TestDelegate action = () => cmdService.Execute(cmd);
 
@@ -100,7 +100,7 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
     {
         protected Mock<IDbTransaction> transactionMock;
 
-        protected virtual CreateCommentCommand Command => new CreateCommentCommand
+        protected virtual CreateOrUpdateCommentCommand Command => new CreateOrUpdateCommentCommand
         {
             UserID = 0,
             ArticleID = 1,
@@ -288,7 +288,7 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
 
     public class ExecuteWithNullParentCommentIdTests : CommandParameterTests
     {
-        protected override CreateCommentCommand Command => new CreateCommentCommand
+        protected override CreateOrUpdateCommentCommand Command => new CreateOrUpdateCommentCommand
         {
             UserID = 0,
             ArticleID = 1,
