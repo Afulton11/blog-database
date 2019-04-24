@@ -55,16 +55,8 @@ CREATE TABLE Blog.[Role]
 	RoleId INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[Name] NVARCHAR(64) NOT NULL,
 	NormalizedName NVARCHAR(128),
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-	UNIQUE([Name]),
-=======
+    
 	UNIQUE([Name])
->>>>>>> 0cf17b1... fixed typos
-=======
-	UNIQUE([Name])
->>>>>>> 0cf17b131883429dc06e4da4f693fb424178be86
 );
 
 CREATE TABLE Blog.[User]

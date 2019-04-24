@@ -1,0 +1,15 @@
+﻿@page
+@model Web.Pages.UserModel
+@{
+    ViewData["Title"] = Model.User.Username;
+    var user = Model.User;
+}
+
+<div class="user-data">
+    @if (user.DeletedAt != null)
+    {
+        <p class="delted-at">Delted Date: @user.DeletedAt</p>
+    }
+    <p class="username">@user.Username</p>
+    <p class="created-date">Join Date: @user.CreationDateTime</p>
+</div>
