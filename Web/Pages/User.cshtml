@@ -3,13 +3,80 @@
 @{
     ViewData["Title"] = Model.User.Username;
     var user = Model.User;
+    var author = Model.Author;
+    var articles = Model.Articles;
+
+    bool userIsDeleted = user.DeletedAt != default(DateTime);
+    bool userIsAuthor = author != null;
+    bool userHasArticles = articles != null;
 }
 
-<div class="user-data">
-    <h3 class="username">@user.Username</h3>
-    @if (user.DeletedAt != null)
+<div class="user-page">
+    <div class="user-data">
+        <h3 class="username">
+            @user.Username
+        </h3>
+
+        @if (userIsDeleted)
+        {
+            <span class="deleted-date">
+                Left on @user.DeletedAt.ToString("MMMM dd, yyyy")
+            </span>
+        }
+        else
+        {
+            <span class="member-period">
+                @*
+                    TODO: This is currently useless as creation
+                    dates are not being randomly generated.
+                *@
+                Member for 
+                @(
+                    Math.Abs((DateTime.Now - user.CreationDateTime).Days)
+                ) days
+            </span>
+        }
+
+        @if (userIsAuthor)
+        {
+            <span class="article-count">
+                @articles.Count() @(articles.Count() > 1 ? "articles" : "article") published
+            </span>
+        }
+        <hr>
+    </div>
+
+    @if (userHasArticles)
     {
-        <p class="deleted-at">Deleted Date: @user.DeletedAt</p>
+        <div class="user-articles">
+            <h3 class="article-header">
+                Articles posted by @user.Username
+            </h3>
+            @foreach (var article in articles)
+            {
+                <div class="article-preview">
+                    <p class="metadata">
+                        <span class="date">
+                            @article.CreationDateTime.ToString("MMMM dd, yyyy")
+                        </span>
+                    </p>
+                    <h3 class="article-title">
+                        <a asp-page="/Article" asp-route-id="@article.ArticleId">
+                            @article.Title
+                        </a>
+                    </h3>
+                    <div class="article-description">
+                        <p>
+                            @article.Description
+                            <span class="read-more">
+                                <a class="more-link" asp-page="/Article" asp-route-id="@article.ArticleId">
+                                    Read more
+                                </a>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            }
+        </div>
     }
-    <p class="created-date">Join Date: @user.CreationDateTime</p>
 </div>

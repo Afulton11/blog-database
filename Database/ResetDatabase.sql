@@ -23,6 +23,8 @@
 :r ./Setup/01_Procedures/Queries/GetTotalPointsByUserId.sql
 :r ./Setup/01_Procedures/Queries/GetArticleCategoryById.sql
 :r ./Setup/01_Procedures/Queries/GetArticlesInCategory.sql
+:r ./Setup/01_Procedures/Queries/GetArticlesInCategory.sql
+:r ./Setup/01_Procedures/Queries/FetchArticlesByAuthorId.sql
 :r ./Setup/01_Procedures/Queries/FetchUserByUsername.sql
 :r ./Setup/01_Procedures/Queries/FetchUserByNormalizedUsername.sql
 :r ./Setup/01_Procedures/Queries/FetchUserByNormalizedEmail.sql
