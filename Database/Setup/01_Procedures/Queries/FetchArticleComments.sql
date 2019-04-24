@@ -1,105 +1,59 @@
 ﻿USE BlogDatabase
 GO
 
-CREATE OR ALTER FUNCTION Blog.FetchAllComments()
-RETURNS TABLE
-AS
-RETURN(
-	SELECT 
-		*,
-		CASE WHEN Com.ParentCommentId IS NOT NULL 
-			THEN
-			ROW_NUMBER() OVER(
-				PARTITION BY Com.ParentCommentId
-				ORDER BY Com.CreationDateTime ASC
-			)
-		ELSE
-			0
-		END AS ReplyNumber
-		FROM Blog.Comment Com
-)
-GO
-
-CREATE OR ALTER FUNCTION Blog.FetchAllArticleComments
-(
-	@ArticleId INT,
-	@MaximumRepliesToFetch INT = 3
-)
-RETURNS TABLE 
-AS
-RETURN (
-	SELECT
-		*,
-		CASE WHEN Com.ReplyNumber = 0
-		THEN
-			ROW_NUMBER() OVER(
-				PARTITION BY Com.ReplyNumber
-				ORDER BY Com.CreationDateTime ASC
-			)
-		ELSE
-			0
-		END AS CommentNumber
-	FROM Blog.FetchAllComments() Com
-	WHERE Com.ArticleId = @ArticleId AND Com.ReplyNumber <= @MaximumRepliesToFetch
-)
-GO
-
-CREATE OR ALTER FUNCTION Blog.FetchAllArticleCommentsWithPaths
-(
-	@ArticleId INT,
-	@MaximumRepliesToFetch INT = 3
-)
-RETURNS TABLE 
-AS
-RETURN (
-	SELECT
-		*,
-		CASE WHEN Com.ReplyNumber = 0
-		THEN
-			CAST(Com.CommentNumber AS VARCHAR)
-		ELSE
-			(CAST(ROW_NUMBER() OVER(
-					PARTITION BY Com.CommentNumber, Com.ReplyNumber
-					ORDER BY Com.ParentCommentId ASC
-				) AS VARCHAR)
-			+ '_'
-			+ CAST(Com.ReplyNumber AS VARCHAR))
-		END AS PathSequence
-			
-	FROM Blog.FetchAllArticleComments(@ArticleId, @MaximumRepliesToFetch) Com
-	WHERE Com.ArticleId = @ArticleId AND Com.ReplyNumber <= @MaximumRepliesToFetch
-)
-GO
-
-/**
-	Returns a paginated list of comments for an article Along with the
-	first @MaximumRepliesToFetch replies for each comment.
-
-	The @PageSize for this query doesn't determine the amount of results unless @MaximumRepliesToFetch = 0.
-*/
 CREATE OR ALTER PROCEDURE Blog.FetchArticleComments
 	@ArticleId INT,
-	@MaximumRepliesToFetch INT = 3,
+	@MaxDepth INT = 3,
 	@PageSize INT = 10,
 	@PageNumber INT = 0
 AS
 BEGIN
+	WITH CommentCTE AS
+	(
+		-- anchor
+		SELECT
+			C.CommentId,
+			C.ParentCommentId,
+			C.UserId,
+			C.CreationDateTime,
+			C.Body,
+			0 AS Depth,
+			CAST(C.CommentId AS VARCHAR(1024)) AS CPath
+		FROM Blog.Comment C
+		WHERE C.ParentCommentId IS NULL AND C.ArticleId = @ArticleId
+
+		UNION ALL
+		-- recursive
+		SELECT 
+			CC.CommentId,
+			CC.ParentCommentId,
+			CC.UserId,
+			CC.CreationDateTime,
+			CC.Body,
+			PC.Depth + 1 AS Depth,
+			CAST(
+				(PC.CPath + '_' + CAST(CC.CommentId AS VARCHAR(31)))
+				AS VARCHAR(1024)
+			) AS CPath
+		FROM CommentCTE PC
+			INNER JOIN Blog.Comment CC ON 
+				CC.ParentCommentId = PC.CommentId
+		WHERE Depth <= @MaxDepth
+	)
 	SELECT
-		Com.ReplyNumber,
-		Com.CommentNumber,
-		Com.PathSequence,
-		Com.ParentCommentId,
-		Com.CommentId,
-		Com.UserId,
+		C.CommentId,
+		C.ParentCommentId,
+		C.UserId,
+		C.CreationDateTime,
+		C.Body,
 		U.Username,
-		Com.CreationDateTime,
-		Com.Body,
-		Com.DeletedAt
-	FROM Blog.FetchAllArticleCommentsWithPaths(@ArticleId, @MaximumRepliesToFetch) Com
-		INNER JOIN Blog.[User] U ON U.UserId = Com.UserId
-	WHERE (Com.CommentNumber > @PageSize * @PageNumber
-		   AND Com.CommentNumber <= @PageSize * @PageNumber + @PageSize )
-		  OR Com.CommentNumber = 0
-	ORDER BY Com.PathSequence ASC
+		C.Depth
+	FROM CommentCTE C
+		INNER JOIN Blog.[User] U ON U.UserId = C.UserId
+	ORDER BY C.CPath
+	OFFSET @PageSize * @PageNumber ROWS
+	FETCH NEXT @PageSize ROWS ONLY
 END
 GO
+
+-- EXEC Blog.FetchArticleComments 78

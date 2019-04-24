@@ -66,8 +66,8 @@ namespace Web.Pages
                     ArticleId = Article.ArticleId,
                     Paging = new PageInfo
                     {
-                        PageIndex = CurrentPage - 1,
-                        PageSize = 5,
+                        PageIndex = 0,
+                        PageSize = 5 * CurrentPage,
                     }
                 });
 
@@ -108,26 +108,5 @@ namespace Web.Pages
 
         public bool CanShowPreviousComments => CurrentPage > 1;
         public bool CanShowMoreComments => true;
-
-        public IEnumerable<IList<ArticleComment>> GetCommentThreads()
-        {
-            var thread = new List<ArticleComment>();
-
-            foreach (var comment in Comments)
-            {
-                if (comment.ParentCommentId == null && thread.Count > 0)
-                {
-                    yield return thread;
-                    thread = new List<ArticleComment>();
-                }
-
-                thread.Add(comment);
-            }
-
-            if (thread.Count > 0)
-            {
-                yield return thread;
-            }
-        }
     }
 }

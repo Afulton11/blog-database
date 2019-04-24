@@ -82,36 +82,10 @@
         <partial name="_AddCommentPartial" model="Model.AddCommentModel" />
     }
 }
-@{
-    var threadDepth = 0;
-    var threadDepthDict = new Dictionary<int, int>();
-}
+
 @foreach (var comment in Model.Comments)
 {
-    var commentId = comment.CommentId;
-    var parentCommentId = comment.ParentCommentId;
-
-
-    if (parentCommentId.HasValue)
-    {
-        if (threadDepthDict.ContainsKey(parentCommentId.Value))
-        {
-            threadDepthDict.Add(commentId, threadDepthDict[parentCommentId.Value] + 1);
-        }
-        else 
-        {
-            threadDepth = 1;
-            threadDepthDict.Add(commentId, threadDepth);
-        }
-    }
-    else
-    {
-        threadDepth = 0;
-        threadDepthDict.Add(commentId, threadDepth);
-    }
-
-
-    <div style="padding-left: @Html.Raw(threadDepthDict[commentId] * 2.5)em">
+    <div style="padding-left: @Html.Raw(comment.Depth * 2.5)em">
         <partial name="_CommentPartial" model="@comment" />
     </div>
 }

@@ -14,6 +14,7 @@ namespace DataAccess.DataAccess.QueryServices.Readers
                 CommentId = row.GetSafely<int>(nameof(ArticleComment.CommentId)),
                 ParentCommentId = row.GetSafely<int>(nameof(ArticleComment.ParentCommentId)),
                 UserId = row.GetSafely<int>(nameof(ArticleComment.UserId)),
+                Depth = row.GetSafely<int>(nameof(ArticleComment.Depth)),
                 Username = row.GetSafely<string>(nameof(ArticleComment.Username)),
                 Body = row.GetSafely<string>(nameof(ArticleComment.Body)),
                 CreationDateTime = row.GetSafely<DateTime>(nameof(ArticleComment.CreationDateTime)),
