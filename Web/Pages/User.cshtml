@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id:int}"
 @model Web.Pages.UserModel
 @{
     ViewData["Title"] = Model.User.Username;
@@ -6,10 +6,10 @@
 }
 
 <div class="user-data">
+    <h3 class="username">@user.Username</h3>
     @if (user.DeletedAt != null)
     {
-        <p class="delted-at">Delted Date: @user.DeletedAt</p>
+        <p class="deleted-at">Delted Date: @user.DeletedAt</p>
     }
-    <p class="username">@user.Username</p>
     <p class="created-date">Join Date: @user.CreationDateTime</p>
 </div>
