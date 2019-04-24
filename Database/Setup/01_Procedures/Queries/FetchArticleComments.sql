@@ -45,6 +45,33 @@ RETURN (
 )
 GO
 
+CREATE OR ALTER FUNCTION Blog.FetchAllArticleCommentsWithPaths
+(
+	@ArticleId INT,
+	@MaximumRepliesToFetch INT = 3
+)
+RETURNS TABLE 
+AS
+RETURN (
+	SELECT
+		*,
+		CASE WHEN Com.ReplyNumber = 0
+		THEN
+			CAST(Com.CommentNumber AS VARCHAR)
+		ELSE
+			(CAST(ROW_NUMBER() OVER(
+					PARTITION BY Com.CommentNumber, Com.ReplyNumber
+					ORDER BY Com.ParentCommentId ASC
+				) AS VARCHAR)
+			+ '_'
+			+ CAST(Com.ReplyNumber AS VARCHAR))
+		END AS PathSequence
+			
+	FROM Blog.FetchAllArticleComments(@ArticleId, @MaximumRepliesToFetch) Com
+	WHERE Com.ArticleId = @ArticleId AND Com.ReplyNumber <= @MaximumRepliesToFetch
+)
+GO
+
 /**
 	Returns a paginated list of comments for an article Along with the
 	first @MaximumRepliesToFetch replies for each comment.
@@ -59,18 +86,21 @@ CREATE OR ALTER PROCEDURE Blog.FetchArticleComments
 AS
 BEGIN
 	SELECT
-		Com.CommentId,
+		Com.ReplyNumber,
+		Com.CommentNumber,
+		Com.PathSequence,
 		Com.ParentCommentId,
+		Com.CommentId,
 		Com.UserId,
 		U.Username,
 		Com.CreationDateTime,
 		Com.Body,
 		Com.DeletedAt
-	FROM Blog.FetchAllArticleComments(@ArticleId, @MaximumRepliesToFetch) Com
+	FROM Blog.FetchAllArticleCommentsWithPaths(@ArticleId, @MaximumRepliesToFetch) Com
 		INNER JOIN Blog.[User] U ON U.UserId = Com.UserId
 	WHERE (Com.CommentNumber > @PageSize * @PageNumber
 		   AND Com.CommentNumber <= @PageSize * @PageNumber + @PageSize )
 		  OR Com.CommentNumber = 0
-	ORDER BY CreationDateTime ASC, U.Username DESC
+	ORDER BY Com.PathSequence ASC
 END
 GO
