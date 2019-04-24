@@ -1,0 +1,30 @@
+﻿@model Domain.Entities.View.ArticleComment;
+
+
+<div class="comment p-sm-2">
+    <p class="metadata">
+        <span class="date">
+            @Model.CreationDateTime.ToString("MMMM dd, yyyy")
+        </span>
+        <span class="by">
+            by
+        </span>
+        <span class="author">
+            <a href="about.html">
+                @Model.Username
+            </a>
+        </span>
+    </p>
+    <div class="article-reading-content" style="font-size: 12px;">
+        <p>
+            @if (Model.DeletedAt.HasValue)
+            {
+                @Model.Body
+            }
+            else
+            {
+                @Html.Raw("(DELETED)");
+            }
+        </p>
+    </div>
+</div>

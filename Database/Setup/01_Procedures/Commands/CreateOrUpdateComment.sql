@@ -3,7 +3,7 @@ GO
 
 CREATE OR ALTER PROCEDURE Blog.CreateOrUpdateComment
 (
-	@CommentId INT,
+	@CommentId INT = NULL,
 	@ParentCommentId INT = NULL,
 	@UserId INT,
 	@ArticleId INT,
@@ -20,16 +20,14 @@ BEGIN
 		@ArticleId,
 		@Body)) AS S(CommentId, ParentCommentId, UserId, ArticleId, Body)
 	ON T.CommentId = S.CommentId
-	WHEN MATCHED AND NOT EXISTS 
+	WHEN MATCHED AND 
 			(
-				SELECT S.Body
-				INTERSECT
-				SELECT T.Body
+				S.Body <> T.Body
 			) THEN
 		UPDATE SET Body = S.Body,
 				   LastUpdatedDateTime = SYSDATETIME()
 	WHEN NOT MATCHED THEN
-		INSERT (CommentId, ParentCommentId, UserId, ArticleId, Body)
-		VALUES (S.CommentId, S.ParentCommentId, S.UserId, S.ArticleId, S.Body);
+		INSERT (ParentCommentId, UserId, ArticleId, Body)
+		VALUES (S.ParentCommentId, S.UserId, S.ArticleId, S.Body);
 END
 GO

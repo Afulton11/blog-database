@@ -1,4 +1,4 @@
-/// <binding />
+/// <binding BeforeBuild='default' />
 /** Gulp Template used
  * https://github.com/cferdinandi/gulp-boilerplate/blob/master/gulpfile.js
  */

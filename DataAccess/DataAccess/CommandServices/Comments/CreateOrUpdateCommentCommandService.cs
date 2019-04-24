@@ -38,13 +38,14 @@ namespace DataAccess.CommandServices.Comments
 
         private IEnumerable<IDataParameter> CreateParameters(CreateOrUpdateCommentCommand command)
         {
-            yield return database.CreateParameter("@UserId", command.UserID);
-            yield return database.CreateParameter("@ArticleId", command.ArticleID);
+            yield return database.CreateParameter("@CommentId", command.CommentId);
+            yield return database.CreateParameter("@UserId", command.UserId);
+            yield return database.CreateParameter("@ArticleId", command.ArticleId);
             yield return database.CreateParameter("@Body", command.Body);
 
-            if (command.ParentCommentID != null)
+            if (command.ParentCommentId != null)
             {
-                yield return database.CreateParameter("@ParentCommentId", command.ParentCommentID);
+                yield return database.CreateParameter("@ParentCommentId", command.ParentCommentId);
             }
 
         }

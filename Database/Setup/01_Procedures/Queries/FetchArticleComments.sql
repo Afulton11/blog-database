@@ -1,7 +1,6 @@
 ﻿USE BlogDatabase
 GO
 
-
 CREATE OR ALTER FUNCTION Blog.FetchAllComments()
 RETURNS TABLE
 AS

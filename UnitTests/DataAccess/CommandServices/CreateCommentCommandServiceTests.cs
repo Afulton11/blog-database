@@ -62,6 +62,7 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
         protected string ParameterArticleId => "@ArticleId";
         protected string ParameterBody => "@Body";
         protected string ParameterParentCommentId => "@ParentCommentId";
+        protected string ParameterCommentId => "@CommentId";
 
         protected IEnumerable<string> AllParameters
         {
@@ -71,6 +72,7 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
                 yield return ParameterBody;
                 yield return ParameterUserId;
                 yield return ParameterParentCommentId;
+                yield return ParameterCommentId;
             }
         }
 
@@ -102,10 +104,11 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
 
         protected virtual CreateOrUpdateCommentCommand Command => new CreateOrUpdateCommentCommand
         {
-            UserID = 0,
-            ArticleID = 1,
+            UserId = 0,
+            ArticleId = 1,
             Body = "Hello there",
-            ParentCommentID = 1,
+            ParentCommentId = 1,
+            CommentId = 2,
         };
 
         protected override void SetUp()
@@ -153,6 +156,7 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
         protected FakeDbParameter FakeUserIdParameter { get; private set; }
         protected FakeDbParameter FakeArticleIdParameter { get; private set; }
         protected FakeDbParameter FakeBodyParameter { get; private set; }
+        protected FakeDbParameter FakeCommentIdParameter { get; private set; }
         protected FakeDbParameter FakeParentCommentIdParameter { get; private set; }
         protected override void SetUpMocks()
         {
@@ -201,6 +205,17 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
                         ParameterName = name,
                         Value = value
                     });
+
+            databaseMock.Setup((mock) =>
+                mock.CreateParameter(
+                    It.Is<string>((val) => val == ParameterCommentId),
+                    It.IsAny<int>()))
+                .Returns((string name, int value) =>
+                    FakeCommentIdParameter = new FakeDbParameter
+                    {
+                        ParameterName = name,
+                        Value = value
+                    });
         }
     }
 
@@ -227,7 +242,7 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
             databaseMock.Verify((mock) =>
                 mock.CreateParameter(
                     It.Is<string>((val) => val == ParameterUserId),
-                    It.Is<int>((val) => val == Command.UserID)),
+                    It.Is<int>((val) => val == Command.UserId)),
                 Times.Once());
         }
 
@@ -239,7 +254,7 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
             databaseMock.Verify((mock) =>
                 mock.CreateParameter(
                     It.Is<string>((val) => val == ParameterArticleId),
-                    It.Is<int>((val) => val == Command.ArticleID)),
+                    It.Is<int>((val) => val == Command.ArticleId)),
                 Times.Once());
         }
 
@@ -263,7 +278,7 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
             databaseMock.Verify((mock) =>
                 mock.CreateParameter(
                     It.Is<string>((val) => val == ParameterParentCommentId),
-                    It.Is<int>((val) => val == Command.ParentCommentID)),
+                    It.Is<int>((val) => val == Command.ParentCommentId)),
                 Times.Once());
         }
 
@@ -278,6 +293,7 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
                  && val.ActualParameters.Contains(FakeUserIdParameter)
                  && val.ActualParameters.Contains(FakeArticleIdParameter)
                  && val.ActualParameters.Contains(FakeBodyParameter)
+                 && val.ActualParameters.Contains(FakeCommentIdParameter)
                  && val.ActualParameters.Contains(FakeParentCommentIdParameter);
 
             databaseMock.Verify((mock) =>
@@ -290,8 +306,8 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
     {
         protected override CreateOrUpdateCommentCommand Command => new CreateOrUpdateCommentCommand
         {
-            UserID = 0,
-            ArticleID = 1,
+            UserId = 0,
+            ArticleId = 1,
             Body = "Hello there",
         };
 
@@ -315,7 +331,7 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
             databaseMock.Verify((mock) =>
                 mock.CreateParameter(
                     It.Is<string>((val) => val == ParameterUserId),
-                    It.Is<int>((val) => val == Command.UserID)),
+                    It.Is<int>((val) => val == Command.UserId)),
                 Times.Once());
         }
 
@@ -327,7 +343,7 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
             databaseMock.Verify((mock) =>
                 mock.CreateParameter(
                     It.Is<string>((val) => val == ParameterArticleId),
-                    It.Is<int>((val) => val == Command.ArticleID)),
+                    It.Is<int>((val) => val == Command.ArticleId)),
                 Times.Once());
         }
 
@@ -351,7 +367,7 @@ namespace UnitTests.DataAccess.CommandServices.CreateCommentCommandServiceTests
             databaseMock.Verify((mock) =>
                 mock.CreateParameter(
                     It.Is<string>((val) => val == ParameterParentCommentId),
-                    It.Is<int>((val) => val == Command.ParentCommentID)),
+                    It.Is<int>((val) => val == Command.ParentCommentId)),
                 Times.Never());
         }
 

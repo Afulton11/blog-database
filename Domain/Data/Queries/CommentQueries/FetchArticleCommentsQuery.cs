@@ -15,7 +15,7 @@ namespace Domain.Data.Queries.CommentQueries
         /// <summary>
         /// The initial number of replies to fetch for each root comment.
         /// </summary>
-        public int MaximumRepliesToFetch { get; set; }
+        public int MaximumRepliesToFetch { get; set; } = 3;
         public PageInfo Paging { get; set; } = new PageInfo();
     }
 }

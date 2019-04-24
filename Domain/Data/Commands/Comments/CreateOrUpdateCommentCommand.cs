@@ -5,12 +5,13 @@ namespace Domain.Data.Commands.Comments
     public class CreateOrUpdateCommentCommand : ICommand
     {
         [Required]
-        public int UserID { get; set; }
+        public int UserId { get; set; }
         [Required]
-        public int ArticleID { get; set; }
+        public int ArticleId { get; set; }
         [Required]
-        [StringLength(2048, MinimumLength = 1, ErrorMessage = "Body should be minimum of 1 character")]
+        [StringLength(2048, MinimumLength = 3, ErrorMessage = "Body should be minimum of 3 characters")]
         public string Body { get; set; }
-        public int? ParentCommentID { get; set; }
+        public int? CommentId { get; set; }
+        public int? ParentCommentId { get; set; }
     }
 }
