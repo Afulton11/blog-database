@@ -16,7 +16,7 @@ namespace Web.Pages
     public class UserModel : PageModel
     {
         private readonly IQueryService<FetchUserByIdQuery, User> FetchUser;
-        public User User { get; set; }
+        public new User User { get; set; }
 
         public UserModel(IQueryService<FetchUserByIdQuery, User> fetchUser)
         {
