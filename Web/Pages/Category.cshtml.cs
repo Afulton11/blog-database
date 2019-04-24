@@ -40,7 +40,7 @@ namespace Web.Pages
                     PageIndex = CurrentPage - 1,
                 },
                 ArticleCategoryName = Name
-            });
+            }); 
 
             Articles = page.Items ?? Enumerable.Empty<Article>();
 
