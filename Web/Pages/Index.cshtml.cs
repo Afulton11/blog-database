@@ -32,7 +32,7 @@ namespace Web.Pages
                     Paging = new PageInfo
                     {
                         PageIndex = CurrentPage - 1,
-                        PageSize = 8
+                        PageSize = 6
                     }
                 });
 
