@@ -370,9 +370,14 @@ a {
             margin-bottom: 0;
         }
 
-        span {
-            font-size: $font-size-sm;
-            margin-right: 15px;
+        .user-stats {
+            display: flex;
+            justify-content: space-around;
+
+            span {
+                font-size: $font-size-sm;
+                margin-right: 15px;
+            }
         }
     }
 
@@ -382,13 +387,13 @@ a {
 
     .article-preview {
         width: 75%;
-        margin: 0 auto;
+        margin: 0 auto 15px auto;
         background-color: #F3F3F3;
         border-radius: 5px;
         padding: 5px 10px 5px 10px;
         box-shadow: 0 $shadow-size $shadow-blur $shadow-color;
         transition: .2s;
-        
+
         .metadata {
             font-size: $font-size-sm !important;
             color: $gray-500;

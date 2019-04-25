@@ -5,7 +5,8 @@
     var user = Model.User;
     var author = Model.Author;
     var articles = Model.Articles;
-
+    var totalPoints = Model.TotalPoints;
+    
     bool userIsDeleted = user.DeletedAt != default(DateTime);
     bool userIsAuthor = author != null;
     bool userHasArticles = articles != null;
@@ -17,32 +18,38 @@
             @user.Username
         </h3>
 
-        @if (userIsDeleted)
-        {
-            <span class="deleted-date">
-                Left on @user.DeletedAt.ToString("MMMM dd, yyyy")
+        <div class="user-stats">
+            <span class="total-points">
+                @totalPoints points
             </span>
-        }
-        else
-        {
-            <span class="member-period">
-                @*
-                    TODO: This is currently useless as creation
-                    dates are not being randomly generated.
-                *@
-                Member for 
-                @(
-                    Math.Abs((DateTime.Now - user.CreationDateTime).Days)
-                ) days
-            </span>
-        }
 
-        @if (userIsAuthor)
-        {
-            <span class="article-count">
-                @articles.Count() @(articles.Count() > 1 ? "articles" : "article") published
-            </span>
-        }
+            @if (userIsAuthor)
+            {
+                <span class="article-count">
+                    @articles.Count() @(articles.Count() > 1 ? "articles" : "article") published
+                </span>
+            }
+
+            @if (userIsDeleted)
+            {
+                <span class="deleted-date">
+                    Left on @user.DeletedAt.ToString("MMMM dd, yyyy")
+                </span>
+            }
+            else
+            {
+                <span class="member-period">
+                    @*
+                        TODO: This is currently useless as creation
+                        dates are not being randomly generated.
+                    *@
+                    Member for
+                    @(
+                        Math.Abs((DateTime.Now - user.CreationDateTime).Days)
+                    ) days
+                </span>
+            }
+        </div>
         <hr>
     </div>
 
