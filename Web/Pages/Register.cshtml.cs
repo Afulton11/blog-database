@@ -34,7 +34,7 @@ namespace Web.Pages
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl = returnUrl ?? Url.Content("~/SignIn");
             if (ModelState.IsValid)
             {
                 var user = new Domain.Entities.Blog.User
@@ -58,7 +58,6 @@ namespace Web.Pages
                     await emailSender.SendEmailAsync(RegisterData.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    await signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

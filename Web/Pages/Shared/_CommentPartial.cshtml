@@ -1,5 +1,7 @@
-﻿@model Domain.Entities.View.ArticleComment;
+﻿
+@model Domain.Entities.View.ArticleComment;
 
+@inject Microsoft.AspNetCore.Identity.SignInManager<Domain.Entities.Blog.User> signInManager
 
 <div class="comment p-sm-2">
     <p class="metadata">
@@ -26,5 +28,11 @@
                 @Html.Raw("(DELETED)");
             }
         </p>
+        @if (signInManager.IsSignedIn(User))
+        { 
+            <a style="text-decoration: underline" asp-page="/Article" asp-route-ParentCommentId="@Model.CommentId">
+                Reply
+            </a>
+        }
     </div>
 </div>

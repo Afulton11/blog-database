@@ -35,14 +35,15 @@ namespace Web.Pages
             this.commandProcessor = commandProcessor;
         }
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(int id, int? parentCommentId)
         {
             if (userContext.CurrentUserId.HasValue)
             {
                 AddCommentModel = new CreateOrUpdateCommentCommand
                 {
                     UserId = userContext.CurrentUserId.Value,
-                    ArticleId = id
+                    ArticleId = id,
+                    ParentCommentId = parentCommentId
                 };
             }
 
