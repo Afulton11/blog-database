@@ -8,6 +8,7 @@ using Domain.Data.Queries;
 using Domain.Data.Queries.UserQueries;
 using Domain.Data.Queries.AuthorQueries;
 using Domain.Data.Queries.ArticleQueries;
+using Domain.Data.Queries.PointQueries;
 using Domain.Entities.Blog;
 using EnsureThat;
 using Microsoft.AspNetCore.Mvc;
@@ -20,10 +21,12 @@ namespace Web.Pages
         private readonly IQueryService<FetchUserByIdQuery, User> FetchUser;
         private readonly IQueryService<FetchAuthorByIdQuery, Author> FetchAuthor;
         private readonly IQueryService<FetchArticlesByAuthorIdQuery, Paged<Article>> FetchArticles;
+        private readonly IQueryService<GetTotalPointsByUserIdQuery, int> GetTotalPoints;
 
         public new User User { get; set; }
         public Author Author { get; set; }
         public IEnumerable<Article> Articles { get; set; }
+        public int TotalPoints { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public int CurrentPage { get; set; } = 1;
@@ -33,16 +36,19 @@ namespace Web.Pages
             (
                 IQueryService<FetchUserByIdQuery, User> fetchUser,
                 IQueryService<FetchAuthorByIdQuery, Author> fetchAuthor,
-                IQueryService<FetchArticlesByAuthorIdQuery, Paged<Article>> fetchArticles
+                IQueryService<FetchArticlesByAuthorIdQuery, Paged<Article>> fetchArticles,
+                IQueryService<GetTotalPointsByUserIdQuery, int> getTotalPoints
             )
         {
             EnsureArg.IsNotNull(fetchUser, nameof(fetchUser));
             EnsureArg.IsNotNull(fetchAuthor, nameof(fetchAuthor));
             EnsureArg.IsNotNull(fetchArticles, nameof(fetchArticles));
+            EnsureArg.IsNotNull(getTotalPoints, nameof(getTotalPoints));
 
             FetchUser = fetchUser;
             FetchAuthor = fetchAuthor;
             FetchArticles = fetchArticles;
+            GetTotalPoints = getTotalPoints;
         }
 
         public void OnGet(int id)
@@ -70,6 +76,11 @@ namespace Web.Pages
                         },
                     }).Items ?? Enumerable.Empty<Article>();
                 }
+
+                TotalPoints = GetTotalPoints.Execute(new GetTotalPointsByUserIdQuery
+                {
+                    UserId = User.UserId,
+                });
             }
         }
     }
