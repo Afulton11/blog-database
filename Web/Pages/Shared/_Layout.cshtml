@@ -1,88 +1,110 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using Domain.Entities.Blog
+@inject SignInManager<User> SignInManager
+
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>@ViewData["Title"]</title>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/styles/index.css" />
+        <link href="~/styles/fontawesome/scss/fontawesome.css" rel="stylesheet" />
+        <link href="~/styles/fontawesome/scss/v4-shims.css" rel="stylesheet" />
+        <link href="~/styles/fontawesome/scss/fa-solid.css" rel="stylesheet" />
+        <link href="~/styles/fontawesome/scss/fa-regular.css" rel="stylesheet" />
+        <link href="~/styles/fontawesome/scss/fa-brands.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/styles/index.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+    <partial name="_CookieConsentPartial" />
+    <div>
+        <div class="sidebar" style="z-index: 6">
+            <div class="sidebar-header">
+                <form method="get" asp-page="/Search">
+                    <input name="Text"
+                           type="text"
+                           class="form-control search-form"
+                           placeholder="Search Articles..."
+                           aria-label="Search Articles"
+                           aria-describedby="basic-addon1" />
+                </form>
+            </div>
+            <nav class="sidebar-content">
+                <div class="sidebar-title">
+                    <h1>
+                        <a asp-page="/Index">
+                            Andrew On Software
+                        </a>
+                    </h1>
+                </div>
+
+                <div>
+                    <h5 class="img-title">Your Host</h5>
+                    <div class="img-content">
+                        <a asp-page="/About">
+                            <div class="profile">
+                                <img src="~/assets/images/joel_on_software.png">
+                            </div>
+                        </a>
+                        <p>
+                            I'm Andrew Fulton, a software developer.
+                            <a asp-page="/About">More about me.</a>
+                        </p>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="navbar float-right" style="z-index: 5">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <form class="float-right p-sm-3" method="get">
+                    <button class="btn btn-outline-primary"
+                            type="submit"
+                            asp-page="~/Account/BecomeAuthor">
+                        Become an author
+                    </button>
+                </form>
+            }
+            <div class="navbar-text float-right p-sm-3" id="navbarSupportContent">
+                <partial name="_LoginPartial" />
+            </div>
+        </div>
+        <div class="page-content">
+            @RenderBody()
+        </div>
+        <hr />
+        <footer>
+            <p>&copy; 2019 - Andrew Fulton</p>
+        </footer>
 
         <environment include="Development">
-            <link rel="stylesheet" href="~/styles/index.css" />
+            <script src="~/js/jquery.js"></script>
+            <script src="~/js/bootstrap.js"></script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
         </environment>
         <environment exclude="Development">
-            <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-                  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-            <link rel="stylesheet" href="~/styles/index.min.css" asp-append-version="true" />
+            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                    asp-fallback-test="window.jQuery"
+                    crossorigin="anonymous"
+                    integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+            </script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+                    crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+                    crossorigin="anonymous"></script>
+            <script src="~/js/site.min.js" asp-append-version="true"></script>
         </environment>
-    </head>
-    <body>
-        <partial name="_CookieConsentPartial" />
-        <div>
-            <div class="sidebar">
-                <div class="sidebar-header">
-                    <form method="get" asp-page="/Search">
-                        <input name="Text"
-                               type="text"
-                               class="form-control search-form"
-                               placeholder="Search Articles..."
-                               aria-label="Search Articles"
-                               aria-describedby="basic-addon1" />
-                    </form>
-                </div>
-                <nav class="sidebar-content">
-                    <div class="sidebar-title">
-                        <h1>
-                            <a asp-page="/Index">
-                                Andrew On Software
-                            </a>
-                        </h1>
-                    </div>
 
-                    <div>
-                        <h5 class="img-title">Your Host</h5>
-                        <div class="img-content">
-                            <a asp-page="/About">
-                                <div class="profile">
-                                    <img src="~/assets/images/joel_on_software.png">
-                                </div>
-                            </a>
-                            <p>
-                                I'm Andrew Fulton, a software developer.
-                                <a asp-page="/About">More about me.</a>
-                            </p>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-            <div class="page-content">
-                <partial name="_LoginPartial" />
-                @RenderBody()
-            </div>
-            <hr />
-            <footer>
-                <p>&copy; 2019 - Andrew Fulton</p>
-            </footer>
-
-            <environment include="Development">
-                <script src="~/js/jquery.js"></script>
-                <script src="~/js/bootstrap.js"></script>
-                <script src="~/js/site.js" asp-append-version="true"></script>
-            </environment>
-            <environment exclude="Development">
-                <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
-                        asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                        asp-fallback-test="window.jQuery"
-                        crossorigin="anonymous"
-                        integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
-                </script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-                        crossorigin="anonymous"></script>
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
-                        crossorigin="anonymous"></script>
-                <script src="~/js/site.min.js" asp-append-version="true"></script>
-            </environment>
-
-        </div>
-        @RenderSection("Scripts", required: false)
-    </body>
+    </div>
+    @RenderSection("Scripts", required: false)
+</body>
 </html>

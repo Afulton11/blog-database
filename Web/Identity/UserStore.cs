@@ -15,11 +15,11 @@ namespace Web.Identity
     /// </summary>
     public class UserStore : IUserStore<User>, IUserEmailStore<User>, IUserPasswordStore<User>
     {
-        private readonly IQueryProcessor queryProcessor;
+        private readonly IAsyncQueryProcessor queryProcessor;
         private readonly ICommandProcessor commandProcessor;
 
         public UserStore(
-            IQueryProcessor queryProcessor,
+            IAsyncQueryProcessor queryProcessor,
             ICommandProcessor commandProcessor)
         {
             EnsureArg.IsNotNull(queryProcessor, nameof(queryProcessor));
@@ -81,7 +81,7 @@ namespace Web.Identity
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return queryProcessor.Execute(new FetchUserByIdQuery
+            return queryProcessor.ExecuteAsync(new FetchUserByIdQuery
             {
                 UserId = int.Parse(userId)
             });
@@ -91,7 +91,7 @@ namespace Web.Identity
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var name = await queryProcessor.Execute(new FetchUserByNormalizedNameQuery
+            var name = await queryProcessor.ExecuteAsync(new FetchUserByNormalizedNameQuery
             {
                 NormalizedUsername = normalizedUserName
             });
@@ -142,7 +142,7 @@ namespace Web.Identity
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var user = await queryProcessor.Execute(new FetchUserByNormalizedEmailQuery
+            var user = await queryProcessor.ExecuteAsync(new FetchUserByNormalizedEmailQuery
             {
                 NormalizedEmail = normalizedEmail
             });

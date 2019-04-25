@@ -1,0 +1,33 @@
+﻿@page "{id:int?}"
+@model Web.Pages.Edit.ArticleModel
+@{
+    ViewData["Title"] = "EditArticle";
+}
+
+<h1>Create Article</h1>
+
+<div class="col-sm-4">
+    <form class="form-group col" method="post">
+        <div class="text-danger" asp-validation-summary="All"></div>
+
+        <input asp-for="ArticleId" type="hidden" />
+        @Html.DropDownListFor(m => m.ArticleData.ArticleCategory, Model.GetCategorySelectList());
+        @Html.DropDownListFor(m => m.ArticleData.ContentStatus, Model.GetContentStatusSelectList());
+
+        <label class="form-text" asp-for="ArticleData.Title">Title</label>
+        <input class="form-control" asp-for="ArticleData.Title" />
+        <span class="text-danger" asp-validation-for="ArticleData.Title"></span>
+
+        <label class="form-text" asp-for="ArticleData.Description">Description</label>
+        <textarea class="form-control" asp-for="ArticleData.Description"></textarea>
+        <span class="text-danger" asp-validation-for="ArticleData.Description"></span>
+
+        <label class="form-text" asp-for="ArticleData.Body">Description</label>
+        <textarea class="form-control" asp-for="ArticleData.Body"></textarea>
+        <span class="text-danger" asp-validation-for="ArticleData.Body"></span>
+
+        <br />
+        <input class="btn btn-primary form-control" type="submit" value="Create Article" />
+    </form>
+</div>
+

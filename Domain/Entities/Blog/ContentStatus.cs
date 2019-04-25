@@ -44,9 +44,10 @@ namespace Domain.Entities.Blog
         /// </exception>
         public static explicit operator ContentStatus(string value)
         {
-            EnsureArg.IsNotEmptyOrWhitespace(value, nameof(value));
+            if (string.IsNullOrEmpty(value))
+                return AllStatuses.First();
 
-            var result = AllStatuses.First((status) => status.Value == value);
+            var result = AllStatuses.First((status) => status.Value.Normalize().ToUpper() == value.Normalize().ToUpper());
 
             // TODO: Show custom exception here.
             EnsureArg.IsNotNull(result, nameof(value));

@@ -6,7 +6,7 @@ using SimpleInjector;
 
 namespace Domain.Business
 {
-    public class DynamicAsyncQueryProcessor : IQueryProcessor
+    public class DynamicAsyncQueryProcessor : IAsyncQueryProcessor
     {
         private readonly Container container;
 
@@ -17,7 +17,7 @@ namespace Domain.Business
             this.container = container;
         }
 
-        public Task<TResult> Execute<TResult>(IQuery<TResult> query)
+        public Task<TResult> ExecuteAsync<TResult>(IQuery<TResult> query)
         {
             var serviceType = typeof(IQueryService<,>).MakeGenericType(query.GetType(), typeof(TResult));
 

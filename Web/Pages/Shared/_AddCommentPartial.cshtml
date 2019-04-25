@@ -1,0 +1,17 @@
+﻿
+
+@model Domain.Data.Commands.Comments.CreateOrUpdateCommentCommand
+
+
+<form method="post" asp-page="Article">
+    <input asp-for="@Model.UserId" type="hidden" />
+    <input asp-for="@Model.ArticleId" type="hidden" />
+    <input asp-for="@Model.ParentCommentId" type="hidden" />
+
+    <div class="form-group">
+        <label asp-for="@Model.Body">Make a Comment</label>
+        <textarea asp-for="@Model.Body" class="form-control" rows="3"></textarea>
+    </div>
+    <button class="btn btn-primary" type="submit">Submit Comment</button>
+</form>
+

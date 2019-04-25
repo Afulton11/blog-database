@@ -29,6 +29,7 @@ using Web.Services.Email;
 using Web.Identity;
 using System;
 using Web.Services;
+using Domain.Data;
 
 namespace Web
 {
@@ -68,7 +69,8 @@ namespace Web
 
             services.AddSingleton(this.container);
             services.AddSingleton<ICommandProcessor, DynamicAsyncCommandProcessor>();
-            services.AddSingleton<IQueryProcessor, DynamicAsyncQueryProcessor>();
+            services.AddSingleton<IAsyncQueryProcessor, DynamicAsyncQueryProcessor>();
+            services.AddSingleton<IQueryProcessor, DynamicQueryProcessor>();
 
             services.AddTransient<IUserStore<User>, UserStore>();
             services.AddTransient<IRoleStore<Role>, RoleStore>();
@@ -95,6 +97,12 @@ namespace Web
                 options.User.AllowedUserNameCharacters =
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = true;
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin").RequireRole("Developer"));
+                options.AddPolicy("AuthorOnly", policy => policy.RequireRole("Author").RequireRole("Admin").RequireRole("Developer"));
             });
 
             services.ConfigureApplicationCookie((options) =>
@@ -181,6 +189,8 @@ namespace Web
 
         private void InitializeAppServices(IApplicationBuilder app)
         {
+            container.Register<IUserContext, AspNetUserContextAdapter>();
+
             var cqrsAssemblies = new[]
             {
                 typeof(ICommandService<>).Assembly,

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Encodings.Web;
+﻿using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Domain.Data.Commands;
-using Domain.Entities.Blog;
 using EnsureThat;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -15,13 +11,13 @@ namespace Web.Pages
 {
     public class RegisterModel : PageModel
     {
-        private UserManager<User> userManager;
-        private SignInManager<User> signInManager;
+        private UserManager<Domain.Entities.Blog.User> userManager;
+        private SignInManager<Domain.Entities.Blog.User> signInManager;
         private IEmailSender emailSender;
 
         public RegisterModel(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
+            UserManager<Domain.Entities.Blog.User> userManager,
+            SignInManager<Domain.Entities.Blog.User> signInManager,
             IEmailSender emailSender)
         {
             EnsureArg.IsNotNull(userManager, nameof(userManager));
@@ -38,10 +34,10 @@ namespace Web.Pages
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl = returnUrl ?? Url.Content("~/SignIn");
             if (ModelState.IsValid)
             {
-                var user = new User
+                var user = new Domain.Entities.Blog.User
                 {
                     Username = RegisterData.Username,
                     Email = RegisterData.Email,
@@ -62,7 +58,6 @@ namespace Web.Pages
                     await emailSender.SendEmailAsync(RegisterData.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    await signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

@@ -3,7 +3,7 @@ using Domain.Data.Commands.Comments;
 
 namespace Domain.Business.CommandServices.Comments
 {
-    public interface ICreateCommentCommandService : ICommandService<CreateCommentCommand>
+    public interface ICreateCommentCommandService : ICommandService<CreateOrUpdateCommentCommand>
     {
     }
 }

@@ -16,7 +16,7 @@ namespace DataAccess.QueryServices.Readers
                 ArticleId = row.GetSafely<int>(nameof(Article.ArticleId)),
                 AuthorId = row.GetSafely<int>(nameof(Article.AuthorId)),
                 CategoryId = row.GetSafely<int>(nameof(Article.CategoryId)),
-                ContentStatus = row.GetSafely<ContentStatus>(nameof(Article.ContentStatus)),
+                ContentStatus = (ContentStatus)row.GetSafely<string>(nameof(Article.ContentStatus)),
                 Title = row.GetSafely<string>(nameof(Article.Title)),
                 Description = row.GetSafely<string>(nameof(Article.Description)),
                 Body = row.GetSafely<string>(nameof(Article.Body)),

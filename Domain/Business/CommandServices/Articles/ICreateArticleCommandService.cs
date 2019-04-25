@@ -2,7 +2,7 @@
 
 namespace Domain.Business.CommandServices.Articles
 {
-    public interface ICreateArticleCommandService : ICommandService<CreateArticleCommand>
+    public interface ICreateOrUpdateArticleCommandService : ICommandService<CreateOrUpdateArticleCommand>
     {
     }
 }

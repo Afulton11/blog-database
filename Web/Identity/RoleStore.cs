@@ -12,10 +12,10 @@ namespace Web.Identity
 {
     public class RoleStore : IRoleStore<Role>
     {
-        private readonly IQueryProcessor queryProcessor;
+        private readonly IAsyncQueryProcessor queryProcessor;
         private readonly ICommandProcessor commandProcessor;
         public RoleStore(
-            IQueryProcessor queryProcessor,
+            IAsyncQueryProcessor queryProcessor,
             ICommandProcessor commandProcessor)
         {
             EnsureArg.IsNotNull(queryProcessor, nameof(queryProcessor));
@@ -64,9 +64,8 @@ namespace Web.Identity
             return IdentityResult.Success;
         }
 
-        // TODO: Add RoleId to Domain POCOs
         public Task<string> GetRoleIdAsync(Role role, CancellationToken cancellationToken) =>
-            Task.FromResult(role.Name);
+            Task.FromResult(role.RoleId.ToString());
 
         public Task<string> GetRoleNameAsync(Role role, CancellationToken cancellationToken) =>
             Task.FromResult(role.Name);
@@ -90,7 +89,7 @@ namespace Web.Identity
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return queryProcessor.Execute(new FetchRoleByIdQuery
+            return queryProcessor.ExecuteAsync(new FetchRoleByIdQuery
             {
                 RoleId = int.Parse(roleId),
             });
@@ -100,7 +99,7 @@ namespace Web.Identity
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return queryProcessor.Execute(new FetchRoleByNormalizedNameQuery
+            return queryProcessor.ExecuteAsync(new FetchRoleByNormalizedNameQuery
             {
                 NormalizedName = normalizedRoleName,
             });
