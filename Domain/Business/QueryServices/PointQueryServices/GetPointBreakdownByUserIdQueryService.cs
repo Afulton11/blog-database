@@ -36,10 +36,9 @@ namespace Domain.Business.QueryServices.PointQueryServices
                 int totalPointsValue = points.Aggregate(0, (sum, nextPoint) => sum + nextPoint.Value);
 
                 // avoid dividing by zero
-                decimal pointDivisor = totalNumberOfPoints > 0 ? totalNumberOfPoints : 1;
                 decimal valueDivisor = totalPointsValue > 0 ? totalPointsValue : 1;
 
-                return CalculatePointBreakdowns(pointReasons, points, pointDivisor, valueDivisor);
+                return CalculatePointBreakdowns(pointReasons, points, valueDivisor);
             }
         }
 
@@ -50,9 +49,7 @@ namespace Domain.Business.QueryServices.PointQueryServices
                 yield return new PointBreakdown
                 {
                     Reason = pr.Reason,
-                    PointTotal = 0,
                     ValueTotal = 0,
-                    PointPercentage = 0,
                     ValuePercentage = 0,
                 };
             }
@@ -62,7 +59,6 @@ namespace Domain.Business.QueryServices.PointQueryServices
             (
                 IEnumerable<PointReason> pointReasons,
                 IEnumerable<Point> points,
-                decimal pointDivisor,
                 decimal valueDivisor
             )
         {
@@ -70,16 +66,9 @@ namespace Domain.Business.QueryServices.PointQueryServices
             {
                 int reasonId = pr.ReasonId;
 
-                // number of point objects for point reason
-                int numPointsForReason = points.Aggregate(0, (sum, nextPoint) =>
-                    nextPoint.ReasonId == reasonId ? sum + 1 : sum);
-
                 // total value from points for point reason
                 int sumPointValueForReason = points.Aggregate(0, (sum, nextPoint) =>
                     nextPoint.ReasonId == reasonId ? sum + nextPoint.Value : sum);
-
-                // percentage of point objects for point reason
-                decimal perPointsForReason = decimal.Round((decimal)(100 * (numPointsForReason / pointDivisor)), 2, MidpointRounding.AwayFromZero);
 
                 // percentage of point value for point reason
                 decimal perPointValueForReason = decimal.Round((decimal)(100 * (sumPointValueForReason / valueDivisor)), 2, MidpointRounding.AwayFromZero);
@@ -87,9 +76,7 @@ namespace Domain.Business.QueryServices.PointQueryServices
                 yield return new PointBreakdown
                 {
                     Reason = pr.Reason,
-                    PointTotal = numPointsForReason,
                     ValueTotal = sumPointValueForReason,
-                    PointPercentage = perPointsForReason,
                     ValuePercentage = perPointValueForReason,
                 };
             }
@@ -102,27 +89,6 @@ namespace Domain.Business.QueryServices.PointQueryServices
                 UserId = userId,
             });
         }
-
-        //private IEnumerable<FullPoint> GetFullPoints(IEnumerable<Point> points)
-        //{
-        //    foreach (Point p in points)
-        //    {
-        //        PointReason pointReason = QueryProcessor.Execute(new GetReasonForPointQuery
-        //        {
-        //            PointId = p.PointId,
-        //        });
-
-        //        yield return new FullPoint
-        //        {
-        //            PointId = p.PointId,
-        //            UserId = p.UserId,
-        //            Reason = pointReason.Reason,
-        //            Value = p.Value,
-        //            CreatedAt = p.CreatedAt,
-        //            ExpiresAt = p.ExpiresAt,
-        //        };
-        //    }
-        //}
 
         private IEnumerable<PointReason> GetPointReasons()
         {
