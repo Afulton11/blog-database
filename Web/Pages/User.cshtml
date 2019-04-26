@@ -6,10 +6,20 @@
     var author = Model.Author;
     var articles = Model.Articles;
     var totalPoints = Model.TotalPoints;
+    var pointBreakdowns = Model.PointBreakdowns;
     
     bool userIsDeleted = user.DeletedAt != default(DateTime);
     bool userIsAuthor = author != null;
-    bool userHasArticles = articles != null;
+    bool userHasArticles = articles.Count() > 0;
+
+    string pointString = totalPoints != 1 ? "points" : "point";
+}
+@functions 
+{
+    int roundGraphPercentage(decimal per)
+    {
+        return (int)Math.Round(per);
+    }
 }
 
 <div class="user-page">
@@ -20,7 +30,7 @@
 
         <div class="user-stats">
             <span class="total-points">
-                @totalPoints points
+                @totalPoints @pointString
             </span>
 
             @if (userIsAuthor)
@@ -84,6 +94,23 @@
                     </div>
                 </div>
             }
+            <hr>
         </div>
     }
+   
+    <div class="point-graph">
+        <dl>
+            <dt>
+                Point Breakdown (@totalPoints @pointString)
+            </dt>
+            @foreach (var pb in pointBreakdowns)
+            {
+                <dd class="graph-bar percentage-@(roundGraphPercentage(pb.ValuePercentage))">
+                    <span class="graph-label">
+                        @pb.Reason (@pb.ValuePercentage%)
+                    </span>
+                </dd>
+            }
+        </dl>
+    </div>
 </div>

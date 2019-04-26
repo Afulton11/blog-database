@@ -40,6 +40,8 @@
 :r ./Setup/01_Procedures/Queries/FetchAuthorById.sql
 :r ./Setup/01_Procedures/Queries/FetchArticleCategories.sql
 :r ./Setup/01_Procedures/Queries/FetchArticleComments.sql
+:r ./Setup/01_Procedures/Queries/FetchPointsByUserId.sql
+:r ./Setup/01_Procedures/Queries/FetchAllPointReasons.sql
 
 -- Populate Tables
 :r ./Setup/02_Populate/00_Role.sql
