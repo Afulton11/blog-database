@@ -27,7 +27,6 @@ AS
     SELECT
         rvt.Reason AS Reason,
         rvt.TotalValue AS ValueTotal,
-        pvt.TotalValue AS TotalTotal,
         CONVERT(DECIMAL(10,2), (100 * (CAST(rvt.TotalValue AS FLOAT) / CAST(IIF(pvt.TotalValue > 0, pvt.TotalValue, 1) AS FLOAT)))) AS ValuePercentage
     FROM
         PointValueTotal AS pvt,
