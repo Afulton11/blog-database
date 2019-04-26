@@ -19,9 +19,6 @@ namespace Web.Pages
 {
     public class UserModel : PageModel
     {
-        //private readonly IQueryService<FetchUserByIdQuery, User> FetchUser;
-        //private readonly IQueryService<FetchAuthorByIdQuery, Author> FetchAuthor;
-        //private readonly IQueryService<FetchArticlesByAuthorIdQuery, Paged<Article>> FetchArticles;
         private readonly IQueryService<GetTotalPointsByUserIdQuery, int> GetTotalPoints;
         private readonly IQueryProcessor QueryProcessor;
 

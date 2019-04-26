@@ -11,6 +11,7 @@
     bool userIsDeleted = user.DeletedAt != default(DateTime);
     bool userIsAuthor = author != null;
     bool userHasArticles = articles.Count() > 0;
+    bool userHasPointBreakdown = pointBreakdowns.Count() > 0;
 
     string pointString = totalPoints != 1 ? "points" : "point";
 }
@@ -60,11 +61,11 @@
                 </span>
             }
         </div>
-        <hr>
     </div>
 
     @if (userHasArticles)
     {
+        <hr>
         <div class="user-articles">
             <h3 class="article-header">
                 Articles posted by @user.Username
@@ -94,23 +95,26 @@
                     </div>
                 </div>
             }
-            <hr>
         </div>
     }
-   
-    <div class="point-graph">
-        <dl>
-            <dt>
-                Point Breakdown (@totalPoints @pointString)
-            </dt>
-            @foreach (var pb in pointBreakdowns)
-            {
-                <dd class="graph-bar percentage-@(roundGraphPercentage(pb.ValuePercentage))">
-                    <span class="graph-label">
-                        @pb.Reason (@pb.ValuePercentage%)
-                    </span>
-                </dd>
-            }
-        </dl>
-    </div>
+
+    @if (userHasPointBreakdown)
+    {
+        <hr>
+        <div class="point-graph">
+            <dl>
+                <dt>
+                    Point Breakdown (@totalPoints @pointString)
+                </dt>
+                @foreach (var pb in pointBreakdowns)
+                {
+                    <dd class="graph-bar percentage-@(roundGraphPercentage(pb.ValuePercentage))">
+                        <span class="graph-label">
+                            @pb.Reason (@pb.ValuePercentage%)
+                        </span>
+                    </dd>
+                }
+            </dl>
+        </div>
+    }
 </div>
