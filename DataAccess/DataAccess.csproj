@@ -14,4 +14,7 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="DataAccess\CommandServices\Favorite\CreateFavoriteArticleCommandService.cs" />
+  </ItemGroup>
 </Project>

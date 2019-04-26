@@ -16,6 +16,26 @@
 }
 
 
+@if (SignInManager.IsSignedIn(User))
+{
+    @if (Model.IsFavorited)
+    {
+        <form asp-page-handler="deleteUserFavorite">
+            <input type="hidden" name="userId" value="@int.Parse(currentUser)" />
+            <input type="hidden" name="articleId" value="@article.ArticleId" />
+            <button class="btn btn-outline" type="submit"><span class="favorited">Delete</span></button>
+        </form>
+    }
+    else
+    {
+        <form asp-page-handler="addUserFavorite">
+            <input type="hidden" name="userId" value="@int.Parse(currentUser)" />
+            <input type="hidden" name="articleId" value="@article.ArticleId" />
+            <button class="fa fa-heart favorite" type="submit"><span class="favorite">Favorite</span></button>
+        </form>
+    }
+}
+
 <p class="metadata">
     <span class="date">
         @article.CreationDateTime

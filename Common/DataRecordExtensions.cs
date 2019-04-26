@@ -21,6 +21,7 @@ namespace Common
         /// </returns>
         public static TResult GetSafely<TResult>(this IDataRecord record, string name)
         {
+            EnsureArg.IsNotNull(record, nameof(record));
             EnsureArg.IsNotNullOrEmpty(name);
             name = name.ToLower();
 
@@ -37,6 +38,18 @@ namespace Common
                         return (TResult)result;
                     }
                 }
+            }
+
+            return default;
+        }
+
+        public static TResult GetFirstSafely<TResult>(this IDataRecord record)
+        {
+            EnsureArg.IsNotNull(record, nameof(record));
+
+            if (record.FieldCount > 0)
+            {
+                return (TResult)record[0];
             }
 
             return default;

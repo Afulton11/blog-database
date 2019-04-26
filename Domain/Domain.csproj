@@ -13,4 +13,7 @@
     <ProjectReference Include="..\DatabaseFactory\DatabaseFactory.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Queries\FavoriteQueries\" />
+  </ItemGroup>
 </Project>

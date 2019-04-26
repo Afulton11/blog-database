@@ -1,6 +1,7 @@
 ﻿using Domain.Business;
 using Domain.Data;
 using Domain.Data.Commands.Comments;
+using Domain.Data.Commands.Favorite;
 using Domain.Data.Queries;
 using Domain.Data.Queries.ArticleCategoryQueries;
 using Domain.Data.Queries.CommentQueries;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.Data.Queries.FavoriteQueries;
 
 namespace Web.Pages
 {
@@ -45,6 +47,13 @@ namespace Web.Pages
                     ArticleId = id,
                     ParentCommentId = parentCommentId
                 };
+
+                IsFavorited = await queryProcessor.ExecuteAsync(new IsArticleFavoritedByUserQuery
+                {
+                    UserId = userContext.CurrentUserId.Value,
+                    ArticleId = id
+                });
+
             }
 
             Article = await queryProcessor.ExecuteAsync(new GetArticleByIdQuery
@@ -61,6 +70,7 @@ namespace Web.Pages
             {
                 ArticleCategoryId = Article.CategoryId
             });
+
 
             var commentPage = await queryProcessor.ExecuteAsync(new FetchArticleCommentsQuery
                 {
@@ -95,6 +105,30 @@ namespace Web.Pages
             return LocalRedirect(redirectUrl);
         }
 
+        public async Task<IActionResult> OnPostAddUserFavoriteAsync(CreateFavoriteCommand createFavorite)
+        {
+            var redirectUrl = "~/";
+            if (createFavorite != null)
+            {
+                redirectUrl = $"~/Article/{createFavorite.ArticleId}";
+                await commandProcessor.Execute(createFavorite);
+            }
+
+            return LocalRedirect(redirectUrl);
+        }
+
+        public async Task<IActionResult> OnPostDeleteUserFavoriteAsync(DeleteFavoriteCommand deleteFavorite)
+        {
+            var redirectUrl = "~/";
+            if (deleteFavorite != null)
+            {
+                redirectUrl = $"~/Article/{deleteFavorite.ArticleId}";
+                await commandProcessor.Execute(deleteFavorite);
+            }
+
+            return LocalRedirect(redirectUrl);
+        }
+
         [BindProperty]
         public CreateOrUpdateCommentCommand AddCommentModel { get; set; }
 
@@ -103,6 +137,8 @@ namespace Web.Pages
         public ArticleCategory Category { get; set; }
 
         public IEnumerable<ArticleComment> Comments { get; set; }
+
+        public bool IsFavorited { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public int CurrentPage { get; set; } = 1;
