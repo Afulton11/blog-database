@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Entities.View
+namespace Domain.Entities.Blog
 {
     public class PointBreakdown : IEntity
     {
