@@ -363,3 +363,139 @@ a {
         font-size: $font-size-sm;
     }
 }
+
+.user-page {
+    .user-data {
+        .username {
+            margin-bottom: 0;
+        }
+
+        .user-stats {
+            display: flex;
+            justify-content: space-around;
+
+            span {
+                font-size: $font-size-sm;
+                margin-right: 15px;
+            }
+        }
+    }
+
+    .article-header {
+        margin-bottom: 35px;
+    }
+
+    .article-preview {
+        width: 75%;
+        margin: 0 auto 15px auto;
+        background-color: #F3F3F3;
+        border-radius: 5px;
+        padding: 5px 10px 5px 10px;
+        box-shadow: 0 $shadow-size $shadow-blur $shadow-color;
+        transition: .2s;
+
+        .metadata {
+            font-size: $font-size-sm !important;
+            color: $gray-500;
+            margin: 0px;
+            padding: 0px;
+            letter-spacing: 1px;
+
+            .date {
+                text-transform: uppercase;
+            }
+        }
+
+        .article-title {
+            margin: 0px;
+            margin-bottom: $regular-padding;
+            padding: 0px;
+            font-weight: bold;
+            font-size: $article-preview-title-size;
+            line-height: 1.1;
+
+            a {
+                color: inherit;
+
+                &:hover {
+                    color: $text-link-primary;
+                }
+            }
+        }
+
+        .article-preview-content {
+            p {
+                margin-bottom: 0;
+            }
+        }
+
+        &:hover {
+            box-shadow: 0 $hover-shadow-size $hover-shadow-blur $shadow-color;
+        }
+    }
+
+    .point-graph {
+        dl {
+            display: flex;
+            flex-direction: column;
+            width: 80%;
+            position: relative;
+            padding: 20px;
+            background-color: $background-primary;
+        }
+
+        dt {
+            align-self: flex-start;
+            width: 100%;
+            font-weight: 700;
+            display: block;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            margin-left: 130px;
+        }
+
+        .graph-label {
+            display: flex;
+            justify-content: flex-end;
+            font-weight: 600;
+            align-items: center;
+            height: 40px;
+            width: 130px;
+            background-color: $background-primary;
+            position: absolute;
+            left: 0;
+        }
+
+        .graph-bar {
+            font-size: .8em;
+            line-height: 1;
+            text-transform: uppercase;
+            width: 100%;
+            height: 40px;
+            margin-left: 130px;
+            background: repeating-linear-gradient( to right, #ddd, #ddd 1px, #fff 1px, #fff 5% );
+
+            &:after {
+                content: "";
+                display: block;
+                background-color: $background-secondary;
+                width: 50px;
+                margin-bottom: 10px;
+                height: 90%;
+                position: relative;
+                top: 50%;
+                transform: translateY(-50%);
+                transition: background-color .3s ease;
+            }
+        }
+
+        @for $i from 0 through 100 {
+            .percentage-#{$i}:after {
+                $value: ($i * 1%);
+                width: $value;
+            }
+        }
+    }
+}

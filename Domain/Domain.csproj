@@ -13,4 +13,9 @@
     <ProjectReference Include="..\DatabaseFactory\DatabaseFactory.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Queries\PointQueries\" />
+    <Folder Include="Data\Queries\PointReasonQueries\" />
+    <Folder Include="Business\QueryServices\PointQueryServices\" />
+  </ItemGroup>
 </Project>

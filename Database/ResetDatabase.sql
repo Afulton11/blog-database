@@ -23,6 +23,8 @@
 :r ./Setup/01_Procedures/Queries/GetTotalPointsByUserId.sql
 :r ./Setup/01_Procedures/Queries/GetArticleCategoryById.sql
 :r ./Setup/01_Procedures/Queries/GetArticlesInCategory.sql
+:r ./Setup/01_Procedures/Queries/GetArticlesInCategory.sql
+:r ./Setup/01_Procedures/Queries/FetchArticlesByAuthorId.sql
 :r ./Setup/01_Procedures/Queries/FetchUserByUsername.sql
 :r ./Setup/01_Procedures/Queries/FetchUserByNormalizedUsername.sql
 :r ./Setup/01_Procedures/Queries/FetchUserByNormalizedEmail.sql
@@ -38,6 +40,9 @@
 :r ./Setup/01_Procedures/Queries/FetchAuthorById.sql
 :r ./Setup/01_Procedures/Queries/FetchArticleCategories.sql
 :r ./Setup/01_Procedures/Queries/FetchArticleComments.sql
+:r ./Setup/01_Procedures/Queries/FetchPointsByUserId.sql
+:r ./Setup/01_Procedures/Queries/FetchAllPointReasons.sql
+:r ./Setup/01_Procedures/Queries/GetPointBreakdownByUserId.sql
 
 -- Populate Tables
 :r ./Setup/02_Populate/00_Role.sql

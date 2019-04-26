@@ -240,3 +240,4 @@ _Pvt_Extensions
 .fake/
 .DS_Store
 Database/ResetScript.sql
+Web/Web.csproj
