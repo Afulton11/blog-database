@@ -1,10 +1,9 @@
 ﻿using Domain.Business;
 using Domain.Data;
 using Domain.Data.Commands.Comments;
+using Domain.Data.Commands.Favorite;
 using Domain.Data.Queries;
-using Domain.Data.Queries.ArticleCategoryQueries;
 using Domain.Data.Queries.CommentQueries;
-using Domain.Entities.Blog;
 using Domain.Entities.View;
 using EnsureThat;
 using Microsoft.AspNetCore.Mvc;
@@ -37,6 +36,17 @@ namespace Web.Pages
 
         public async Task<IActionResult> OnGetAsync(int id, int? parentCommentId)
         {
+            Article = await queryProcessor.ExecuteAsync(new FetchArticlePageByIdQuery
+                {
+                    ArticleId = id,
+                    UserId = userContext.CurrentUserId
+                });
+
+            if (Article == null)
+            {
+                return RedirectToPage("/Index");
+            }
+
             if (userContext.CurrentUserId.HasValue)
             {
                 AddCommentModel = new CreateOrUpdateCommentCommand
@@ -47,28 +57,13 @@ namespace Web.Pages
                 };
             }
 
-            Article = await queryProcessor.ExecuteAsync(new GetArticleByIdQuery
-                {
-                    ArticleID = id
-                });
-
-            if (Article == null)
-            {
-                return RedirectToPage("/Index");
-            }
-
-            Category = await queryProcessor.ExecuteAsync(new FetchArticleCategoryQuery
-            {
-                ArticleCategoryId = Article.CategoryId
-            });
-
             var commentPage = await queryProcessor.ExecuteAsync(new FetchArticleCommentsQuery
                 {
                     ArticleId = Article.ArticleId,
                     Paging = new PageInfo
                     {
                         PageIndex = 0,
-                        PageSize = 5 * CurrentPage,
+                        PageSize = PageSize * CurrentPage,
                     }
                 });
 
@@ -95,19 +90,43 @@ namespace Web.Pages
             return LocalRedirect(redirectUrl);
         }
 
+        public async Task<IActionResult> OnPostAddUserFavoriteAsync(CreateFavoriteCommand createFavorite)
+        {
+            var redirectUrl = "~/";
+            if (createFavorite != null)
+            {
+                redirectUrl = $"~/Article/{createFavorite.ArticleId}";
+                await commandProcessor.Execute(createFavorite);
+            }
+
+            return LocalRedirect(redirectUrl);
+        }
+
+        public async Task<IActionResult> OnPostDeleteUserFavoriteAsync(DeleteFavoriteCommand deleteFavorite)
+        {
+            var redirectUrl = "~/";
+            if (deleteFavorite != null)
+            {
+                redirectUrl = $"~/Article/{deleteFavorite.ArticleId}";
+                await commandProcessor.Execute(deleteFavorite);
+            }
+
+            return LocalRedirect(redirectUrl);
+        }
+
         [BindProperty]
         public CreateOrUpdateCommentCommand AddCommentModel { get; set; }
 
-        public Article Article { get; set; }
-
-        public ArticleCategory Category { get; set; }
+        public ArticleViewModel Article { get; set; }
 
         public IEnumerable<ArticleComment> Comments { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public int CurrentPage { get; set; } = 1;
 
+        public int PageSize { get; set; } = 5;
+
         public bool CanShowPreviousComments => CurrentPage > 1;
-        public bool CanShowMoreComments => true;
+        public bool CanShowMoreComments => CurrentPage < (float)(Article.CommentCount / PageSize);
     }
 }

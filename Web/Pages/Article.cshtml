@@ -8,30 +8,51 @@
 @{
     ViewData["Title"] = Model.Article.Title;
     var article = Model.Article;
-    var category = Model.Category;
 
     var currentUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-    var isAuthorViewingArticle = currentUser == article.AuthorId.ToString();
+    var isAuthorViewingArticle = currentUser == article.AuthorUserId.ToString();
 }
-
 
 <p class="metadata">
     <span class="date">
-        @article.CreationDateTime
+        @article.CreationDateTime.ToString("MMMM dd, yyyy")
     </span>
     <span class="by">
         by
     </span>
     <span class="author">
-        <a href="about.html">
-            @article.AuthorId
+        <a asp-page="User" asp-route-id="@article.AuthorUserId">
+            @article.AuthorFullName
         </a>
     </span>
 </p>
 <h1 class="title">
     @article.Title
 </h1>
+@if (SignInManager.IsSignedIn(User))
+{
+    @if (article.DidUserFavorite)
+    {
+        <form class="favorite isFavorited" asp-page-handler="deleteUserFavorite">
+            <input type="hidden" name="userId" value="@int.Parse(currentUser)" />
+            <input type="hidden" name="articleId" value="@article.ArticleId" />
+            <button class="btn btn-outline fa fa-heart" style="color: red" type="submit"> @article.FavoriteCount</button>
+        </form>
+    }
+    else
+    {
+        <form class="favorite" asp-page-handler="addUserFavorite">
+            <input type="hidden" name="userId" value="@int.Parse(currentUser)" />
+            <input type="hidden" name="articleId" value="@article.ArticleId" />
+            <button class="btn btn-outline fa fa-heart" type="submit">  @article.FavoriteCount</button>
+        </form>
+    }
+}
+else
+{
+    <p class="fa fa-heart favorite"> @article.FavoriteCount</p>
+}
 @if (isAuthorViewingArticle)
 {
     <div class="article-tags" style="padding-bottom: 10px">
@@ -43,8 +64,8 @@
 <div class="article-tags">
     <ul class="tag-list">
         <li class="category">
-            <a asp-page="/Category" asp-route-name="@category.Name" rel="category tag">
-                @category.Name
+            <a asp-page="/Category" asp-route-name="@article.CategoryName" rel="category tag">
+                @article.CategoryName
             </a>
         </li>
     </ul>

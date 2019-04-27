@@ -2,7 +2,7 @@
 
 namespace Domain.Data.Commands.Favorite
 {
-    public class CreateFavoriteArticleCommand : ICommand
+    public class CreateFavoriteCommand : ICommand
     {
         /// <summary>
         /// The <see cref="Entities.Blog.User.UserId"/> that the favorite should be created for.
