@@ -7,6 +7,7 @@ using EnsureThat;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Domain.Data.Queries.AuthorQueries;
+using System;
 
 namespace Web.Pages.Account
 {
@@ -41,14 +42,24 @@ namespace Web.Pages.Account
                     AuthorId = userId.Value
                 });
 
-                AuthorData = new CreateOrUpdateAuthorCommand
+                if (author != null)
                 {
-                    UserId = userId.Value,
-                    FirstName = author.FirstName,
-                    LastName = author.LastName,
-                    MiddleName = author.MiddleName,
-                    BirthDate = author.BirthDate
-                };
+                    AuthorData = new CreateOrUpdateAuthorCommand
+                    {
+                        UserId = userId.Value,
+                        FirstName = author.FirstName,
+                        LastName = author.LastName,
+                        MiddleName = author.MiddleName,
+                        BirthDate = author.BirthDate,
+                    };
+                }
+                else
+                {
+                    AuthorData = new CreateOrUpdateAuthorCommand
+                    {
+                        UserId = userId.Value,
+                    };
+                }
             }
         }
 
