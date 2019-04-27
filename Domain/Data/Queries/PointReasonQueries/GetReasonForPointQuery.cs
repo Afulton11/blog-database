@@ -1,10 +1,9 @@
 ﻿using Domain.Entities.Blog;
-using DatabaseFactory.Data.Contracts;
 using System.ComponentModel.DataAnnotations;
 
-namespace Domain.Data.Queries
+namespace Domain.Data.Queries.PointReasonQueries
 {
-    class GetReasonForPointQuery : IQuery<PointReason>
+    public class GetReasonForPointQuery : IQuery<PointReason>
     {
         [Required]
         public int PointId { get; set; }

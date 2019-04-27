@@ -65,13 +65,18 @@
         <div class="navbar float-right" style="z-index: 5">
             @if (SignInManager.IsSignedIn(User))
             {
-                <form class="float-right p-sm-3" method="get">
-                    <button class="btn btn-outline-primary"
-                            type="submit"
-                            asp-page="~/Account/BecomeAuthor">
-                        Become an author
-                    </button>
-                </form>
+            <form class="float-right p-sm-3" method="get">
+                <button class="btn btn-outline-primary"
+                        type="submit"
+                        asp-page="/Account/BecomeAuthor">
+                    Become an author
+                </button>
+                <button class="btn btn-outline-primary"
+                        type="submit"
+                        asp-page="/Edit/Article">
+                    Create Article
+                </button>
+            </form>
             }
             <div class="navbar-text float-right p-sm-3" id="navbarSupportContent">
                 <partial name="_LoginPartial" />

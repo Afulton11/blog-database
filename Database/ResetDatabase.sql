@@ -17,12 +17,16 @@
 :r ./Setup/01_Procedures/Commands/CreateOrUpdateComment.sql
 :r ./Setup/01_Procedures/Commands/CreateOrUpdateAuthor.sql
 :r ./Setup/01_Procedures/Commands/DeleteRole.sql
+:r ./Setup/01_Procedures/Commands/CreateFavorite.sql
+:r ./Setup/01_Procedures/Commands/DeleteFavorite.sql
 
 -- Create OR Alter Query Procedures
 :r ./Setup/01_Procedures/Queries/GetArticleById.sql
 :r ./Setup/01_Procedures/Queries/GetTotalPointsByUserId.sql
 :r ./Setup/01_Procedures/Queries/GetArticleCategoryById.sql
 :r ./Setup/01_Procedures/Queries/GetArticlesInCategory.sql
+:r ./Setup/01_Procedures/Queries/GetArticlesInCategory.sql
+:r ./Setup/01_Procedures/Queries/FetchArticlesByAuthorId.sql
 :r ./Setup/01_Procedures/Queries/FetchUserByUsername.sql
 :r ./Setup/01_Procedures/Queries/FetchUserByNormalizedUsername.sql
 :r ./Setup/01_Procedures/Queries/FetchUserByNormalizedEmail.sql
@@ -39,6 +43,12 @@
 :r ./Setup/01_Procedures/Queries/FetchArticleCategories.sql
 :r ./Setup/01_Procedures/Queries/FetchArticleComments.sql
 
+:r ./Setup/01_Procedures/Queries/FetchPointsByUserId.sql
+:r ./Setup/01_Procedures/Queries/FetchAllPointReasons.sql
+:r ./Setup/01_Procedures/Queries/GetPointBreakdownByUserId.sql
+:r ./Setup/01_Procedures/Queries/FetchArticleFavorites.sql
+:r ./Setup/01_Procedures/Queries/FetchArticlePageById.sql
+
 -- Populate Tables
 :r ./Setup/02_Populate/00_Role.sql
 :r ./Setup/02_Populate/01_User.sql
@@ -50,5 +60,3 @@
 :r ./Setup/02_Populate/07_Comment.sql
 :r ./Setup/02_Populate/08_Reason.sql
 :r ./Setup/02_Populate/09_Point.sql
-
-

@@ -11,8 +11,10 @@
         <div class="text-danger" asp-validation-summary="All"></div>
 
         <input asp-for="ArticleId" type="hidden" />
-        @Html.DropDownListFor(m => m.ArticleData.ArticleCategory, Model.GetCategorySelectList());
-        @Html.DropDownListFor(m => m.ArticleData.ContentStatus, Model.GetContentStatusSelectList());
+        <label class="form-text" asp-for="ArticleData.ContentStatus">Publication Status</label>
+        @Html.DropDownListFor(m => m.ArticleData.ContentStatus, Model.GetContentStatusSelectList())
+        <label class="form-text" asp-for="ArticleData.ArticleCategory">Category</label>
+        @Html.DropDownListFor(m => m.ArticleData.ArticleCategory, Model.GetCategorySelectList())
 
         <label class="form-text" asp-for="ArticleData.Title">Title</label>
         <input class="form-control" asp-for="ArticleData.Title" />
@@ -22,7 +24,7 @@
         <textarea class="form-control" asp-for="ArticleData.Description"></textarea>
         <span class="text-danger" asp-validation-for="ArticleData.Description"></span>
 
-        <label class="form-text" asp-for="ArticleData.Body">Description</label>
+        <label class="form-text" asp-for="ArticleData.Body">Body</label>
         <textarea class="form-control" asp-for="ArticleData.Body"></textarea>
         <span class="text-danger" asp-validation-for="ArticleData.Body"></span>
 

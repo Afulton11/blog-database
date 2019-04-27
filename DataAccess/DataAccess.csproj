@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DataAccess\QueryServices\PointQueries\" />
+    <Folder Include="DataAccess\QueryServices\PointReasonQueries\" />
+  </ItemGroup>
 </Project>
