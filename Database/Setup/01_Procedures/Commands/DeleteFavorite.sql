@@ -3,13 +3,13 @@ GO
 
 CREATE OR ALTER PROCEDURE Blog.DeleteFavorite
 (
-	@UserID INT,
-	@ArticleID INT
+	@UserId INT,
+	@ArticleId INT
 )
 AS
 BEGIN
 	UPDATE Blog.Favorite
 	SET DeletedAt = SYSDATETIME()
-	WHERE (UserID = @UserID) AND (ArticleID = @ArticleID)
+	WHERE (UserId = @UserId) AND (ArticleId = @ArticleId)
 END
 GO

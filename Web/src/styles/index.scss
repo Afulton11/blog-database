@@ -133,8 +133,7 @@ a {
 }
 
 .page-content {
-    @include padding($outer-padding,
-        $outer-padding 6% 4% 30%);
+    @include padding($outer-padding, $outer-padding 6% 4% 30%);
 
     p {
         font-size: $font-size-lg;
@@ -156,10 +155,23 @@ a {
     .alternate-title {
         margin-top: $small-padding;
         margin-bottom: $regular-padding;
-    
+
         h2 {
             font-size: $recent-posts-title-size;
             font-weight: bold;
+        }
+    }
+
+    .favorite {
+        color: #9b9b9b;
+        font-size: 18px;
+
+        button {
+            padding: 0px;
+        }
+
+        .isFavorited {
+            color: #ff0000;
         }
     }
 
@@ -192,6 +204,7 @@ a {
 
                 a {
                     color: inherit;
+
                     &:hover {
                         color: $text-link-primary;
                     }

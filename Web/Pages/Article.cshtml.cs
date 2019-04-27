@@ -3,9 +3,7 @@ using Domain.Data;
 using Domain.Data.Commands.Comments;
 using Domain.Data.Commands.Favorite;
 using Domain.Data.Queries;
-using Domain.Data.Queries.ArticleCategoryQueries;
 using Domain.Data.Queries.CommentQueries;
-using Domain.Entities.Blog;
 using Domain.Entities.View;
 using EnsureThat;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +11,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Domain.Data.Queries.FavoriteQueries;
 
 namespace Web.Pages
 {
@@ -39,6 +36,17 @@ namespace Web.Pages
 
         public async Task<IActionResult> OnGetAsync(int id, int? parentCommentId)
         {
+            Article = await queryProcessor.ExecuteAsync(new FetchArticlePageByIdQuery
+                {
+                    ArticleId = id,
+                    UserId = userContext.CurrentUserId
+                });
+
+            if (Article == null)
+            {
+                return RedirectToPage("/Index");
+            }
+
             if (userContext.CurrentUserId.HasValue)
             {
                 AddCommentModel = new CreateOrUpdateCommentCommand
@@ -47,30 +55,7 @@ namespace Web.Pages
                     ArticleId = id,
                     ParentCommentId = parentCommentId
                 };
-
-                IsFavorited = await queryProcessor.ExecuteAsync(new IsArticleFavoritedByUserQuery
-                {
-                    UserId = userContext.CurrentUserId.Value,
-                    ArticleId = id
-                });
-
             }
-
-            Article = await queryProcessor.ExecuteAsync(new GetArticleByIdQuery
-                {
-                    ArticleID = id
-                });
-
-            if (Article == null)
-            {
-                return RedirectToPage("/Index");
-            }
-
-            Category = await queryProcessor.ExecuteAsync(new FetchArticleCategoryQuery
-            {
-                ArticleCategoryId = Article.CategoryId
-            });
-
 
             var commentPage = await queryProcessor.ExecuteAsync(new FetchArticleCommentsQuery
                 {
@@ -78,7 +63,7 @@ namespace Web.Pages
                     Paging = new PageInfo
                     {
                         PageIndex = 0,
-                        PageSize = 5 * CurrentPage,
+                        PageSize = PageSize * CurrentPage,
                     }
                 });
 
@@ -132,18 +117,16 @@ namespace Web.Pages
         [BindProperty]
         public CreateOrUpdateCommentCommand AddCommentModel { get; set; }
 
-        public Article Article { get; set; }
-
-        public ArticleCategory Category { get; set; }
+        public ArticleViewModel Article { get; set; }
 
         public IEnumerable<ArticleComment> Comments { get; set; }
-
-        public bool IsFavorited { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public int CurrentPage { get; set; } = 1;
 
+        public int PageSize { get; set; } = 5;
+
         public bool CanShowPreviousComments => CurrentPage > 1;
-        public bool CanShowMoreComments => true;
+        public bool CanShowMoreComments => CurrentPage < (float)(Article.CommentCount / PageSize);
     }
 }

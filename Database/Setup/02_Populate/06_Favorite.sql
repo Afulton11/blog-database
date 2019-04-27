@@ -1,4 +1,4 @@
-﻿USE BlogDatabase;
+﻿ USE BlogDatabase;
 GO
 
 INSERT INTO Blog.Favorite ([UserId],[ArticleId]) 
