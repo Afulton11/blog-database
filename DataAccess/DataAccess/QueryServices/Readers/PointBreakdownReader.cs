@@ -1,6 +1,5 @@
 ﻿using Common;
-using Domain.Entities.Blog;
-using System;
+using Domain.Entities.View;
 using System.Data;
 
 namespace DataAccess.QueryServices.Readers

@@ -18,8 +18,7 @@ BEGIN
 		   Art.AuthorID,
 	       Art.Title,
 	       Art.[Description],
-	       Art.CreationDateTime,
-		   C.[Name] AS ContentStatus
+	       Art.CreationDateTime
 	FROM Blog.Article Art
 	WHERE Art.DeletedAt IS NULL AND Art.ContentStatusId = @PublishedContentStatusId
 	ORDER BY Art.CreationDateTime DESC

@@ -1,12 +1,11 @@
-﻿using Domain.Data.Queries;
-using Domain.Data.Queries.PointReasonQueries;
+﻿using Domain.Data.Queries.PointReasonQueries;
 using Domain.Data.Queries.PointQueries;
 using Domain.Entities.Blog;
 using Domain.Entities.View;
-using EnsureThat;
-using System;
 using System.Collections.Generic;
+using EnsureThat;
 using System.Linq;
+using System;
 
 namespace Domain.Business.QueryServices.PointQueryServices
 {
