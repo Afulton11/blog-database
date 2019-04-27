@@ -20,7 +20,11 @@ namespace DataAccess.DataAccess.QueryServices.Readers
                 Body = row.GetSafely<string>(nameof(ArticleViewModel.Body)),
                 DidUserFavorite = row.GetSafely<bool>(nameof(ArticleViewModel.DidUserFavorite)),
                 CommentCount = row.GetSafely<int>(nameof(ArticleViewModel.CommentCount)),
-                FavoriteCount = row.GetSafely<int>(nameof(ArticleViewModel.FavoriteCount))
+                FavoriteCount = row.GetSafely<int>(nameof(ArticleViewModel.FavoriteCount)),
+                NextArticleId = row.GetSafely<int?>(nameof(ArticleViewModel.NextArticleId)),
+                NextArticleTitle = row.GetSafely<string>(nameof(ArticleViewModel.NextArticleTitle)),
+                PreviousArticleId = row.GetSafely<int?>(nameof(ArticleViewModel.PreviousArticleId)),
+                PreviousArticleTitle = row.GetSafely<string>(nameof(ArticleViewModel.PreviousArticleTitle))
             };
     }
 }
