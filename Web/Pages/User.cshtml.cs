@@ -10,20 +10,17 @@ using Domain.Data.Queries.AuthorQueries;
 using Domain.Data.Queries.ArticleQueries;
 using Domain.Data.Queries.PointQueries;
 using Domain.Entities.Blog;
-using Domain.Entities.View;
 using EnsureThat;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Domain.Business;
 
 namespace Web.Pages
 {
     public class UserModel : PageModel
     {
-        private readonly IQueryService<FetchUserByIdQuery, User> FetchUser;
-        private readonly IQueryService<FetchAuthorByIdQuery, Author> FetchAuthor;
-        private readonly IQueryService<FetchArticlesByAuthorIdQuery, Paged<Article>> FetchArticles;
         private readonly IQueryService<GetTotalPointsByUserIdQuery, int> GetTotalPoints;
-        private readonly IQueryService<GetPointBreakdownByUserIdQuery, IEnumerable<PointBreakdown>> GetPointBreakdown;
+        private readonly IQueryProcessor QueryProcessor;
 
         public new User User { get; set; }
         public Author Author { get; set; }
@@ -37,24 +34,15 @@ namespace Web.Pages
 
         public UserModel
             (
-                IQueryService<FetchUserByIdQuery, User> fetchUser,
-                IQueryService<FetchAuthorByIdQuery, Author> fetchAuthor,
-                IQueryService<FetchArticlesByAuthorIdQuery, Paged<Article>> fetchArticles,
                 IQueryService<GetTotalPointsByUserIdQuery, int> getTotalPoints,
-                IQueryService<GetPointBreakdownByUserIdQuery, IEnumerable<PointBreakdown>> getPointBreakdown
+                IQueryProcessor queryProcessor
             )
         {
-            EnsureArg.IsNotNull(fetchUser, nameof(fetchUser));
-            EnsureArg.IsNotNull(fetchAuthor, nameof(fetchAuthor));
-            EnsureArg.IsNotNull(fetchArticles, nameof(fetchArticles));
             EnsureArg.IsNotNull(getTotalPoints, nameof(getTotalPoints));
-            EnsureArg.IsNotNull(getPointBreakdown, nameof(getPointBreakdown));
+            EnsureArg.IsNotNull(queryProcessor, nameof(queryProcessor));
 
-            FetchUser = fetchUser;
-            FetchAuthor = fetchAuthor;
-            FetchArticles = fetchArticles;
             GetTotalPoints = getTotalPoints;
-            GetPointBreakdown = getPointBreakdown;
+            QueryProcessor = queryProcessor;
         }
 
         public void OnGet(int id)
@@ -78,7 +66,7 @@ namespace Web.Pages
 
         private User SetUser(int id)
         {
-            return FetchUser.Execute(new FetchUserByIdQuery
+            return QueryProcessor.Execute(new FetchUserByIdQuery
             {
                 UserId = id
             });
@@ -86,7 +74,7 @@ namespace Web.Pages
 
         private Author SetAuthor(int userId)
         {
-            return FetchAuthor.Execute(new FetchAuthorByIdQuery
+            return QueryProcessor.Execute(new FetchAuthorByIdQuery
             {
                 AuthorId = userId
             });
@@ -94,7 +82,7 @@ namespace Web.Pages
 
         private IEnumerable<Article> SetArticles(int authorId)
         {
-            return FetchArticles.Execute(new FetchArticlesByAuthorIdQuery
+            return QueryProcessor.Execute(new FetchArticlesByAuthorIdQuery
             {
                 AuthorId = authorId,
                 Paging = new PageInfo
@@ -114,7 +102,7 @@ namespace Web.Pages
 
         private IEnumerable<PointBreakdown> SetPointBreakDowns(int userId)
         {
-            return GetPointBreakdown.Execute(new GetPointBreakdownByUserIdQuery
+            return QueryProcessor.Execute(new GetPointBreakdownByUserIdQuery
             {
                 UserId = userId,
             });
