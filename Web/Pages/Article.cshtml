@@ -34,7 +34,7 @@
 {
     @if (article.DidUserFavorite)
     {
-        <form class="favorite isFavorited" asp-page-handler="deleteUserFavorite">
+        <form class="favorite isFavorited" asp-page-handler="deleteUserFavorite" style="margin-left: 0px">
             <input type="hidden" name="userId" value="@int.Parse(currentUser)" />
             <input type="hidden" name="articleId" value="@article.ArticleId" />
             <button class="btn btn-outline fa fa-heart" style="color: red" type="submit"> @article.FavoriteCount</button>
@@ -42,7 +42,7 @@
     }
     else
     {
-        <form class="favorite" asp-page-handler="addUserFavorite">
+        <form class="favorite" asp-page-handler="addUserFavorite"  style="margin-left: 0px">
             <input type="hidden" name="userId" value="@int.Parse(currentUser)" />
             <input type="hidden" name="articleId" value="@article.ArticleId" />
             <button class="btn btn-outline fa fa-heart" type="submit">  @article.FavoriteCount</button>
@@ -51,12 +51,12 @@
 }
 else
 {
-    <p class="fa fa-heart favorite"> @article.FavoriteCount</p>
+    <p class="fa fa-heart favorite" style="margin-left: -3px"> @article.FavoriteCount</p>
 }
 @if (isAuthorViewingArticle)
 {
-    <div class="article-tags" style="padding-bottom: 10px">
-        <a class="fa-edit" asp-page="/Edit/Article" asp-route-id="@article.ArticleId">
+    <div class="article-tags" style="margin-bottom: 20px">
+        <a class="fa fa-edit" asp-page="/Edit/Article" asp-route-id="@article.ArticleId">
             Edit
         </a>
     </div>
