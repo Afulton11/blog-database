@@ -76,20 +76,29 @@ else
     </p>
 </div>
 <div class="large-space"></div>
-<nav class="article-navigation">
-    <div class="previous">
-        <a href="#" rel="previous">
-            <span class="metadata">← Previous Article</span>
-            <br /> Stack Overflow Age
-        </a>
-    </div>
-    <div class="next">
-        <a href="#" rel="next">
-            <span class="metadata">Next Article →</span>
-            <br /> Strange and Maddening Rules
-        </a>
-    </div>
-</nav>
+@if (article.NextArticleId.HasValue || article.PreviousArticleId.HasValue)
+{
+    <nav class="article-navigation">
+        @if (article.PreviousArticleId.HasValue)
+        {
+            <div class="previous">
+                <a asp-page="/Article" asp-route-id="@article.PreviousArticleId.Value" rel="prev">
+                    <span class="metadata">← Previous Article</span>
+                    <br /> @article.PreviousArticleTitle
+                </a>
+            </div>
+        }
+        @if (article.NextArticleId.HasValue)
+        {
+            <div class="next">
+                <a asp-page="/Article" asp-route-id="@article.NextArticleId.Value" rel="next">
+                    <span class="metadata">Next Article →</span>
+                    <br /> @article.NextArticleTitle
+                </a>
+            </div>
+        }
+    </nav>
+}
 
 @if (Model.Comments.Any() || SignInManager.IsSignedIn(User))
 {
@@ -102,33 +111,33 @@ else
     {
         <partial name="_AddCommentPartial" model="Model.AddCommentModel" />
     }
-}
 
-@foreach (var comment in Model.Comments)
-{
-    <div style="padding-left: @Html.Raw(comment.Depth * 2.5)em">
-        <partial name="_CommentPartial" model="@comment" />
-    </div>
-}
-
-<nav class="article-navigation">
-    @if (Model.CanShowPreviousComments)
+    @foreach (var comment in Model.Comments)
     {
-        <div class="previous">
-            <a asp-page="/Article" asp-route-id="@Model.Article.ArticleId" asp-route-CurrentPage="@(Model.CurrentPage - 1)" rel="prev">
-                <span class="metadata">← Comments</span>
-                <br /> Previous
-            </a>
+        <div style="padding-left: @Html.Raw(comment.Depth * 2.5)em">
+            <partial name="_CommentPartial" model="@comment" />
         </div>
     }
-    @if (Model.CanShowMoreComments)
-    {
-        <div class="next">
-            <a asp-page="/Article" asp-route-id="@Model.Article.ArticleId" asp-route-CurrentPage="@(Model.CurrentPage + 1)" rel="next">
-                <span class="metadata">Comments →</span>
-                <br /> More
-            </a>
-        </div>
-    }
-</nav>
+
+    <nav class="article-navigation">
+        @if (Model.CanShowPreviousComments)
+        {
+            <div class="previous">
+                <a asp-page="/Article" asp-route-id="@Model.Article.ArticleId" asp-route-CurrentPage="@(Model.CurrentPage - 1)" rel="prev">
+                    <span class="metadata">← Comments</span>
+                    <br /> Previous
+                </a>
+            </div>
+        }
+        @if (Model.CanShowMoreComments)
+        {
+            <div class="next">
+                <a asp-page="/Article" asp-route-id="@Model.Article.ArticleId" asp-route-CurrentPage="@(Model.CurrentPage + 1)" rel="next">
+                    <span class="metadata">Comments →</span>
+                    <br /> More
+                </a>
+            </div>
+        }
+    </nav>
+}
 

@@ -15,5 +15,10 @@ namespace Domain.Entities.View
         public bool DidUserFavorite { get; set; }
         public int CommentCount { get; set; }
         public int FavoriteCount { get; set; }
+
+        public int? NextArticleId { get; set; }
+        public string NextArticleTitle { get; set; }
+        public int? PreviousArticleId { get; set; }
+        public string PreviousArticleTitle { get; set; }
     }
 }
