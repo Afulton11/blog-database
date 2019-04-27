@@ -1,4 +1,4 @@
-﻿using Domain.Entities.Blog;
+﻿using Domain.Entities.View;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 

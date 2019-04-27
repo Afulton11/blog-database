@@ -1,5 +1,4 @@
-﻿using System;
-namespace Domain.Data
+﻿namespace Domain.Data
 {
     public interface IEntity
     {
