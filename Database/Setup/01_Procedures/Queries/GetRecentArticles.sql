@@ -8,6 +8,12 @@ CREATE OR ALTER PROCEDURE Blog.GetRecentArticles
 )
 AS
 BEGIN
+	DECLARE @PublishedContentStatusId INT =
+		(
+			SELECT C.ContentStatusId
+			FROM Blog.ContentStatus C
+			WHERE C.[Name] = N'Published'
+		)
 	SELECT Art.ArticleId,
 		   Art.AuthorID,
 	       Art.Title,
@@ -15,8 +21,7 @@ BEGIN
 	       Art.CreationDateTime,
 		   C.[Name] AS ContentStatus
 	FROM Blog.Article Art
-		INNER JOIN Blog.ContentStatus C ON C.ContentStatusId = C.ContentStatusId
-	WHERE Art.DeletedAt IS NULL AND C.[Name] = N'Published'
+	WHERE Art.DeletedAt IS NULL AND Art.ContentStatusId = @PublishedContentStatusId
 	ORDER BY Art.CreationDateTime DESC
 	OFFSET @PageSize * @PageNumber ROWS
 	FETCH NEXT @PageSize ROWS ONLY;
