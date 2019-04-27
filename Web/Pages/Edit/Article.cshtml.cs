@@ -93,17 +93,13 @@ namespace Web.Pages.Edit
                 {
                     return LocalRedirect($"~/Article/{ArticleId}");
                 }
-                else
-                {
-                    return LocalRedirect("~/");
-                }
             }
             else
             {
                 ModelState.AddModelError("", "Invalid Article");
             }
 
-            return Page();
+            return LocalRedirect("~/");
         }
 
         [BindProperty]
