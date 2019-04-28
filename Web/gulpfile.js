@@ -311,7 +311,6 @@ exports.default = series(
 // gulp watch
 exports.watch = series(
     exports.default,
-    startServer,
     watchSource
 );
 
