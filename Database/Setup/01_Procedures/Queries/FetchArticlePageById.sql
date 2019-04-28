@@ -1,24 +1,65 @@
 ﻿USE BlogDatabase;
 GO
 
+CREATE OR ALTER FUNCTION Blog.PublishedContentStatusId()
+RETURNS INT AS
+BEGIN
+	DECLARE @PublishedCS INT = (SELECT ContentStatusId FROM Blog.ContentStatus WHERE [Name] = N'Published');
+
+	RETURN @PublishedCS;
+END;
+GO
+
 CREATE OR ALTER FUNCTION Blog.FetchNextArticle(
 	@ArticleId INT,
-	@NextOffset INT = 1
+	@CreationDateTime DATETIME
 )
 RETURNS TABLE
 AS
 RETURN
-	SELECT A.ArticleId,
-		   A.Title
+	SELECT TOP(1)
+		A.ArticleId,
+		A.Title
 	FROM Blog.Article A
-	WHERE A.ArticleId = (@ArticleId + @NextOffset)
+	WHERE A.ArticleId != @ArticleId
+		AND A.CreationDateTime >= @CreationDateTime
+		AND A.ContentStatusId = Blog.PublishedContentStatusId()
+		AND A.DeletedAt IS NULL
+	ORDER BY A.CreationDateTime ASC
 GO
+
+CREATE OR ALTER FUNCTION Blog.FetchPreviousArticle(
+	@ArticleId INT,
+	@CreationDateTime DATETIME
+)
+RETURNS TABLE
+AS
+RETURN
+	SELECT TOP(1)
+		A.ArticleId,
+		A.Title
+	FROM Blog.Article A
+	WHERE A.ArticleId != @ArticleId
+		AND A.CreationDateTime <= @CreationDateTime
+		AND A.ContentStatusId = Blog.PublishedContentStatusId()
+		AND A.DeletedAt IS NULL
+	ORDER BY A.CreationDateTime DESC
+GO
+
+
 
 CREATE OR ALTER PROCEDURE Blog.FetchArticlePageById(
 	@ArticleId INT,
 	@UserId INT = NULL
 ) AS
 BEGIN
+	DECLARE @CreationDateTime DATETIME =
+		(
+			SELECT A.CreationDateTime
+			FROM Blog.Article A
+			WHERE A.ArticleId = @ArticleId
+		);
+
 	WITH CurrentUserFavorite AS
 	(
 		SELECT U.UserId
@@ -58,8 +99,8 @@ BEGIN
 		LEFT JOIN Blog.Author AU ON AU.AuthorUserId = A.AuthorId
 		LEFT JOIN Blog.ArticleCategory C ON C.ArticleCategoryId = A.CategoryId
 		LEFT JOIN Blog.Comment Comment ON Comment.ArticleId = A.ArticleId
-		LEFT JOIN Blog.FetchNextArticle(@ArticleId, 1) NextArticle ON 1 = 1
-		LEFT JOIN Blog.FetchNextArticle(@ArticleId, -1) PreviousArticle ON 1 = 1
+		LEFT JOIN Blog.FetchNextArticle(@ArticleId, @CreationDateTime) NextArticle ON 1 = 1
+		LEFT JOIN Blog.FetchPreviousArticle(@ArticleId, @CreationDateTime) PreviousArticle ON 1 = 1
 	WHERE A.ArticleId = @ArticleId
 	GROUP BY 
 		A.ArticleId,
