@@ -58,5 +58,7 @@
 :r ./Setup/02_Populate/05_Article.sql
 :r ./Setup/02_Populate/06_Favorite.sql
 :r ./Setup/02_Populate/07_Comment.sql
+:r ./Setup/02_Populate/07_Comment2.sql
+:r ./Setup/02_Populate/07_Comment3.sql
 :r ./Setup/02_Populate/08_Reason.sql
 :r ./Setup/02_Populate/09_Point.sql
