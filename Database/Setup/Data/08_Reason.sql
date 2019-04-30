@@ -7,4 +7,4 @@ VALUES
     (N'Favorited a comment'),
     (N'Commented on an article'),
     (N'Replied to a new comment thread'),
-    (N'Visited website')
+    (N'Visited website');

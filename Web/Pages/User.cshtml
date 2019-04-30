@@ -2,18 +2,24 @@
 @model Web.Pages.UserModel
 @{
     ViewData["Title"] = Model.User.Username;
+
+    var currentUserId = Model.CurrentUserId;
     var user = Model.User;
     var author = Model.Author;
     var articles = Model.Articles;
+    var favoriteArticles = Model.FavoriteArticles;
+    var favoriteArticleCount = favoriteArticles == null ? 0 : favoriteArticles.Count();
     var totalPoints = Model.TotalPoints;
     var pointBreakdowns = Model.PointBreakdowns;
-    
+
+    bool currentUserIsUser = currentUserId == user.UserId;
     bool userIsDeleted = user.DeletedAt != default(DateTime);
     bool userIsAuthor = author != null;
-    bool userHasArticles = articles.Count() > 0;
-    bool userHasPointBreakdown = pointBreakdowns.Count() > 0;
+    bool userHasArticles = articles != null && articles.Count() > 0;
+    bool userHasPointBreakdown = pointBreakdowns != null && pointBreakdowns.Count() > 0;
 
     string pointString = totalPoints != 1 ? "points" : "point";
+    string favoriteString = favoriteArticleCount != 1 ? "favorite articles" : "favorite article";
 }
 @functions 
 {
@@ -34,6 +40,10 @@
                 @totalPoints @pointString
             </span>
 
+            <span class="total-favorites">
+                @favoriteArticleCount @favoriteString
+            </span>
+
             @if (userIsAuthor)
             {
                 <span class="article-count">
@@ -50,10 +60,6 @@
             else
             {
                 <span class="member-period">
-                    @*
-                        TODO: This is currently useless as creation
-                        dates are not being randomly generated.
-                    *@
                     Member for
                     @(
                         Math.Abs((DateTime.Now - user.CreationDateTime).Days)
@@ -61,16 +67,61 @@
                 </span>
             }
         </div>
+        <hr />
     </div>
+
+    @if (currentUserId == user.UserId)
+    {
+        <div class="user-controls">
+            <form class="delete-user" method="post" asp-page-handler="deleteUser">
+                <input class="btn btn-danger form-control" type="submit" value="Delete Account" />
+                <input type="hidden" name="user-id" value="@currentUserId" />
+            </form>
+        </div>
+    }
 
     @if (userHasArticles)
     {
-        <hr>
         <div class="user-articles">
             <h3 class="article-header">
                 Articles posted by @user.Username
             </h3>
             @foreach (var article in articles)
+            {
+                <div class="article-preview">
+                    <p class="metadata">
+                        <span class="date">
+                            @article.CreationDateTime.ToString("MMMM dd, yyyy")
+                        </span>
+                    </p>
+                    <h3 class="article-title">
+                        <a asp-page="/Article" asp-route-id="@article.ArticleId">
+                            @article.Title
+                        </a>
+                    </h3>
+                    <div class="article-description">
+                        <p>
+                            @article.Description
+                            <span class="read-more">
+                                <a class="more-link" asp-page="/Article" asp-route-id="@article.ArticleId">
+                                    Read more
+                                </a>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    @if (favoriteArticleCount > 0)
+    {
+        <hr />
+        <div class="favorite-articles">
+            <h3 class="article-header">
+                @user.Username's Favorite Articles
+            </h3>
+            @foreach (var article in favoriteArticles)
             {
                 <div class="article-preview">
                     <p class="metadata">

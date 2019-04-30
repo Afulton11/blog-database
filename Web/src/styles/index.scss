@@ -131,7 +131,6 @@ a {
         }
     }
 }
-
 .page-content {
     @include padding($outer-padding, $outer-padding 6% 4% 30%);
 
@@ -165,15 +164,21 @@ a {
     .favorite {
         color: #9b9b9b;
         font-size: 18px;
+        font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        position: relative;
 
-        button {
-            padding: 0px;
-        }
-
-        .isFavorited {
-            color: #ff0000;
+        &:before {
+            @include solid-icons;
+            content: fa-content($fa-var-heart);
+            left: 0;
+            transform: translateY(-1.5px);
         }
     }
+
+    .isFavorited {
+        color: #ff0000;
+    }
+
 
     .content {
         display: flex;
@@ -390,6 +395,18 @@ a {
             span {
                 font-size: $font-size-sm;
                 margin-right: 15px;
+            }
+        }
+    }
+
+    .user-controls {
+        width: 100%;
+
+        .delete-user {
+            max-width: 20%;
+            float: right;
+            input {
+                text-align: center;
             }
         }
     }

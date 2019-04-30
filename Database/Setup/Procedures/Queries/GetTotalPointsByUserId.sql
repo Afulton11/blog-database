@@ -7,5 +7,6 @@ AS
     SELECT ISNULL(SUM(p.[Value]), 0) AS TotalPoints
     FROM Blog.Point AS p
     WHERE p.UserId = @UserId
-        AND p.ExpiresAt >= SYSDATETIME();
+        AND p.ExpiresAt IS NULL 
+        OR p.ExpiresAt >= SYSDATETIME();
 GO
