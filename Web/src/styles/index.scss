@@ -399,6 +399,18 @@ a {
         }
     }
 
+    .user-controls {
+        width: 100%;
+
+        .delete-user {
+            max-width: 20%;
+            float: right;
+            input {
+                text-align: center;
+            }
+        }
+    }
+
     .article-header {
         margin-bottom: 35px;
     }
