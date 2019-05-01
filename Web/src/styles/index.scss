@@ -292,6 +292,10 @@ a {
 
 .article-reading-content {
     max-width: $max-line-width;
+
+    p {
+        line-height: 2.0;
+    }
 }
 
 .article-tags {
