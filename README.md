@@ -1,3 +1,6 @@
+# Archived
+This repository has been archived as it was a group project as part of the CIS-560 Database Management class at Kansas State University. The project has been left in the same state as when it was turned in.
+
 # Blog Database
 This repository is a simple skeleton for a blog with a database. Created as a part of a CIS-560 project at Kansas State University.
 
